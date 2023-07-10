@@ -1,8 +1,9 @@
 import 'dart:core';
 import 'package:hive/hive.dart';
+part 'hour_models.g.dart';
 
 @HiveType(typeId: 0)
-class hours {
+class hours extends HiveObject {
 
   @HiveField(0)
   String index;

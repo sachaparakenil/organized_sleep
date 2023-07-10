@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:organized_sleep/boxes/boxes.dart';
+import 'package:organized_sleep/models/hour_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'boxes/boxes.dart';
 
 class AlarmScreen extends StatefulWidget {
   @override
@@ -12,7 +16,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
 
   @override
   void dispose() {
-
     Hive.box("transaction").close();
     super.dispose();
   }
@@ -34,9 +37,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
   }
 
   void _saveAlarms(SharedPreferences prefs) {
-    List<String> alarmStrings = _alarms
-        .map((alarm) => alarm.format(context))
-        .toList();
+    List<String> alarmStrings =
+        _alarms.map((alarm) => alarm.format(context)).toList();
     prefs.setStringList('alarms', alarmStrings);
   }
 
@@ -46,7 +48,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
       setState(() {
         _alarms = alarmStrings
             .map((alarmString) =>
-            TimeOfDay.fromDateTime(DateTime.parse(alarmString)))
+                TimeOfDay.fromDateTime(DateTime.parse(alarmString)))
             .toList();
       });
     }
@@ -60,7 +62,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,9 +74,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                var box = await Hive.openBox("hour");
-                box.put('index', 'hourFormat');
-                print(box.get('index'));
                 TimeOfDay? pickedTime = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.now(),
@@ -83,6 +81,11 @@ class _AlarmScreenState extends State<AlarmScreen> {
                 if (pickedTime != null) {
                   _addAlarm(pickedTime);
                 }
+                final data =
+                    hours(hour: pickedTime!.format(context), index: "1");
+                final box = Boxes.getData();
+                box.add(data);
+                data.save();
               },
               child: Text('Add Alarm'),
             ),
@@ -93,30 +96,28 @@ class _AlarmScreenState extends State<AlarmScreen> {
             ),
             SizedBox(height: 10),
             Expanded(
-              child: ListView.builder(
-                itemCount: _alarms.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Icon(Icons.alarm),
-                    title: Text(
-                      _alarms[index].format(context),
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () => _removeAlarm(index),
-                    ),
-                  );
-                },
-              ),
-            ),
-            FutureBuilder(future: Hive.openBox("hour"),builder: (context, snapshot){
-              return Text(snapshot.data!.get('index').toString());
-            }),
+                child: ValueListenableBuilder<Box<hours>>(
+              valueListenable: Boxes.getData().listenable(),
+              builder: (context, box, _) {
+                var data = box.values.toList().cast<hours>();
+                return ListView.builder(
+                  itemCount: box.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Icon(Icons.alarm),
+                      title: Text(data[index].hour.toString()),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () => _removeAlarm(index),
+                      ),
+                    );
+                  },
+                );
+              },
+            )),
           ],
         ),
       ),
     );
   }
 }
-

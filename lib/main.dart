@@ -8,11 +8,14 @@ import 'alarm_screen.dart';
 import 'countdown_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
+import 'models/hour_models.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
+  Hive.registerAdapter(hoursAdapter());
+  await Hive.openBox<hours>('hour');
   runApp(ClockApp());
 }
 
