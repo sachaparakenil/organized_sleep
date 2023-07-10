@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:organized_sleep/boxes/boxes.dart';
 import 'package:organized_sleep/models/hour_models.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'boxes/boxes.dart';
+import '../boxes/boxes.dart';
 
 class AlarmScreen extends StatefulWidget {
   @override
@@ -12,7 +11,6 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
-  List<TimeOfDay> _alarms = [];
 
   @override
   void dispose() {
@@ -20,47 +18,43 @@ class _AlarmScreenState extends State<AlarmScreen> {
     super.dispose();
   }
 
-  void _addAlarm(TimeOfDay selectedTime) async {
+/*  void _addAlarm(TimeOfDay selectedTime) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _alarms.add(selectedTime);
       _saveAlarms(prefs);
     });
+  }*/
+
+  void delete(hours val)async{
+    await val.delete();
   }
 
-  void _removeAlarm(int index) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _alarms.removeAt(index);
-      _saveAlarms(prefs);
-    });
-  }
-
-  void _saveAlarms(SharedPreferences prefs) {
+/*  void _saveAlarms(SharedPreferences prefs) {
     List<String> alarmStrings =
-        _alarms.map((alarm) => alarm.format(context)).toList();
+    _alarms.map((alarm) => alarm.format(context)).toList();
     prefs.setStringList('alarms', alarmStrings);
-  }
+  }*/
 
-  void _loadAlarms(SharedPreferences prefs) {
+/*  void _loadAlarms(SharedPreferences prefs) {
     List<String>? alarmStrings = prefs.getStringList('alarms');
     if (alarmStrings != null) {
       setState(() {
         _alarms = alarmStrings
             .map((alarmString) =>
-                TimeOfDay.fromDateTime(DateTime.parse(alarmString)))
+            TimeOfDay.fromDateTime(DateTime.parse(alarmString)))
             .toList();
       });
     }
-  }
-
+  }*/
+/*
   @override
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((prefs) {
       _loadAlarms(prefs);
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +73,13 @@ class _AlarmScreenState extends State<AlarmScreen> {
                   initialTime: TimeOfDay.now(),
                 );
                 if (pickedTime != null) {
-                  _addAlarm(pickedTime);
+                  final data =
+                  hours(hour: pickedTime.format(context), index: "1");
+                  final box = Boxes.getData();
+                  box.add(data);
+                  data.save();
                 }
-                final data =
-                    hours(hour: pickedTime!.format(context), index: "1");
-                final box = Boxes.getData();
-                box.add(data);
-                data.save();
+
               },
               child: Text('Add Alarm'),
             ),
@@ -97,24 +91,24 @@ class _AlarmScreenState extends State<AlarmScreen> {
             SizedBox(height: 10),
             Expanded(
                 child: ValueListenableBuilder<Box<hours>>(
-              valueListenable: Boxes.getData().listenable(),
-              builder: (context, box, _) {
-                var data = box.values.toList().cast<hours>();
-                return ListView.builder(
-                  itemCount: box.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Icon(Icons.alarm),
-                      title: Text(data[index].hour.toString()),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () => _removeAlarm(index),
-                      ),
+                  valueListenable: Boxes.getData().listenable(),
+                  builder: (context, box, _) {
+                    var data = box.values.toList().cast<hours>();
+                    return ListView.builder(
+                      itemCount: box.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Icon(Icons.alarm),
+                          title: Text(data[index].hour.toString()),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () => delete(data[index]),
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
-            )),
+                )),
           ],
         ),
       ),
