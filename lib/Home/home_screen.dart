@@ -186,17 +186,3 @@ class SleepScreen extends StatelessWidget {
     );
   }
 }
-
-class MeditateScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Self Meditate'),
-      ),
-      body: Center(
-        child: Text('Meditate Screen'),
-      ),
-    );
-  }
-}

@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:organized_sleep/boxes/boxes.dart';
@@ -11,6 +12,11 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
+  final AudioPlayer audioCache = AudioPlayer();
+
+  void playSound(String soundFilePath) {
+    audioCache.play("assets/summer.mp3" as Source);
+  }
 
   @override
   void dispose() {
@@ -18,43 +24,9 @@ class _AlarmScreenState extends State<AlarmScreen> {
     super.dispose();
   }
 
-/*  void _addAlarm(TimeOfDay selectedTime) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _alarms.add(selectedTime);
-      _saveAlarms(prefs);
-    });
-  }*/
-
   void delete(hours val)async{
     await val.delete();
   }
-
-/*  void _saveAlarms(SharedPreferences prefs) {
-    List<String> alarmStrings =
-    _alarms.map((alarm) => alarm.format(context)).toList();
-    prefs.setStringList('alarms', alarmStrings);
-  }*/
-
-/*  void _loadAlarms(SharedPreferences prefs) {
-    List<String>? alarmStrings = prefs.getStringList('alarms');
-    if (alarmStrings != null) {
-      setState(() {
-        _alarms = alarmStrings
-            .map((alarmString) =>
-            TimeOfDay.fromDateTime(DateTime.parse(alarmString)))
-            .toList();
-      });
-    }
-  }*/
-/*
-  @override
-  void initState() {
-    super.initState();
-    SharedPreferences.getInstance().then((prefs) {
-      _loadAlarms(prefs);
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +50,11 @@ class _AlarmScreenState extends State<AlarmScreen> {
                   final box = Boxes.getData();
                   box.add(data);
                   data.save();
+                }
+                DateTime specifiedTime = DateTime.now().add(Duration(seconds: 5));
+                DateTime now = DateTime.now();
+                if (now.isAfter(specifiedTime)) {
+                  playSound('sound_file.mp3');
                 }
 
               },

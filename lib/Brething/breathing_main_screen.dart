@@ -42,7 +42,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 Text('Inhale Duration: $_selectedInhaleDuration seconds'),
                 ElevatedButton(
                   onPressed:
-                      _isBreathing ? null : () => _showDurationDialog('Inhale'),
+                  _isBreathing ? null : () => _showDurationDialog('Inhale'),
                   child: Text('Change'),
                 ),
               ],
@@ -53,7 +53,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 Text('Hold Duration: $_selectedHoldDuration seconds'),
                 ElevatedButton(
                   onPressed:
-                      _isBreathing ? null : () => _showDurationDialog('Hold'),
+                  _isBreathing ? null : () => _showDurationDialog('Hold'),
                   child: Text('Change'),
                 ),
               ],
@@ -64,20 +64,15 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 Text('Exhale Duration: $_selectedExhaleDuration seconds'),
                 ElevatedButton(
                   onPressed:
-                      _isBreathing ? null : () => _showDurationDialog('Exhale'),
+                  _isBreathing ? null : () => _showDurationDialog('Exhale'),
                   child: Text('Change'),
                 ),
               ],
             ),
             SizedBox(height: 40),
             ElevatedButton(
-              onPressed: _isBreathing ? null : _startBreathing,
-              child: Text('Start Breathing'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _isBreathing ? _stopBreathing : null,
-              child: Text('Stop Breathing'),
+              onPressed: _isBreathing ? _stopBreathing : _startBreathing,
+              child: _isBreathing ? Text('Stop Breathing') : Text('Start Breathing'),
             ),
           ],
         ),
@@ -85,8 +80,10 @@ class _BreathingScreenState extends State<BreathingScreen> {
     );
   }
 
-  Future<void> _showDurationDialog(String type) async {
-    int initialValue = 0;
+  void _showDurationDialog(String type) {
+    int initialValue = 1;
+    int selectedDuration = 1;
+
     switch (type) {
       case 'Inhale':
         initialValue = _selectedInhaleDuration;
@@ -99,33 +96,52 @@ class _BreathingScreenState extends State<BreathingScreen> {
         break;
     }
 
-    int? selectedDuration = await showDialog<int>(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
-        int duration = initialValue;
         return AlertDialog(
           title: Text('Set $type Duration'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButton<int>(
-                value: duration,
-                items: List.generate(10, (index) {
-                  return DropdownMenuItem<int>(
-                    value: index + 1,
-                    child: Text((index + 1).toString()),
-                  );
-                }),
-                onChanged: (int? value) {
-                  duration = value ?? 1;
-                },
-              ),
-            ],
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButton<int>(
+                    value: initialValue,
+                    items: List.generate(10, (index) {
+                      return DropdownMenuItem<int>(
+                        value: index + 1,
+                        child: Text((index + 1).toString()),
+                      );
+                    }),
+                    onChanged: (int? value) {
+                      setState(() {
+                        initialValue = value ?? 1;
+                        selectedDuration = value ?? 1;
+                      });
+                    },
+                  ),
+                ],
+              );
+            },
           ),
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(duration);
+                setState(() {
+                  switch (type) {
+                    case 'Inhale':
+                      _selectedInhaleDuration = selectedDuration;
+                      break;
+                    case 'Exhale':
+                      _selectedExhaleDuration = selectedDuration;
+                      break;
+                    case 'Hold':
+                      _selectedHoldDuration = selectedDuration;
+                      break;
+                  }
+                });
+                Navigator.of(context).pop();
               },
               child: Text('Save'),
             ),
@@ -133,111 +149,70 @@ class _BreathingScreenState extends State<BreathingScreen> {
         );
       },
     );
-
-    // Update the selected duration based on the dialog result
-    if (selectedDuration != null) {
-      setState(() {
-        switch (type) {
-          case 'Inhale':
-            _selectedInhaleDuration = selectedDuration;
-            break;
-          case 'Exhale':
-            _selectedExhaleDuration = selectedDuration;
-            break;
-          case 'Hold':
-            _selectedHoldDuration = selectedDuration;
-            break;
-        }
-      });
-    }
   }
 
-  /*int? selectedDuration = await showDialog<int>(
-      context: context,
-      builder: (BuildContext context) {
-        int duration = initialValue;
-        return AlertDialog(
-          title: Text('Set $type Duration'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButton<int>(
-                value: duration,
-                items: List.generate(10, (index) {
-                  return DropdownMenuItem<int>(
-                    value: index + 1,
-                    child: Text((index + 1).toString()),
-                  );
-                }),
-                onChanged: (int? value) {
-                  setState(() {
-                    duration = value ?? 1;
-                  });
-                },
-              ),
-              Text('$duration seconds'),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop(duration);
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
+  bool _stopRequested = false;
 
-    if (selectedDuration != null) {
-      setState(() {
-        switch (type) {
-          case 'Inhale':
-            _selectedInhaleDuration = selectedDuration;
-            break;
-          case 'Exhale':
-            _selectedExhaleDuration = selectedDuration;
-            break;
-          case 'Hold':
-            _selectedHoldDuration = selectedDuration;
-            break;
-        }
-      });
-    }
-  }*/
-
-  Future<void> _startBreathing() async {
-    setState(() {
-      _isBreathing = true;
-    });
-
-    while (_isBreathing) {
-      await _animateBreath(_selectedInhaleDuration, 'Inhale', Colors.green);
-      await _animateBreath(_selectedHoldDuration, 'Hold', Colors.yellow);
-      await _animateBreath(_selectedExhaleDuration, 'Exhale', Colors.red);
-    }
-  }
-
-  Future<void> _animateBreath(
-      int duration, String statusText, Color statusColor) async {
-    setState(() {
-      _statusText = statusText;
-      _statusColor = statusColor;
-    });
-    await ftts.speak(_statusText);
+  void _speakText(String text) async {
+    await ftts.speak(text);
     await ftts.setLanguage("en-US");
     await ftts.setSpeechRate(0.5);
     await ftts.setVolume(1.0);
     await ftts.setPitch(1);
-    await Future.delayed(Duration(seconds: duration));
   }
 
-  void _stopBreathing() {
+  void _startBreathing() async {
+    setState(() {
+      _isBreathing = true;
+      _stopRequested = false;
+    });
+
+    while (_isBreathing && !_stopRequested) {
+      await _animateBreath(_selectedInhaleDuration, 'Inhale', Colors.green);
+      await _animateBreath(_selectedHoldDuration, 'Hold', Colors.yellow);
+      await _animateBreath(_selectedExhaleDuration, 'Exhale', Colors.red);
+    }
+
     setState(() {
       _isBreathing = false;
       _statusText = 'Inhale';
       _statusColor = Colors.green;
     });
   }
+
+  Future<void> _animateBreath(int duration, String statusText,
+      Color statusColor) async {
+    setState(() {
+      _statusText = statusText;
+      _statusColor = statusColor;
+    });
+
+    _speakText(_statusText); // Call the text-to-speech method here
+
+    await Future.delayed(Duration(seconds: duration));
+
+    if (_stopRequested) {
+      return;
+    }
+  }
+
+  void _stopBreathing() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 5), () {
+          Navigator.of(context).pop();
+          setState(() {
+            _stopRequested = true;
+          });
+        });
+
+        return AlertDialog(
+          title: Text('Breathing Stop Requested'),
+          content: Text('Breathing will stop after completing the current task.'),
+        );
+      },
+    );
+  }
+
 }

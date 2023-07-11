@@ -5,11 +5,13 @@ import 'package:organized_sleep/Clock/stopwatch_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Brething/breathing_main_screen.dart';
 import '../Clock/clock_home_screen.dart';
+import '../Self_Practice/self_home_screen.dart';
 import 'Home/home_screen.dart';
 import '../Clock/clock_view.dart';
 import '../Clock/alarm_screen.dart';
 import '../Clock/countdown_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:hive/hive.dart';
 import 'home_screen.dart';
 import '../models/hour_models.dart';
@@ -41,7 +43,7 @@ class better_sleep extends StatelessWidget {
         '/breathing': (context) => BreathingScreen(),
         '/Clock': (context) => ClockScreen(),
         '/sleep': (context) => SleepScreen(),
-        '/meditate': (context) => MeditateScreen(),
+        '/meditate': (context) => AudioPlayerPage(),
       },
     );
   }
