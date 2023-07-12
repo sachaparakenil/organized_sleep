@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Clock/clock_view.dart';
 
-
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -5,8 +5,8 @@ import 'package:organized_sleep/Clock/stopwatch_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Brething/breathing_main_screen.dart';
 import '../Clock/clock_home_screen.dart';
+import '../Self_Practice/player.dart';
 import '../Self_Practice/self_home_screen.dart';
-import 'Home/home_screen.dart';
 import '../Clock/clock_view.dart';
 import '../Clock/alarm_screen.dart';
 import '../Clock/countdown_screen.dart';
@@ -44,6 +44,7 @@ class better_sleep extends StatelessWidget {
         '/Clock': (context) => ClockScreen(),
         '/sleep': (context) => SleepScreen(),
         '/meditate': (context) => AudioPlayerPage(),
+        /*'/player': (context) => Player(data: snapshot.data[index],),*/
       },
     );
   }
