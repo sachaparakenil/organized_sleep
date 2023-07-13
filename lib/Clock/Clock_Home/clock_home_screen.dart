@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'clock_view.dart';
+import '../clock_view.dart';
 
 class ClockScreen extends StatefulWidget {
   @override

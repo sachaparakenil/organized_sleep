@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:organized_sleep/Self_Practice/Controller/player_controller.dart';
-import 'package:organized_sleep/Self_Practice/player.dart';
+import 'package:organized_sleep/Music_melodies/player.dart';
+import 'Controller/player_controller.dart';
 
+//ignore: must_be_immutable
 class AudioPlayerPage extends StatelessWidget {
   AudioPlayerPage({super.key});
 
@@ -67,7 +66,7 @@ class AudioPlayerPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Player(
-                                          data: snapshot.data![index],
+                                          data: snapshot.data!,
                                         )
                                 ));
                             controller.playSong(snapshot.data![index].uri, index);

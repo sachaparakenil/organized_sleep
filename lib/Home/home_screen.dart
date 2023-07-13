@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../Clock/clock_view.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,7 +16,9 @@ class HomeScreen extends StatelessWidget {
             ClockView(
               size: MediaQuery.of(context).size.height / 4,
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -49,8 +52,19 @@ class ButtonOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       label: 'Music Melodies',
-      onPressed: () {
-        Navigator.pushNamed(context, '/music');
+      onPressed: () async {
+        PermissionStatus audio = await Permission.audio.request();
+        if (audio == PermissionStatus.granted) {
+          Navigator.pushNamed(context, '/meditate');
+        }if (await Permission.storage.request().isGranted) {
+          Navigator.pushNamed(context, '/meditate');
+        }
+        if(audio == PermissionStatus.denied){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This Permission is Required")));
+        }
+        if(audio == PermissionStatus.permanentlyDenied){
+          openAppSettings();
+        }
       },
     );
   }
@@ -73,8 +87,20 @@ class ButtonThree extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       label: 'Alarm',
-      onPressed: () {
-        Navigator.pushNamed(context, '/Clock');
+      onPressed: () async {
+        PermissionStatus notification = await Permission.notification.request();
+        if (notification == PermissionStatus.granted) {
+          Navigator.pushNamed(context, '/Clock');
+        }
+        if(notification == PermissionStatus.denied){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This Permission is Required")));
+        }
+        if(notification == PermissionStatus.permanentlyDenied){
+          openAppSettings();
+        }/*else{
+          Navigator.pushNamed(context, '/Clock');
+        }*/
+
       },
     );
   }
@@ -98,7 +124,7 @@ class ButtonFive extends StatelessWidget {
     return Button(
       label: 'Self Meditate',
       onPressed: () {
-        Navigator.pushNamed(context, '/meditate');
+        Navigator.pushNamed(context, '/music');
       },
     );
   }
@@ -141,7 +167,6 @@ class Button extends StatelessWidget {
   }
 }
 
-// Custom Screens for each button route
 class MusicScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -155,22 +180,6 @@ class MusicScreen extends StatelessWidget {
     );
   }
 }
-
-/*
-class BreathingScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Breathing Meditation'),
-      ),
-      body: Center(
-        child: Text('Breathing Screen'),
-      ),
-    );
-  }
-}
-*/
 
 class SleepScreen extends StatelessWidget {
   @override

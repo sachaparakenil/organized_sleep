@@ -1,23 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:organized_sleep/Clock/stopwatch_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Brething/breathing_main_screen.dart';
-import '../Clock/clock_home_screen.dart';
-import '../Self_Practice/player.dart';
-import '../Self_Practice/self_home_screen.dart';
-import '../Clock/clock_view.dart';
-import '../Clock/alarm_screen.dart';
-import '../Clock/countdown_screen.dart';
+import '../Clock/Clock_Home/clock_home_screen.dart';
+import '../Music_melodies/self_home_screen.dart';
+import '../Clock/Alarm/alarm_screen.dart';
+import '../Clock/CountDown/countdown_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:hive/hive.dart';
 import 'home_screen.dart';
+import '../Splash_screen/splash_screen.dart';
 import '../models/hour_models.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+import 'package:alarm/alarm.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +21,10 @@ Future<void> main() async {
   Hive.init(directory.path);
   Hive.registerAdapter(hoursAdapter());
   await Hive.openBox<hours>('hour');
-  runApp(better_sleep());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Alarm.init();
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
 }
 
 class better_sleep extends StatelessWidget {
@@ -44,7 +43,6 @@ class better_sleep extends StatelessWidget {
         '/Clock': (context) => ClockScreen(),
         '/sleep': (context) => SleepScreen(),
         '/meditate': (context) => AudioPlayerPage(),
-        /*'/player': (context) => Player(data: snapshot.data[index],),*/
       },
     );
   }
