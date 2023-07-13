@@ -3,11 +3,13 @@ import 'package:permission_handler/permission_handler.dart';
 import '../Clock/clock_view.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Homescreen'),
+        title: const Text('HomeScreen'),
       ),
       body: Center(
         child: Column(
@@ -16,25 +18,25 @@ class HomeScreen extends StatelessWidget {
             ClockView(
               size: MediaQuery.of(context).size.height / 4,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonOne(),
                 ButtonTwo(),
               ],
             ),
-            SizedBox(height: 20),
-            Row(
+            const SizedBox(height: 20),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonThree(),
                 ButtonFour(),
               ],
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonFive(),
@@ -48,6 +50,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class ButtonOne extends StatelessWidget {
+  const ButtonOne({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Button(
@@ -56,13 +60,15 @@ class ButtonOne extends StatelessWidget {
         PermissionStatus audio = await Permission.audio.request();
         if (audio == PermissionStatus.granted) {
           Navigator.pushNamed(context, '/meditate');
-        }if (await Permission.storage.request().isGranted) {
+        }
+        if (await Permission.storage.request().isGranted) {
           Navigator.pushNamed(context, '/meditate');
         }
-        if(audio == PermissionStatus.denied){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This Permission is Required")));
+        if (audio == PermissionStatus.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("This Permission is Required")));
         }
-        if(audio == PermissionStatus.permanentlyDenied){
+        if (audio == PermissionStatus.permanentlyDenied) {
           openAppSettings();
         }
       },
@@ -71,6 +77,8 @@ class ButtonOne extends StatelessWidget {
 }
 
 class ButtonTwo extends StatelessWidget {
+  const ButtonTwo({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Button(
@@ -83,6 +91,8 @@ class ButtonTwo extends StatelessWidget {
 }
 
 class ButtonThree extends StatelessWidget {
+  const ButtonThree({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Button(
@@ -92,21 +102,21 @@ class ButtonThree extends StatelessWidget {
         if (notification == PermissionStatus.granted) {
           Navigator.pushNamed(context, '/Clock');
         }
-        if(notification == PermissionStatus.denied){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("This Permission is Required")));
+        if (notification == PermissionStatus.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("This Permission is Required")));
         }
-        if(notification == PermissionStatus.permanentlyDenied){
+        if (notification == PermissionStatus.permanentlyDenied) {
           openAppSettings();
-        }/*else{
-          Navigator.pushNamed(context, '/Clock');
-        }*/
-
+        }
       },
     );
   }
 }
 
 class ButtonFour extends StatelessWidget {
+  const ButtonFour({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Button(
@@ -119,6 +129,8 @@ class ButtonFour extends StatelessWidget {
 }
 
 class ButtonFive extends StatelessWidget {
+  const ButtonFive({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Button(
@@ -134,7 +146,7 @@ class Button extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
 
-  const Button({required this.label, this.onPressed});
+  const Button({super.key, required this.label, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +154,8 @@ class Button extends StatelessWidget {
       child: Container(
         height: 100,
         width: 100,
-        margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
+        margin: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
           color: Colors.blue,
         ),
         child: Material(
@@ -153,7 +165,7 @@ class Button extends StatelessWidget {
             child: Center(
               child: Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -168,13 +180,15 @@ class Button extends StatelessWidget {
 }
 
 class MusicScreen extends StatelessWidget {
+  const MusicScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Music Melodies'),
+        title: const Text('Music Melodies'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Music Screen'),
       ),
     );
@@ -182,13 +196,15 @@ class MusicScreen extends StatelessWidget {
 }
 
 class SleepScreen extends StatelessWidget {
+  const SleepScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sleep Tracker'),
+        title: const Text('Sleep Tracker'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Sleep Screen'),
       ),
     );

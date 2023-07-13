@@ -6,7 +6,7 @@ class CountdownScreen extends StatefulWidget {
   const CountdownScreen({Key? key}) : super(key: key);
 
   @override
-  _CountdownScreenState createState() => _CountdownScreenState();
+  State<CountdownScreen> createState() => _CountdownScreenState();
 }
 
 class _CountdownScreenState extends State<CountdownScreen>
@@ -68,7 +68,7 @@ class _CountdownScreenState extends State<CountdownScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('CountDown'),
+        title: const Text('CountDown'),
       ),
       body: Column(
         children: [
@@ -124,13 +124,13 @@ class _CountdownScreenState extends State<CountdownScreen>
                           started = !started;
                         });
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text((started) ? "Pause" : "Start"),
-                      ),
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         elevation: 5,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text((started) ? "Pause" : "Start"),
                       ),
                     ),
                   ),
@@ -145,17 +145,17 @@ class _CountdownScreenState extends State<CountdownScreen>
                           controller.duration = const Duration(seconds: 0);
                         });
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.tealAccent,
+                        shape: const StadiumBorder(),
+                        elevation: 5,
+                      ),
                       child: const Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
                           "Stop",
                           style: TextStyle(color: Colors.black),
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.tealAccent,
-                        shape: const StadiumBorder(),
-                        elevation: 5,
                       ),
                     ),
                   ),

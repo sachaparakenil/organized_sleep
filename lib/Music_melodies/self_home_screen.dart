@@ -10,15 +10,14 @@ class AudioPlayerPage extends StatelessWidget {
   AudioPlayerPage({super.key});
 
   AudioPlayer audioPlayer = AudioPlayer();
-  // audioPlayer.play(AssetSource('summer.mp3'));
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(PlayerController());
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
-        title: Text('Playing Audio'),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        title: const Text('Playing Audio'),
       ),
       body: FutureBuilder<List<SongModel>>(
         future: controller.audioQuery.querySongs(
@@ -28,35 +27,35 @@ class AudioPlayerPage extends StatelessWidget {
             uriType: UriType.EXTERNAL),
         builder: (BuildContext context, snapshot) {
           if (snapshot.data == null) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.data!.isEmpty) {
-            return Center(child: Text('No Song Found'));
+            return const Center(child: Text('No Song Found'));
           } else {
             return Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      margin: EdgeInsets.only(bottom: 4),
+                      margin: const EdgeInsets.only(bottom: 4),
                       child: Obx(
                         () => ListTile(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
                           title:
-                              Text("${snapshot.data![index].displayNameWOExt}"),
+                              Text(snapshot.data![index].displayNameWOExt),
                           subtitle: Text("${snapshot.data![index].artist}"),
                           leading: QueryArtworkWidget(
                             id: snapshot.data![index].id,
                             type: ArtworkType.AUDIO,
-                            nullArtworkWidget: Icon(Icons.music_note),
+                            nullArtworkWidget: const Icon(Icons.music_note),
                           ),
                           trailing: controller.playIndex.value == index &&
                                   controller.isPlaying.value
-                              ? Icon(Icons.play_arrow)
+                              ? const Icon(Icons.play_arrow)
                               : null,
                           onTap: () {
                             // Get.to(() => const Player());

@@ -5,7 +5,7 @@ class StopWatchScreen extends StatefulWidget {
   const StopWatchScreen({Key? key}) : super(key: key);
 
   @override
-  _StopWatchScreenState createState() => _StopWatchScreenState();
+  State<StopWatchScreen> createState() => _StopWatchScreenState();
 }
 
 class _StopWatchScreenState extends State<StopWatchScreen> {
@@ -78,7 +78,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('StopWatch'),
+          title: const Text('StopWatch'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -113,7 +113,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  "Lap No. " + (index + 1).toString(),
+                                  "Lap No. ${index + 1}",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20.0,
@@ -147,13 +147,13 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                           onPressed: () {
                             (started) ? stop() : start();
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text((started) ? "Pause" : "Start"),
-                          ),
                           style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
                             elevation: 5,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text((started) ? "Pause" : "Start"),
                           ),
                         ),
                       ),
@@ -174,6 +174,9 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                           onPressed: () {
                             reset();
                           },
+                          style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(), backgroundColor: Colors.tealAccent,
+                              elevation: 5),
                           child: const Padding(
                             padding: EdgeInsets.all(16.0),
                             child: Text(
@@ -181,9 +184,6 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                               style: TextStyle(color: Colors.black),
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder(), backgroundColor: Colors.tealAccent,
-                              elevation: 5),
                         ),
                       ),
                     ),

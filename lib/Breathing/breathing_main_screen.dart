@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 class BreathingScreen extends StatefulWidget {
+  const BreathingScreen({super.key});
+
   @override
-  _BreathingScreenState createState() => _BreathingScreenState();
+  State<BreathingScreen> createState() => _BreathingScreenState();
 }
 
 class _BreathingScreenState extends State<BreathingScreen> {
@@ -15,13 +16,13 @@ class _BreathingScreenState extends State<BreathingScreen> {
   int _selectedExhaleDuration = 4;
   int _selectedHoldDuration = 2;
   bool _isBreathing = false;
-  FlutterTts ftts = FlutterTts();
+  FlutterTts speakFTTS = FlutterTts();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Breathing App'),
+        title: const Text('Breathing App'),
       ),
       body: Center(
         child: Column(
@@ -35,7 +36,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 color: _statusColor,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -43,7 +44,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 ElevatedButton(
                   onPressed:
                   _isBreathing ? null : () => _showDurationDialog('Inhale'),
-                  child: Text('Change'),
+                  child: const Text('Change'),
                 ),
               ],
             ),
@@ -54,7 +55,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 ElevatedButton(
                   onPressed:
                   _isBreathing ? null : () => _showDurationDialog('Hold'),
-                  child: Text('Change'),
+                  child: const Text('Change'),
                 ),
               ],
             ),
@@ -65,14 +66,14 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 ElevatedButton(
                   onPressed:
                   _isBreathing ? null : () => _showDurationDialog('Exhale'),
-                  child: Text('Change'),
+                  child: const Text('Change'),
                 ),
               ],
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: _isBreathing ? _stopBreathing : _startBreathing,
-              child: _isBreathing ? Text('Stop Breathing') : Text('Start Breathing'),
+              child: _isBreathing ? const Text('Stop Breathing') : const Text('Start Breathing'),
             ),
           ],
         ),
@@ -143,7 +144,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
                 });
                 Navigator.of(context).pop();
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -154,11 +155,11 @@ class _BreathingScreenState extends State<BreathingScreen> {
   bool _stopRequested = false;
 
   void _speakText(String text) async {
-    await ftts.speak(text);
-    await ftts.setLanguage("en-US");
-    await ftts.setSpeechRate(0.5);
-    await ftts.setVolume(1.0);
-    await ftts.setPitch(1);
+    await speakFTTS.speak(text);
+    await speakFTTS.setLanguage("en-US");
+    await speakFTTS.setSpeechRate(0.5);
+    await speakFTTS.setVolume(1.0);
+    await speakFTTS.setPitch(1);
   }
 
   void _startBreathing() async {
@@ -200,14 +201,14 @@ class _BreathingScreenState extends State<BreathingScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 5), () {
+        Future.delayed(const Duration(seconds: 5), () {
           Navigator.of(context).pop();
           setState(() {
             _stopRequested = true;
           });
         });
 
-        return AlertDialog(
+        return const AlertDialog(
           title: Text('Breathing Stop Requested'),
           content: Text('Breathing will stop after completing the current task.'),
         );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:path_provider/path_provider.dart';
-import '../Brething/breathing_main_screen.dart';
+import '../Breathing/breathing_main_screen.dart';
 import '../Clock/Clock_Home/clock_home_screen.dart';
 import '../Music_melodies/self_home_screen.dart';
 import '../Clock/Alarm/alarm_screen.dart';
@@ -19,29 +19,31 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
-  Hive.registerAdapter(hoursAdapter());
-  await Hive.openBox<hours>('hour');
+  Hive.registerAdapter(HoursAdapter());
+  await Hive.openBox<Hours>('hour');
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Alarm.init();
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
 }
 
-class better_sleep extends StatelessWidget {
+class BetterSleep extends StatelessWidget {
+  const BetterSleep({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => HomeScreen(),
-        '/alarm': (context) => AlarmScreen(),
-        '/countdown': (context) => CountdownScreen(),
-        '/stopwatch': (context) => StopWatchScreen(),
-        '/music': (context) => MusicScreen(),
-        '/breathing': (context) => BreathingScreen(),
-        '/Clock': (context) => ClockScreen(),
-        '/sleep': (context) => SleepScreen(),
+        '/': (context) => const HomeScreen(),
+        '/alarm': (context) => const AlarmScreen(),
+        '/countdown': (context) => const CountdownScreen(),
+        '/stopwatch': (context) => const StopWatchScreen(),
+        '/music': (context) => const MusicScreen(),
+        '/breathing': (context) => const BreathingScreen(),
+        '/Clock': (context) => const ClockScreen(),
+        '/sleep': (context) => const SleepScreen(),
         '/meditate': (context) => AudioPlayerPage(),
       },
     );

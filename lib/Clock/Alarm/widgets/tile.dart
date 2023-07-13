@@ -38,7 +38,7 @@ class ExampleAlarmTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.alarm, size: 35),
+              const Icon(Icons.alarm, size: 35),
               Text(
                 title,
                 style: const TextStyle(

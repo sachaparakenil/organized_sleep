@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organized_sleep/Home/main.dart';
 
 class Splash extends StatefulWidget {
-  Splash({Key? key}) : super(key: key);
+  const Splash({Key? key}) : super(key: key);
 
   @override
   State<Splash> createState() => _SplashState();
@@ -16,9 +16,9 @@ class _SplashState extends State<Splash> {
   }
 
   _navigatetohome() async {
-    await Future.delayed(Duration(milliseconds: 1500), () {});
+    await Future.delayed(const Duration(milliseconds: 1500), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => better_sleep()));
+        context, MaterialPageRoute(builder: (context) => BetterSleep()));
   }
 
   @override

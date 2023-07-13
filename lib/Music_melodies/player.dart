@@ -32,18 +32,18 @@ class Player extends StatelessWidget {
                       type: ArtworkType.AUDIO,
                       artworkHeight: double.infinity,
                       artworkWidth: double.infinity,
-                      nullArtworkWidget: Icon(Icons.music_note),
+                      nullArtworkWidget: const Icon(Icons.music_note),
                     ),
               )),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Expanded(
                 child: Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.yellow,
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(16))),
@@ -56,9 +56,9 @@ class Player extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Text(
@@ -66,9 +66,9 @@ class Player extends StatelessWidget {
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Obx(
@@ -78,7 +78,7 @@ class Player extends StatelessWidget {
                           Expanded(
                               child: Slider(
                                   min:
-                                      Duration(seconds: 0).inSeconds.toDouble(),
+                                      const Duration(seconds: 0).inSeconds.toDouble(),
                                   max: controller.max.value,
                                   value: controller.value.value,
                                   onChanged: (newValue) {
@@ -90,7 +90,7 @@ class Player extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 12,
                     ),
                     Row(
@@ -102,7 +102,7 @@ class Player extends StatelessWidget {
                                   data[controller.playIndex.value -1].uri,
                                   controller.playIndex.value - 1);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.skip_previous_rounded,
                               size: 40,
                             )),
@@ -123,10 +123,10 @@ class Player extends StatelessWidget {
                                       }
                                     },
                                     icon: controller.isPlaying.value
-                                        ? Icon(
+                                        ? const Icon(
                                             Icons.pause_outlined,
                                           )
-                                        : Icon(
+                                        : const Icon(
                                             Icons.play_arrow_rounded,
                                           )),
                               )),
@@ -137,7 +137,7 @@ class Player extends StatelessWidget {
                                   data[controller.playIndex.value+ 1].uri,
                                   controller.playIndex.value + 1);
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.skip_next_rounded,
                               size: 40,
                             )),

@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'hour_models.g.dart';
 
 @HiveType(typeId: 0)
-class hours extends HiveObject {
+class Hours extends HiveObject {
 
   @HiveField(0)
   String index;
@@ -11,6 +11,6 @@ class hours extends HiveObject {
   @HiveField(1)
   String hour;
 
-  hours({required this.hour, required this.index});
+  Hours({required this.hour, required this.index});
 
 }
