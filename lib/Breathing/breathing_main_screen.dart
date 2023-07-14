@@ -23,17 +23,30 @@ class _BreathingScreenState extends State<BreathingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Breathing App'),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              _statusText,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: _statusColor,
+            const Text("“As you breathe in, cherish yourself. As you breathe out, cherish all beings.”", style: TextStyle(fontSize: 18),),
+            const SizedBox(height: 20,),
+            const Text("Dalai Lama", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
+            const SizedBox(height: 40,),
+            Container(
+              height: 100,
+              width: 200,
+              color: Colors.blueGrey,
+              padding: const EdgeInsets.all(20),
+              child: Center(
+                child: Text(
+                  _statusText,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: _statusColor,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 20),

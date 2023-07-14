@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('HomeScreen'),
       ),
       body: Center(
@@ -136,7 +137,7 @@ class ButtonFive extends StatelessWidget {
     return Button(
       label: 'Self Meditate',
       onPressed: () {
-        Navigator.pushNamed(context, '/music');
+        Navigator.pushNamed(context, '/selfPractice');
       },
     );
   }
@@ -179,34 +180,3 @@ class Button extends StatelessWidget {
   }
 }
 
-class MusicScreen extends StatelessWidget {
-  const MusicScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Music Melodies'),
-      ),
-      body: const Center(
-        child: Text('Music Screen'),
-      ),
-    );
-  }
-}
-
-class SleepScreen extends StatelessWidget {
-  const SleepScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sleep Tracker'),
-      ),
-      body: const Center(
-        child: Text('Sleep Screen'),
-      ),
-    );
-  }
-}
