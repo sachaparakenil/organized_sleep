@@ -42,7 +42,7 @@ dependencies:
   hive: ^2.0.3
   http: ^0.13.3
 
-  path_provider: ^2.0.11
+  path_provider: ^2.0.15
   flutter_background: ^1.2.0
   flutter_tts: ^3.7.0
   android_alarm_manager_plus: ^3.0.1
@@ -53,6 +53,12 @@ dependencies:
   provider: ^6.0.5
   alarm: ^1.1.5
   flutter_sound: ^9.2.13
+  assets_audio_player: ^3.0.6
+  file_picker: ^5.3.2
+  noise_meter: ^4.0.1
+  flutter_audio_recorder2: ^0.0.2
+  syncfusion_flutter_gauges: ^22.1.38
+
 
 dev_dependencies:
   hive_flutter: ^1.1.0
