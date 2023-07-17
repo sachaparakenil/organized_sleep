@@ -1,21 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class dBMeter extends StatefulWidget {
+class dbMeter extends StatefulWidget {
   double maxDB = 12;
 
-  dBMeter(
-    double this.maxDB,
+  dbMeter(
+    this.maxDB, {super.key}
   );
 
-  dBMeter.doNothing({super.key});
+  dbMeter.doNothing({super.key});
 
   @override
-  State<dBMeter> createState() => _dBMeterState();
+  State<dbMeter> createState() => _dbMeterState();
 }
 
-class _dBMeterState extends State<dBMeter> {
+class _dbMeterState extends State<dbMeter> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,11 +22,11 @@ class _dBMeterState extends State<dBMeter> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Color(0xFFEDEEEF), width: 1.5),
-
+          border: Border.all(color: const Color(0xFFEDEEEF), width: 1.5),
         ),
         child: SfRadialGauge(
-          title:  GaugeTitle(text: "dB Meter", textStyle: TextStyle(color: Color(0xFF4B4E4F))),
+          title: const GaugeTitle(
+              text: "dB Meter", textStyle: TextStyle(color: Color(0xFF4B4E4F))),
           enableLoadingAnimation: true,
           axes: [
             RadialAxis(

@@ -10,6 +10,7 @@ import '../Clock/Alarm/alarm_screen.dart';
 import '../Clock/CountDown/countdown_screen.dart';
 import 'package:hive/hive.dart';
 import '../Self_meditation/self_meditation.dart';
+import '../SleepTracker/recorder_homeview.dart';
 import '../SleepTracker/sleep_home.dart';
 import 'home_screen.dart';
 import '../Splash_screen/splash_screen.dart';

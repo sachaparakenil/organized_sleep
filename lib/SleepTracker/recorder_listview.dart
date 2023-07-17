@@ -1,14 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'constants.dart';
-import 'dB_meter.dart';
+import 'db_meter.dart';
 
 class RecordListView extends StatefulWidget {
   final List<String> records;
@@ -21,7 +21,7 @@ class RecordListView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RecordListViewState createState() => _RecordListViewState();
+  State<RecordListView> createState() => _RecordListViewState();
 }
 
 class _RecordListViewState extends State<RecordListView>
@@ -82,7 +82,7 @@ class _RecordListViewState extends State<RecordListView>
 
   void noiseStart() async {
     try {
-      noiseSubscription = noiseMeter.noiseStream.listen(onData);
+      noiseSubscription = noiseMeter.noise.listen(onData);
     } catch (e) {
       print(e);
     }
@@ -118,15 +118,15 @@ class _RecordListViewState extends State<RecordListView>
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('Date: $date', style: TextStyle(fontSize: 16)),
+              Text('Date: $date', style: const TextStyle(fontSize: 16)),
 
               // SizedBox(height: 2),
-              Text('Time: $time', style: TextStyle(fontSize: 16)),
+              Text('Time: $time', style: const TextStyle(fontSize: 16)),
               // Text(time, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ],
           );
         } else {
-          return Text('File does not exist.');
+          return const Text('File does not exist.');
         }
       },
     );
@@ -147,7 +147,7 @@ class _RecordListViewState extends State<RecordListView>
                 TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
+                        borderSide: const BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(10)),
                     hintText: 'Enter New Name',
                     helperText: 'Keep it meaningful',
@@ -160,7 +160,7 @@ class _RecordListViewState extends State<RecordListView>
                   controller: renameController,
                 ),
                 TextButton(
-                  child: Text('Rename'),
+                  child: const Text('Rename'),
                   onPressed: () async {
                     Navigator.pop(context);
 
@@ -177,15 +177,6 @@ class _RecordListViewState extends State<RecordListView>
                         "List Path ${widget.records.elementAt(position)}\nNewPath $newPath");
 
                     setState(() {});
-                    /*getApplicationDocumentsDirectory().then((value) {
-                        appDirectory = value;
-                        appDirectory.list().listen((onData) {
-                          if (onData.path.contains('.aac')) records.add(onData.path);
-                        }).onDone(() {
-                          records = records.reversed.toList();
-                          setState(() {});
-                        });
-                      });*/
                   },
                 ),
               ],
@@ -193,42 +184,9 @@ class _RecordListViewState extends State<RecordListView>
           },
         );
       },
-      icon: Image.asset("assets/images/edit.png"),
+      icon: const Icon(Icons.edit),
     );
   }
-
-  // FloatingActionButton noiseMeasureFloatingIcon() {
-  //   // print("isRecording: ${isRecording}");
-  //   return FloatingActionButton.extended(
-  //     shape: const CircleBorder(),
-  //     elevation: 0,
-  //     backgroundColor: Colors.blue.shade50,
-  //     foregroundColor: Colors.blue.shade500,
-  //     label: const Text(''),
-  //     // onPressed: isRecording ? noiseStop : noiseStart,
-  //     onPressed: () {
-  //       if (isRecording) {
-  //         isRecording = false;
-  //
-  //         noiseStop();
-  //       } else {
-  //         isRecording = true;
-  //         noiseStart();
-  //       }
-  //     },
-  //
-  //     icon: !isRecording
-  //         ? const Icon(
-  //             Icons.record_voice_over_sharp,
-  //             size: 30,
-  //           )
-  //         : const Icon(
-  //             Icons.stop,
-  //             size: 30,
-  //             color: Colors.red,
-  //           ),
-  //   );
-  // }
 
   IconButton deleteIcon(BuildContext context, int i) {
     return IconButton(
@@ -243,13 +201,13 @@ class _RecordListViewState extends State<RecordListView>
                 content: const Text('Do you really want to delete this file!'),
                 actions: [
                   TextButton(
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
                   TextButton(
-                    child: Text('OK'),
+                    child: const Text('OK'),
                     onPressed: () {
                       deleteFile(File(widget.records.elementAt(i)), i);
                       // deleteAllFilesInFolder();
@@ -263,7 +221,7 @@ class _RecordListViewState extends State<RecordListView>
 
           setState(() {});
         },
-        icon: Image.asset("assets/images/delete.png"));
+        icon: const Icon(Icons.delete));
   }
 
   IconButton resetIcon() {
@@ -272,7 +230,7 @@ class _RecordListViewState extends State<RecordListView>
       onPressed: () {
         _onStop();
       },
-      icon: Image.asset("assets/images/stop.png"),
+      icon: const Icon(Icons.stop),
     );
   }
 
@@ -281,9 +239,9 @@ class _RecordListViewState extends State<RecordListView>
       iconSize: 43,
       icon: _selectedIndex == i
           ? _isPlaying
-              ? Image.asset("assets/images/pause.png")
-              : Image.asset("assets/images/play.png")
-          : Image.asset("assets/images/play.png"),
+              ? const Icon(Icons.pause)
+              : const Icon(Icons.play_arrow)
+          : const Icon(Icons.play_arrow),
       onPressed: () {
         if (_isPlaying) {
           _onPause();
@@ -292,14 +250,6 @@ class _RecordListViewState extends State<RecordListView>
           _onPlay(filePath: widget.records.elementAt(i), index: i);
           noiseStart();
         }
-
-        // if (isRecording) {
-        //   isRecording = false;
-        //
-        // } else {
-        //   isRecording = true;
-        //
-        // }
       },
     );
   }
@@ -323,14 +273,14 @@ class _RecordListViewState extends State<RecordListView>
 
   Future<void> _onPlay({required String filePath, required int index}) async {
     if (!_isPlaying) {
-      audioPlayer.play(filePath, isLocal: true);
+      audioPlayer.play(AssetSource(filePath));
       setState(() {
         _selectedIndex = index;
         _completedPercentage = 0.0;
         _isPlaying = true;
       });
 
-      audioPlayer.onPlayerCompletion.listen((_) {
+      audioPlayer.onPlayerComplete.listen((_) {
         setState(() {
           _isPlaying = false;
           // isRecording = false;
@@ -344,7 +294,7 @@ class _RecordListViewState extends State<RecordListView>
         });
       });
 
-      audioPlayer.onAudioPositionChanged.listen((duration) {
+      audioPlayer.onPositionChanged.listen((duration) {
         setState(() {
           _currentDuration = duration.inMicroseconds;
           _completedPercentage =
@@ -379,7 +329,7 @@ class _RecordListViewState extends State<RecordListView>
 
     var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
     var newPath = path.substring(0, lastSeparator + 1) + newFileName;
-    print("new path: ${newPath}");
+    print("new path: $newPath");
     return await file.rename(newPath);
   }
 
@@ -456,6 +406,7 @@ class _RecordListViewState extends State<RecordListView>
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: widget.records.length,
                 shrinkWrap: true,
                 reverse: false,
@@ -476,45 +427,29 @@ class _RecordListViewState extends State<RecordListView>
                             color: Colors.grey.withOpacity(0.5), // Shadow color
                             spreadRadius: 1, // Spread radius
                             blurRadius: 2.5, // Blur radius
-                            offset: Offset(0, 2), // Offset in x and y direction
+                            offset: const Offset(0, 2), // Offset in x and y direction
                           ),
                         ],
                       ),
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 8, left: 8, top: 8),
+                        padding: const EdgeInsets.only(bottom: 8, left: 8, top: 8),
                         child: ExpansionTile(
                           // this new index is for getting new recording first
                           // title: Text('New recoding ${widget.records.length - i}'),
                           title: Text(
                             fileName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 2),
+                              const SizedBox(height: 2),
                               dateAndTime(i),
                             ],
                           ),
-                          // trailing: isExpanded
-                          //     ? Image.asset("assets/images/up.png", width: 23)
-                          //     : Image.asset("assets/images/down.png",
-                          //         width: 23),
-                          trailing:
-                               _selectedIndex == i && isExpanded
-                                ? Image.asset("assets/images/up.png", width: 23)
-                                : Image.asset("assets/images/down.png", width: 23),
-
-
-                          // onExpansionChanged: ((newState) {
-                          //   if (newState) {
-                          //     setState(
-                          //       () {
-                          //         _selectedIndex = i;
-                          //       },
-                          //     );
-                          //   }
-                          // }),
+                          trailing: _selectedIndex == i && isExpanded
+                              ? const Icon(Icons.arrow_circle_up)
+                              : const Icon(Icons.arrow_circle_down_rounded),
 
                           onExpansionChanged: (bool expanded) {
                             setState(() {
@@ -533,8 +468,8 @@ class _RecordListViewState extends State<RecordListView>
                                   LinearProgressIndicator(
                                     semanticsLabel: fileName,
                                     minHeight: 6,
-                                    backgroundColor: Color(0xFFCED3D9),
-                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                    backgroundColor: const Color(0xFFCED3D9),
+                                    valueColor: const AlwaysStoppedAnimation<Color>(
                                         Color(0xFF1C95FF)),
                                     value: _selectedIndex == i
                                         ? _completedPercentage
@@ -558,7 +493,7 @@ class _RecordListViewState extends State<RecordListView>
                                     children: [
                                       if (_selectedIndex == i)
                                         if (_isPlaying)
-                                          dBMeter(maxDB)
+                                          dbMeter(maxDB)
                                         else
                                           const SizedBox(
                                             height: 0,

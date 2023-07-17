@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
+import 'package:record/record.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class RecorderView extends StatefulWidget {
   final Function onSaved;
@@ -9,7 +10,7 @@ class RecorderView extends StatefulWidget {
   const RecorderView({Key? key, required this.onSaved}) : super(key: key);
 
   @override
-  _RecorderViewState createState() => _RecorderViewState();
+  State<RecorderView> createState() => _RecorderViewState();
 }
 
 // different states of recordings
@@ -21,43 +22,39 @@ enum RecordingState {
 }
 
 class _RecorderViewState extends State<RecorderView> {
-   Image _recordIcon = Image.asset(
-    'assets/images/mic.png',
-    height: 80,
-    width: 80,
-  );
+  IconData _recordIcon = Icons.mic;
   String _recordText = 'Click To Start';
 
   // RecordingState - Inbuilt variable for handling recording's state
   RecordingState _recordingState = RecordingState.Set;
 
   // Recorder properties
-  late FlutterAudioRecorder2 audioRecorder;
+  late Record audioRecord;
+  late AudioPlayer audioPlayer;
+  bool isRecording = false;
+  String audioPath = '';
 
   @override
   void initState() {
     super.initState();
-    FlutterAudioRecorder2.hasPermissions.then((hasPermission) {
-      if (hasPermission!) {
-        _recordingState = RecordingState.Set;
-        setState(() {
-          _recordIcon = Image.asset(
-            'assets/images/mic.png',
-            height: 80,
-            width: 80,
-          );
-          _recordText = 'Record';
-        });
-      }
-      // else{
+    audioRecord = Record();
+    _checkPermission();
+  }
 
-      // }
-    });
+  Future<void> _checkPermission() async {
+    final hasPermission = await audioRecord.hasPermission();
+    if (hasPermission) {
+      _recordingState = RecordingState.Set;
+      setState(() {
+        _recordIcon = Icons.mic;
+        _recordText = 'Record';
+      });
+    }
   }
 
   @override
-  void dispose()  {
-     _stopRecording();
+  void dispose() {
+    _stopRecording();
     super.dispose();
   }
 
@@ -72,31 +69,21 @@ class _RecorderViewState extends State<RecorderView> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _recordText == "Recording..."
-                  ? Image.asset("assets/images/waves_gif1.gif", width: 125,height: 125,)
-                  : SizedBox.shrink(),
-              TextButton(
+                  ? Image.asset('assets/waves_gif1.gif',width: 125, height: 125,)
+                  : const SizedBox.shrink(),
+              IconButton(
                 onPressed: () async {
                   await _onRecordButtonPressed();
                   setState(() {});
                 },
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all(CircleBorder()),
-                  // padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-                  // backgroundColor:
-                  // MaterialStateProperty.all(Colors.blue), // <-- Button color
-                  // overlayColor:
-                  // MaterialStateProperty.resolveWith<Color?>((states) {
-                  //   if (states.contains(MaterialState.pressed)) {
-                  //     return Colors.red; // <-- Splash color
-                  //   }
-                  //   return null;
-                  // }),
+                  shape: MaterialStateProperty.all(const CircleBorder()),
                 ),
-                child: _recordIcon,
+                icon: Icon(_recordIcon),
               ),
               _recordText == "Recording..."
-                  ? Image.asset("assets/images/waves_gif1.gif", width: 125,)
-                  : SizedBox.shrink(),
+                  ? Image.asset('assets/waves_gif1.gif',width: 125, height: 125,)
+                  : const SizedBox.shrink(),
             ],
           ),
           Align(
@@ -114,68 +101,49 @@ class _RecorderViewState extends State<RecorderView> {
   Future<void> _onRecordButtonPressed() async {
     switch (_recordingState) {
       case RecordingState.Set:
+        setState(() {
+          _recordIcon = Icons.mic_none;
+          _recordText = 'Recording...';
+        });
         await _recordVoice();
         break;
 
       case RecordingState.Recording:
-        await _stopRecording();
-        _recordingState = RecordingState.Stopped;
         setState(() {
-          _recordIcon = Image.asset(
-            'assets/images/mic.png',
-            height: 80,
-            width: 80,
-          );
+          _recordIcon = Icons.mic;
           _recordText = 'Record a new one';
         });
+        await _stopRecording();
+        _recordingState = RecordingState.Stopped;
         break;
 
       case RecordingState.Stopped:
+        setState(() {
+          _recordIcon = Icons.mic_none;
+          _recordText = 'Recording...';
+        });
         await _recordVoice();
         break;
 
       case RecordingState.UnSet:
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Please allow recording from settings.'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please allow recording from settings.'),
+          ),
+        );
         break;
     }
   }
 
-  _initRecorder() async {
-    Directory appDirectory = await getApplicationDocumentsDirectory();
-    String filePath = appDirectory.path +
-        '/' +
-        DateTime.now().millisecondsSinceEpoch.toString() +
-        '.aac';
-    print(filePath);
-    audioRecorder =
-        FlutterAudioRecorder2(filePath, audioFormat: AudioFormat.AAC);
-    await audioRecorder.initialized;
-  }
-
-  _startRecording() async {
-    await audioRecorder.start();
-  }
-
-  _stopRecording() async {
-    await audioRecorder.stop();
-    widget.onSaved();
-  }
-
   Future<void> _recordVoice() async {
-    final hasPermission = await FlutterAudioRecorder2.hasPermissions;
-    if (hasPermission ?? false) {
+    bool hasPermission = await audioRecord.hasPermission();
+    if (!hasPermission) {
       await _initRecorder();
       await _startRecording();
       setState(() {
         _recordingState = RecordingState.Recording;
-        _recordIcon = Image.asset(
-          'assets/images/mic.png',
-          height: 80,
-          width: 80,
-        );
+        _recordIcon = Icons.mic;
         _recordText = 'Recording...';
       });
     } else {
@@ -183,13 +151,27 @@ class _RecorderViewState extends State<RecorderView> {
       await _startRecording();
       setState(() {
         _recordingState = RecordingState.Recording;
-        _recordIcon = Image.asset(
-          'assets/images/mic.png',
-          height: 80,
-          width: 80,
-        );
+        _recordIcon = Icons.mic;
         _recordText = 'Recording...';
       });
     }
   }
+
+
+Future<void> _initRecorder() async {
+  Directory appDirectory = await getApplicationDocumentsDirectory();
+  String filePath =
+      '${appDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+  print(filePath);
+  await audioRecord.start(path: filePath);
+}
+
+Future<void> _startRecording() async {
+  await audioRecord.start();
+}
+
+Future<void> _stopRecording() async {
+  await audioRecord.stop();
+  widget.onSaved();
+}
 }

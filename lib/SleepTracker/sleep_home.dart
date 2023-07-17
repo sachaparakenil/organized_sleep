@@ -1,9 +1,12 @@
+/*
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class SleepScreen extends StatefulWidget {
   const SleepScreen({Key? key}) : super(key: key);
@@ -13,111 +16,106 @@ class SleepScreen extends StatefulWidget {
 }
 
 class _SleepScreenState extends State<SleepScreen> {
+  late Record audioRecord;
+  late AudioPlayer audioPlayer;
+  bool isRecording = false;
+  String audioPath = '';
+
   @override
   void initState() {
-    initRecorder();
+    audioPlayer = AudioPlayer();
+    audioRecord = Record();
     super.initState();
   }
 
   @override
   void dispose() {
-    recorder.closeRecorder();
+    audioRecord.dispose();
+    audioPlayer.dispose();
     super.dispose();
   }
 
-  final recorder = FlutterSoundRecorder();
-
-  Future initRecorder() async {
-    final status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      throw 'Permission not granted';
+  Future<void> startRecording() async {
+    try {
+      if (await audioRecord.hasPermission()) {
+        await audioRecord.start();
+        setState(() {
+          isRecording = true;
+        });
+      }
+    } catch (e) {
+      print('Error Start Recording : $e');
     }
-    await recorder.openRecorder();
-    recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
   }
 
-  Future startRecord() async {
-    await recorder.startRecorder(toFile: "audio");
+  Future<void> stopRecording() async {
+    try {
+      String? path = await audioRecord.stop();
+      setState(() {
+        isRecording = false;
+        audioPath = path!;
+      });
+    } catch (e) {
+      print("Error Stopping record: $e");
+    }
   }
 
-  Future stopRecorder() async {
-    final audioFile = await recorder.stopRecorder();
-
-    final directory = await getExternalStorageDirectory();
-    print(directory!.path);
-
-    // var _completeFileName =
-    //     await File("${directory.path}/${DateTime.now()}.mp3").create();
-
-    File(directory.path + '/' + '${directory.path}/${DateTime.now()}.mp3')
-        .create(recursive: true)
-        .then((File file) async {
-      //write to file
-
-      Uint8List bytes = await file.readAsBytes();
-      file.writeAsBytes(bytes);
-      print(file.path);
-    });
-
-    // create audio file
-    // final audioPath = await File("${directory.path}/${DateTime.now()}.mp3").create();
-    // print('Recorded file path: $audioPath');
-
-    // final file = File(filePath!);
+  Future<void> playRecording() async {
+    try {
+      Source urlSource = UrlSource(audioPath);
+      await audioPlayer.play(urlSource);
+    } catch (e) {
+      print('Error Playing Recording: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final icon1 = isRecording ? Icons.stop : Icons.mic;
+    final text = isRecording ? 'STOP' : 'START';
     return Scaffold(
         appBar: AppBar(
           title: const Text("Sleep Analyser"),
         ),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              StreamBuilder<RecordingDisposition>(
-                builder: (context, snapshot) {
-                  final duration = snapshot.hasData
-                      ? snapshot.data!.duration
-                      : Duration.zero;
-
-                  String twoDigits(int n) => n.toString().padLeft(2, '0');
-
-                  final twoDigitMinutes =
-                      twoDigits(duration.inMinutes.remainder(60));
-                  final twoDigitSeconds =
-                      twoDigits(duration.inSeconds.remainder(60));
-
-                  return Text(
-                    '$twoDigitMinutes:$twoDigitSeconds',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                },
-                stream: recorder.onProgress,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 40,
               ),
-              const SizedBox(height: 20),
+              if (isRecording)
+                Text(
+                  'Recording in progress',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
               ElevatedButton(
-                onPressed: () async {
-                  if (recorder.isRecording) {
-                    await stopRecorder();
-                    setState(() {});
-                  } else {
-                    await startRecord();
-                    setState(() {});
-                  }
-                },
-                child: Icon(
-                  recorder.isRecording ? Icons.stop : Icons.mic,
-                  size: 100,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(120, 40),
+                  maximumSize: Size(150, 50)
+                ),
+                onPressed: isRecording ? stopRecording : startRecording,
+                child: Row(
+
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon1),
+                    SizedBox(width: 8),
+                    Text(text),
+                  ],
                 ),
               ),
+              SizedBox(
+                height: 25,
+              ),
+              if (!isRecording)
+                ElevatedButton(
+                    onPressed: playRecording, child: Text('Play Recording'))
             ],
           ),
         ));
   }
 }
+*/

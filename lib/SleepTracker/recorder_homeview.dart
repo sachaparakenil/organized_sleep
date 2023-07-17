@@ -1,23 +1,20 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:organized_sleep/SleepTracker/recorder_listview.dart';
 import 'package:organized_sleep/SleepTracker/recorder_view.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
-import 'constants.dart';
+class SleepScreen extends StatefulWidget {
 
-class RecorderHomeView extends StatefulWidget {
-  final String _title;
-
-  const RecorderHomeView({Key? key, required String title})
-      : _title = title,
+  const SleepScreen({Key? key, })
+      :
         super(key: key);
 
   @override
-  _RecorderHomeViewState createState() => _RecorderHomeViewState();
+  State<SleepScreen> createState() => _SleepScreenState();
 }
 
-class _RecorderHomeViewState extends State<RecorderHomeView> {
+class _SleepScreenState extends State<SleepScreen> {
   Directory appDirectory = Directory("");
   List<String> records = [];
 
@@ -49,7 +46,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: IconButton(
-                icon: Image.asset("assets/images/d1.png"),
+                icon: const Icon(Icons.delete,),
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -67,7 +64,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
                             },
                           ),
                           TextButton(
-                            child: Text('OK'),
+                            child: const Text('OK'),
                             onPressed: () {
                               deleteAllFilesInFolder();
                               Navigator.pop(context);
@@ -81,26 +78,10 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
                 }),
           ),
         ],
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: IconButton(
-            icon: Image.asset(
-              'assets/images/back.png',
-              height: 28,
-              width: 28,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
         title: const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Text(
             "Voice Recorder",
-            style: kAppbarStyle,
           ),
         ),
       ),
@@ -154,7 +135,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
   }
 
   Future<void> deleteAllFilesInFolder() async {
-    String folderPath = "/data/user/0/com.example.jay_sound_meter/app_flutter/";
+    String folderPath = "/data/user/0/com.example.organized_sleep/app_flutter/";
     Directory folder = Directory(folderPath);
     if (await folder.exists()) {
       List<FileSystemEntity> entities = folder.listSync();
