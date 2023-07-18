@@ -44,7 +44,7 @@ class BetterSleep extends StatelessWidget {
         '/stopwatch': (context) => const StopWatchScreen(),
         '/breathing': (context) => const BreathingScreen(),
         '/Clock': (context) => const ClockScreen(),
-        '/sleep': (context) =>  const SleepScreen(),
+        '/sleep': (context) =>  const RecorderHomeView(),
         '/meditate': (context) => AudioPlayerPage(),
         '/selfPractice': (context) => const CountdownPage(),
       },

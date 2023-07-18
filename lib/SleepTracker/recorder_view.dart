@@ -13,7 +13,6 @@ class RecorderView extends StatefulWidget {
   State<RecorderView> createState() => _RecorderViewState();
 }
 
-// different states of recordings
 enum RecordingState {
   UnSet,
   Set,
@@ -24,19 +23,15 @@ enum RecordingState {
 class _RecorderViewState extends State<RecorderView> {
   IconData _recordIcon = Icons.mic;
   String _recordText = 'Click To Start';
-
-  // RecordingState - Inbuilt variable for handling recording's state
   RecordingState _recordingState = RecordingState.Set;
-
-  // Recorder properties
   late Record audioRecord;
   late AudioPlayer audioPlayer;
-  bool isRecording = false;
-  String audioPath = '';
+  late String filePath; // Added filePath variable
 
   @override
   void initState() {
     super.initState();
+    audioPlayer = AudioPlayer();
     audioRecord = Record();
     _checkPermission();
   }
@@ -44,11 +39,11 @@ class _RecorderViewState extends State<RecorderView> {
   Future<void> _checkPermission() async {
     final hasPermission = await audioRecord.hasPermission();
     if (hasPermission) {
-      _recordingState = RecordingState.Set;
       setState(() {
         _recordIcon = Icons.mic;
         _recordText = 'Record';
       });
+      _recordingState = RecordingState.Set;
     }
   }
 
@@ -68,8 +63,9 @@ class _RecorderViewState extends State<RecorderView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _recordText == "Recording..."
-                  ? Image.asset('assets/waves_gif1.gif',width: 125, height: 125,)
+               _recordText == "Recording..."
+                  ? Image.asset('assets/waves_gif1.gif',
+                  width: 125, height: 125)
                   : const SizedBox.shrink(),
               IconButton(
                 onPressed: () async {
@@ -81,8 +77,9 @@ class _RecorderViewState extends State<RecorderView> {
                 ),
                 icon: Icon(_recordIcon),
               ),
-              _recordText == "Recording..."
-                  ? Image.asset('assets/waves_gif1.gif',width: 125, height: 125,)
+               _recordText == "Recording..."
+                  ? Image.asset('assets/waves_gif1.gif',
+                  width: 125, height: 125)
                   : const SizedBox.shrink(),
             ],
           ),
@@ -101,10 +98,6 @@ class _RecorderViewState extends State<RecorderView> {
   Future<void> _onRecordButtonPressed() async {
     switch (_recordingState) {
       case RecordingState.Set:
-        setState(() {
-          _recordIcon = Icons.mic_none;
-          _recordText = 'Recording...';
-        });
         await _recordVoice();
         break;
 
@@ -118,10 +111,6 @@ class _RecorderViewState extends State<RecorderView> {
         break;
 
       case RecordingState.Stopped:
-        setState(() {
-          _recordIcon = Icons.mic_none;
-          _recordText = 'Recording...';
-        });
         await _recordVoice();
         break;
 
@@ -137,13 +126,13 @@ class _RecorderViewState extends State<RecorderView> {
   }
 
   Future<void> _recordVoice() async {
-    bool hasPermission = await audioRecord.hasPermission();
-    if (!hasPermission) {
+    final hasPermission = await audioRecord.hasPermission();
+    if (hasPermission) {
       await _initRecorder();
       await _startRecording();
       setState(() {
         _recordingState = RecordingState.Recording;
-        _recordIcon = Icons.mic;
+        _recordIcon = Icons.mic_none;
         _recordText = 'Recording...';
       });
     } else {
@@ -151,27 +140,34 @@ class _RecorderViewState extends State<RecorderView> {
       await _startRecording();
       setState(() {
         _recordingState = RecordingState.Recording;
-        _recordIcon = Icons.mic;
+        _recordIcon = Icons.mic_none;
         _recordText = 'Recording...';
       });
     }
   }
 
+  Future<void> _initRecorder() async {
+    Directory appDirectory = await getApplicationDocumentsDirectory();
+    String filePath = '${appDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+    await audioRecord.start(path: filePath);
+  }
 
-Future<void> _initRecorder() async {
-  Directory appDirectory = await getApplicationDocumentsDirectory();
-  String filePath =
-      '${appDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
-  print(filePath);
-  await audioRecord.start(path: filePath);
-}
+  Future<void> _startRecording() async {
+    try {
+      if (await audioRecord.hasPermission()) {
+        await audioRecord.start();
+      }
+    } catch (e) {
+      print('Error Start Recording : $e');
+    }
+  }
 
-Future<void> _startRecording() async {
-  await audioRecord.start();
-}
-
-Future<void> _stopRecording() async {
-  await audioRecord.stop();
-  widget.onSaved();
-}
+  Future<void> _stopRecording() async {
+    try {
+      await audioRecord.stop();
+      widget.onSaved();
+    } catch (e) {
+      print('Error Stopping record : $e');
+    }
+  }
 }

@@ -56,8 +56,9 @@ dependencies:
   assets_audio_player: ^3.0.6
   file_picker: ^5.3.2
   noise_meter: ^4.0.1
-  syncfusion_flutter_gauges: ^22.1.38
+  syncfusion_flutter_gauges: ^22.1.39
   record: ^4.4.4
+  flutter_local_notifications: ^14.1.2
 
 
 dev_dependencies:

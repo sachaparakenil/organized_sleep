@@ -1,20 +1,20 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:organized_sleep/SleepTracker/recorder_listview.dart';
 import 'package:organized_sleep/SleepTracker/recorder_view.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'constants.dart';
 
-class SleepScreen extends StatefulWidget {
-
-  const SleepScreen({Key? key, })
-      :
-        super(key: key);
+class RecorderHomeView extends StatefulWidget {
+  const RecorderHomeView({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<SleepScreen> createState() => _SleepScreenState();
+  State<RecorderHomeView> createState() => _RecorderHomeViewState();
 }
 
-class _SleepScreenState extends State<SleepScreen> {
+class _RecorderHomeViewState extends State<RecorderHomeView> {
   Directory appDirectory = Directory("");
   List<String> records = [];
 
@@ -46,7 +46,7 @@ class _SleepScreenState extends State<SleepScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: IconButton(
-                icon: const Icon(Icons.delete,),
+                icon: Icon(Icons.delete),
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -54,8 +54,8 @@ class _SleepScreenState extends State<SleepScreen> {
                       return AlertDialog(
                         title: const Text('Warning!',
                             style: TextStyle(color: Colors.red)),
-                        content:
-                        const Text('Do you really want to delete all files!'),
+                        content: const Text(
+                            'Do you really want to delete all files!'),
                         actions: [
                           TextButton(
                             child: const Text('Cancel'),
@@ -64,7 +64,7 @@ class _SleepScreenState extends State<SleepScreen> {
                             },
                           ),
                           TextButton(
-                            child: const Text('OK'),
+                            child: Text('OK'),
                             onPressed: () {
                               deleteAllFilesInFolder();
                               Navigator.pop(context);
@@ -81,11 +81,10 @@ class _SleepScreenState extends State<SleepScreen> {
         title: const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Text(
-            "Voice Recorder",
+            "Sleep Tracker",
           ),
         ),
       ),
-
       body: Column(
         children: [
           Expanded(
@@ -121,7 +120,6 @@ class _SleepScreenState extends State<SleepScreen> {
     try {
       if (await file.exists()) {
         await file.delete();
-        print(file);
         setState(() {
           records.remove(file);
           records.removeRange(
@@ -142,14 +140,12 @@ class _SleepScreenState extends State<SleepScreen> {
       for (FileSystemEntity entity in entities) {
         if (entity is File) {
           await entity.delete();
-          print('Deleted file: ${entity.path}');
         }
       }
       setState(() {
         records.removeRange(
             0, records.length); // Clear the file list after deletion
       });
-      print('All files in folder deleted successfully');
     } else {
       print('Folder does not exist');
     }
