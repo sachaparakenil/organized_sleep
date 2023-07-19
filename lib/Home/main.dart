@@ -10,8 +10,8 @@ import '../Clock/Alarm/alarm_screen.dart';
 import '../Clock/CountDown/countdown_screen.dart';
 import 'package:hive/hive.dart';
 import '../Self_meditation/self_meditation.dart';
-import '../SleepTracker/recorder_homeview.dart';
-import '../SleepTracker/sleep_home.dart';
+import '../SleepTracker/SleepAudioTracker/recorder_homeview.dart';
+import '../SleepTracker/dBmeter/dB_Data.dart';
 import 'home_screen.dart';
 import '../Splash_screen/splash_screen.dart';
 import '../models/hour_models.dart';
@@ -47,6 +47,7 @@ class BetterSleep extends StatelessWidget {
         '/sleep': (context) =>  const RecorderHomeView(),
         '/meditate': (context) => AudioPlayerPage(),
         '/selfPractice': (context) => const CountdownPage(),
+        '/noiseApp': (context) => const NoiseApp(),
       },
     );
   }

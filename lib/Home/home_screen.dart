@@ -29,7 +29,6 @@ class HomeScreen extends StatelessWidget {
                 ButtonTwo(),
               ],
             ),
-            const SizedBox(height: 20),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -83,7 +82,7 @@ class ButtonTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button(
-      label: 'Breathing Meditation',
+      label: 'Breathing',
       onPressed: () {
         Navigator.pushNamed(context, '/breathing');
       },
@@ -122,8 +121,18 @@ class ButtonFour extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       label: 'Sleep Tracker',
-      onPressed: () {
-        Navigator.pushNamed(context, '/sleep');
+      onPressed: () async {
+        PermissionStatus microphone = await Permission.microphone.request();
+        if (microphone == PermissionStatus.granted) {
+          Navigator.pushNamed(context, '/noiseApp');
+        }
+        if (microphone == PermissionStatus.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("This Permission is Required")));
+        }
+        if (microphone == PermissionStatus.permanentlyDenied) {
+          openAppSettings();
+        }
       },
     );
   }
@@ -143,6 +152,7 @@ class ButtonFive extends StatelessWidget {
   }
 }
 
+
 class Button extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
@@ -156,8 +166,9 @@ class Button extends StatelessWidget {
         height: 100,
         width: 100,
         margin: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.blue,
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Material(
           color: Colors.transparent,

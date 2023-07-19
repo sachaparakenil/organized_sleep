@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
+import 'constants.dart';
+
 class RecordListView extends StatefulWidget {
   final List<String> records;
   final Directory appDirectory;
@@ -18,7 +20,7 @@ class RecordListView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RecordListViewState createState() => _RecordListViewState();
+  State<RecordListView> createState() => _RecordListViewState();
 }
 
 class _RecordListViewState extends State<RecordListView>
@@ -26,7 +28,6 @@ class _RecordListViewState extends State<RecordListView>
   _RecordListViewState();
 
   AudioPlayer audioPlayer = AudioPlayer();
-  final recordingPlayer = AssetsAudioPlayer();
 
   TextEditingController renameController = TextEditingController();
 
@@ -46,7 +47,6 @@ class _RecordListViewState extends State<RecordListView>
   void dispose() {
     super.dispose();
     audioPlayer.stop();
-
   }
 
 
@@ -187,8 +187,8 @@ class _RecordListViewState extends State<RecordListView>
       iconSize: 43,
       icon: _selectedIndex == i
           ? _isPlaying
-          ? Icon(Icons.pause)
-          : Icon(Icons.play_arrow)
+            ? Icon(Icons.pause)
+            : Icon(Icons.play_arrow)
           : Icon(Icons.play_arrow),
       onPressed: () {
         if (_isPlaying) {
@@ -216,9 +216,9 @@ class _RecordListViewState extends State<RecordListView>
     setState(() {});
   }
 
-  Future<void> _onPlay({required String filePath, required int index}) async {
+/*  Future<void> _onPlay({required String filePath, required int index}) async {
     if (!_isPlaying) {
-      await audioPlayer.play(UrlSource(filePath));
+      audioPlayer.play(UrlSource(filePath));
       setState(() {
         _selectedIndex = index;
         _completedPercentage = 0.0;
@@ -246,7 +246,39 @@ class _RecordListViewState extends State<RecordListView>
         });
       });
     }
+  }*/
+  Future<void> _onPlay({required String filePath, required int index}) async {
+    if (!_isPlaying) {
+      await audioPlayer.stop();
+      audioPlayer.play(UrlSource(filePath));
+      setState(() {
+        _selectedIndex = index;
+        _completedPercentage = 0.0;
+        _isPlaying = true;
+      });
+
+      audioPlayer.onPlayerComplete.listen((_) {
+        setState(() {
+          _isPlaying = false;
+          _completedPercentage = 0.0;
+        });
+      });
+
+      audioPlayer.onDurationChanged.listen((duration) {
+        setState(() {
+          _totalDuration = duration.inMilliseconds;
+        });
+      });
+
+      audioPlayer.onPositionChanged.listen((duration) {
+        setState(() {
+          _currentDuration = duration.inMilliseconds;
+          _completedPercentage = _currentDuration.toDouble() / _totalDuration.toDouble();
+        });
+      });
+    }
   }
+
 
   Future<void> _onStop() async {
     audioPlayer.stop();
@@ -359,6 +391,7 @@ class _RecordListViewState extends State<RecordListView>
                   vertical: 8.0, horizontal: 8),
               child: Container(
                 decoration: BoxDecoration(
+                  color: kListCardBackGroundColor,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -405,16 +438,29 @@ class _RecordListViewState extends State<RecordListView>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            LinearProgressIndicator(
-                              semanticsLabel: fileName,
-                              minHeight: 6,
-                              backgroundColor: Color(0xFFCED3D9),
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color(0xFF1C95FF)),
-                              value: _selectedIndex == i
-                                  ? _completedPercentage
-                                  : 0,
+                            GestureDetector(
+                              onTapDown: (TapDownDetails details) {
+                                // Calculate the new audio position based on the tap position
+                                double tapPosition = details.localPosition.dx;
+                                double totalWidth = MediaQuery.of(context).size.width;
+                                int newAudioPosition =
+                                (tapPosition / totalWidth * _totalDuration).toInt();
+
+                                // Update the audio player's position
+                                audioPlayer.seek(Duration(milliseconds: newAudioPosition));
+                              },
+                              child: LinearProgressIndicator(
+                                semanticsLabel: fileName,
+                                minHeight: 6,
+                                backgroundColor: const Color(0xFFCED3D9),
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Color(0xFF1C95FF)),
+                                value: _selectedIndex == i
+                                    ? _completedPercentage
+                                    : 0,
+                              ),
                             ),
+
                             const SizedBox(
                               height: 15,
                             ),

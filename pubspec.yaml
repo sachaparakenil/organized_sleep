@@ -59,6 +59,7 @@ dependencies:
   syncfusion_flutter_gauges: ^22.1.39
   record: ^4.4.4
   flutter_local_notifications: ^14.1.2
+  syncfusion_flutter_charts: ^22.1.39
 
 
 dev_dependencies:

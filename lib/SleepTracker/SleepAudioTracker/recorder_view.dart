@@ -26,7 +26,6 @@ class _RecorderViewState extends State<RecorderView> {
   RecordingState _recordingState = RecordingState.Set;
   late Record audioRecord;
   late AudioPlayer audioPlayer;
-  late String filePath; // Added filePath variable
 
   @override
   void initState() {
@@ -67,15 +66,15 @@ class _RecorderViewState extends State<RecorderView> {
                   ? Image.asset('assets/waves_gif1.gif',
                   width: 125, height: 125)
                   : const SizedBox.shrink(),
-              IconButton(
+              TextButton(
                 onPressed: () async {
                   await _onRecordButtonPressed();
                   setState(() {});
                 },
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all(const CircleBorder()),
+                  shape: MaterialStateProperty.all(CircleBorder()),
                 ),
-                icon: Icon(_recordIcon),
+                child: Icon(_recordIcon),
               ),
                _recordText == "Recording..."
                   ? Image.asset('assets/waves_gif1.gif',
@@ -102,12 +101,12 @@ class _RecorderViewState extends State<RecorderView> {
         break;
 
       case RecordingState.Recording:
+        await _stopRecording();
+        _recordingState = RecordingState.Stopped;
         setState(() {
           _recordIcon = Icons.mic;
           _recordText = 'Record a new one';
         });
-        await _stopRecording();
-        _recordingState = RecordingState.Stopped;
         break;
 
       case RecordingState.Stopped:
@@ -146,13 +145,13 @@ class _RecorderViewState extends State<RecorderView> {
     }
   }
 
-  Future<void> _initRecorder() async {
+  _initRecorder() async {
     Directory appDirectory = await getApplicationDocumentsDirectory();
     String filePath = '${appDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
     await audioRecord.start(path: filePath);
   }
 
-  Future<void> _startRecording() async {
+  _startRecording() async {
     try {
       if (await audioRecord.hasPermission()) {
         await audioRecord.start();
@@ -162,7 +161,7 @@ class _RecorderViewState extends State<RecorderView> {
     }
   }
 
-  Future<void> _stopRecording() async {
+  _stopRecording() async {
     try {
       await audioRecord.stop();
       widget.onSaved();

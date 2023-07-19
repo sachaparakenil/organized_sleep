@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:organized_sleep/SleepTracker/recorder_listview.dart';
-import 'package:organized_sleep/SleepTracker/recorder_view.dart';
+import 'package:organized_sleep/SleepTracker/SleepAudioTracker/recorder_listview.dart';
+import 'package:organized_sleep/SleepTracker/SleepAudioTracker/recorder_view.dart';
 import 'package:path_provider/path_provider.dart';
-import 'constants.dart';
 
 class RecorderHomeView extends StatefulWidget {
   const RecorderHomeView({
