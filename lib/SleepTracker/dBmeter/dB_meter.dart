@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-//ignore: must_be_immutable
 class dBMeter extends StatefulWidget {
   double maxDB = 12;
 
-  dBMeter(
-    double this.maxDB,
-  );
+
+  dBMeter(double this.maxDB);
 
   dBMeter.doNothing({super.key});
 
@@ -17,6 +15,7 @@ class dBMeter extends StatefulWidget {
 }
 
 class _dBMeterState extends State<dBMeter> {
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,10 +24,11 @@ class _dBMeterState extends State<dBMeter> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Color(0xFFEDEEEF), width: 1.5),
-
         ),
         child: SfRadialGauge(
-          title:  const GaugeTitle(text: "Sleep Tracking Machine", textStyle: TextStyle(color: Color(0xFF4B4E4F))),
+          title: const GaugeTitle(
+              text: "Sleep Tracking Machine",
+              textStyle: TextStyle(color: Color(0xFF4B4E4F))),
           enableLoadingAnimation: true,
           axes: [
             RadialAxis(

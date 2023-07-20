@@ -1,9 +1,7 @@
 /*
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../../SleepAudioTracker/constants.dart';
+import '../SleepAudioTracker/constants.dart';
 import 'history_meter.dart';
 
 
@@ -245,5 +243,125 @@ class SaveMainState extends State<SaveMain> {
     box.clear();
   }
 
+}*/
+
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:organized_sleep/models/details_model.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../boxes/boxes.dart';
+import 'history_meter.dart';
+
+class SaveMain extends StatefulWidget {
+  const SaveMain({super.key});
+
+  @override
+  State<SaveMain> createState() => SaveMainState();
 }
-*/
+
+class SaveMainState extends State<SaveMain> {
+  SaveMainState();
+  final box = Boxes.getData();
+
+
+  void deleteAll() async {
+    box.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Warning!',
+                              style: TextStyle(color: Colors.red)),
+                          content: const Text(
+                              'Do you really want to delete all images!'),
+                          actions: [
+                            TextButton(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                deleteAll();
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    setState(() {});
+                  }),
+            ),
+          ],
+          title: Text('Sleep Report'),
+        ),
+        body: FutureBuilder(
+            future: Hive.openBox('Sleep Report'),
+            builder: (context, snapshot) {
+              return ValueListenableBuilder<Box<DetailsModel>>(
+                  valueListenable: Boxes.getData().listenable(),
+                  builder: (context, box, _) {
+                    var data = box.values.toList().cast<DetailsModel>();
+                    return ListView.builder(
+                        itemCount: box.length,
+                        itemBuilder: (context, index) {
+                          int reversedIndex = data.length - 1 - index;
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HistoryMeter(
+                                    maxVoice: data[reversedIndex].maxVoice,
+                                    sleepAt: data[reversedIndex].sleepAt.toString(),
+                                    wakeAt: data[reversedIndex].wakeAt.toString(),
+                                    avgVoice: data[reversedIndex].avgVoice.toString(),
+                                    sniffing: data[reversedIndex].sniffing,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        'Sleep At: ${data[reversedIndex].sleepAt}'),
+                                    Text(
+                                        'Wake At: ${data[reversedIndex].wakeAt}'),
+                                    Text(
+                                        'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
+                                    Text(
+                                        'Average Voice: ${data[reversedIndex].avgVoice} db'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        });
+                  });
+            }));
+  }
+}
+
+

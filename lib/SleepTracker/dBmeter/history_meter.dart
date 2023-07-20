@@ -5,13 +5,14 @@ import 'dB_meter.dart';
 class HistoryMeter extends StatelessWidget {
   const HistoryMeter(
       {super.key,
-      required this.maxDB,
-      required this.date,
-      required this.time,
-      required this.area});
+      required this.sleepAt,
+      required this.wakeAt,
+      required this.maxVoice,
+      required this.avgVoice,
+      required this.sniffing});
 
-  final double maxDB;
-  final String date, time, area;
+  final List<String> sniffing;
+  final String sleepAt, wakeAt, maxVoice, avgVoice;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +26,11 @@ class HistoryMeter extends StatelessWidget {
           ),
         ),
       ),
-
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          dBMeter(maxDB),
+          /*dBMeter(maxVoice),*/
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
             child: Column(
@@ -40,12 +40,11 @@ class HistoryMeter extends StatelessWidget {
                   children: [
                     const Text(
                       "Noise Detected :",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      " ${maxDB.toStringAsFixed(2)} dB",
+                      " $maxVoice dB",
                       style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -56,15 +55,19 @@ class HistoryMeter extends StatelessWidget {
                 const SizedBox(
                   height: 4,
                 ),
-                Text("Area : $area", style: const TextStyle(fontSize: 13)),
+                Text("Sleep At : $sleepAt", style: const TextStyle(fontSize: 13)),
                 const SizedBox(
                   height: 4,
                 ),
-                Text("Date : $date", style: const TextStyle(fontSize: 13)),
+                Text("Wake At : $wakeAt", style: const TextStyle(fontSize: 13)),
                 const SizedBox(
                   height: 4,
                 ),
-                Text("Time : $time", style: const TextStyle(fontSize: 13)),
+                Text("Maximum Voice : $maxVoice", style: const TextStyle(fontSize: 13)),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text("Average Voice : $avgVoice", style: const TextStyle(fontSize: 13)),
               ],
             ),
           )

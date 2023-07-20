@@ -23,24 +23,12 @@ class DBChart extends StatelessWidget {
           border: Border.all(color: const Color(0xFFEDEEEF), width: 1.5),
         ),
         child: SfCartesianChart(
+
           title: ChartTitle(
-              text: 'dB Graph',
+              text: 'Graph of noise from the background',
               textStyle: const TextStyle(color: Color(0xFFE1E4E8), fontSize: 13),
               alignment: ChartAlignment.far),
           series: <AreaSeries<ChartData, double>>[
-            // LineSeries<ChartData, double>(
-            //   dataLabelSettings: const DataLabelSettings(
-            //     // isVisible: true,
-            //   ),
-            //   dataSource: chartData,
-            //   xAxisName: 'Time',
-            //   yAxisName: 'dB',
-            //   name: 'dB values over time',
-            //   xValueMapper: (ChartData value, _) => value.frames,
-            //   yValueMapper: (ChartData value, _) => value.maxDB?.floor(),
-            //   animationDuration: 1
-            // ),
-
             AreaSeries(
                 gradient: const LinearGradient(
                     colors: [Color(0xFFCEE9FF), Color(0xFF35A1FF)],

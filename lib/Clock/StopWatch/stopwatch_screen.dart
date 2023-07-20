@@ -150,10 +150,12 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                           style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
                             elevation: 5,
+                            backgroundColor: started ? Colors.red : Colors.green,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Text((started) ? "Pause" : "Start"),
+
                           ),
                         ),
                       ),
@@ -161,7 +163,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                   ),
                   IconButton(
                     onPressed: () {
-                      addLaps();
+                      (started) ? addLaps() : null;
                     },
                     icon: const Icon(Icons.flag),
                     color: Colors.black,
