@@ -120,6 +120,21 @@ class ButtonFour extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button(
+      label: 'Self Meditate',
+      onPressed: () {
+        Navigator.pushNamed(context, '/selfPractice');
+      },
+
+    );
+  }
+}
+
+class ButtonFive extends StatelessWidget {
+  const ButtonFive({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Button(
       label: 'Sleep Tracker',
       onPressed: () async {
         PermissionStatus microphone = await Permission.microphone.request();
@@ -133,20 +148,6 @@ class ButtonFour extends StatelessWidget {
         if (microphone == PermissionStatus.permanentlyDenied) {
           openAppSettings();
         }
-      },
-    );
-  }
-}
-
-class ButtonFive extends StatelessWidget {
-  const ButtonFive({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Button(
-      label: 'Self Meditate',
-      onPressed: () {
-        Navigator.pushNamed(context, '/selfPractice');
       },
     );
   }

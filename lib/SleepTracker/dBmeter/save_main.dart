@@ -269,6 +269,10 @@ class SaveMainState extends State<SaveMain> {
     box.clear();
   }
 
+  Future<void> delete(DetailsModel detailsModel) async {
+    await detailsModel.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,7 +290,7 @@ class SaveMainState extends State<SaveMain> {
                           title: const Text('Warning!',
                               style: TextStyle(color: Colors.red)),
                           content: const Text(
-                              'Do you really want to delete all images!'),
+                              'Do you really want to delete all data?'),
                           actions: [
                             TextButton(
                               child: const Text('Cancel'),
@@ -346,14 +350,62 @@ class SaveMainState extends State<SaveMain> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        'Sleep At: ${data[reversedIndex].sleepAt}'),
-                                    Text(
-                                        'Wake At: ${data[reversedIndex].wakeAt}'),
-                                    Text(
-                                        'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
-                                    Text(
-                                        'Average Voice: ${data[reversedIndex].avgVoice} db'),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            'Sleep At: ${data[reversedIndex].sleepAt}'),
+                                        Spacer(),
+                                        InkWell(
+                                            onTap: (){
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text('Warning!',
+                                                        style: TextStyle(color: Colors.red)),
+                                                    content: const Text(
+                                                        'Do you really want to delete this data?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: const Text('Cancel'),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                      TextButton(
+                                                        child: Text('OK'),
+                                                        onPressed: () {
+                                                          delete(data[index]);
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+
+                                            },
+                                            child: Icon(Icons.delete)),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            'Wake At: ${data[reversedIndex].wakeAt}'),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            'Average Voice: ${data[reversedIndex].avgVoice} db'),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),

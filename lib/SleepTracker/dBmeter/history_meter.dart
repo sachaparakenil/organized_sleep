@@ -27,19 +27,57 @@ class HistoryMeter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           dBMeter(maxVoiceValue),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 Row(
                   children: [
                     const Text(
-                      "Noise Detected :",
+                      "Sleep At: ",
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      " $sleepAt",
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF1C95FF)),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      "Wake At: ",
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      " $wakeAt",
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF1C95FF)),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      "Maximum Noise: ",
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       " $maxVoice dB",
@@ -53,24 +91,81 @@ class HistoryMeter extends StatelessWidget {
                 const SizedBox(
                   height: 4,
                 ),
-                Text("Sleep At : $sleepAt", style: const TextStyle(fontSize: 13)),
+                Row(
+                  children: [
+                    const Text(
+                      "Average Noise: ",
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      " $avgVoice dB",
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF1C95FF)),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 4,
                 ),
-                Text("Wake At : $wakeAt", style: const TextStyle(fontSize: 13)),
-                const SizedBox(
-                  height: 4,
+                GestureDetector(
+                  onTap: () {
+                    print('press view button ${sniffing}');
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => LongList(sniffing: sniffing,)));
+                  },
+                  child: const Text('Click To View sniffing Data',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
-                Text("Maximum Voice : $maxVoice", style: const TextStyle(fontSize: 13)),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text("Average Voice : $avgVoice", style: const TextStyle(fontSize: 13)),
               ],
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class LongList extends StatelessWidget {
+   LongList({super.key, required this.sniffing});
+   final List<String> sniffing;
+
+  // List listOfItems = List.generate(20, (index) => 'Sample Item - $index');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Sniffing Data"),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: sniffing.length,
+          itemBuilder: (BuildContext context,int index){
+            return GestureDetector(
+              onTap: (){
+                print('Tapped on item #$index');
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text('${index + 1}.'),
+                        SizedBox(width: 4,),
+                        Text(sniffing[index]),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }

@@ -27,6 +27,7 @@ class _CountdownScreenState extends State<CountdownScreen>
 
   void notify() {
     if (countText == '00:00:00') {
+
       setState(() {
         isPlaying = false;
       });
@@ -67,6 +68,7 @@ class _CountdownScreenState extends State<CountdownScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text("Countdown"),
+        centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -157,6 +159,27 @@ class _CountdownScreenState extends State<CountdownScreen>
                     }
                   },*/
                   onTap: () {
+                    if(countText == '00:00:00'){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Warning!',
+                                style: TextStyle(color: Colors.red)),
+                            content: const Text(
+                                'Please Select CountDown Time'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Ok'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                     if (controller.isAnimating) {
                       controller.stop();
                       setState(() {

@@ -177,7 +177,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     final box = Boxes.getData();
     box.add(data);
     data.save();
-    noiseCrossed80dBList.clear();
+    // noiseCrossed80dBList.clear();
 
 
   }
