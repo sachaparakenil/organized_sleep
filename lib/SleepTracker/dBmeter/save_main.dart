@@ -310,6 +310,7 @@ class SaveMainState extends State<SaveMain> {
             ),
           ],
           title: Text('Sleep Report'),
+          centerTitle: true,
         ),
         body: FutureBuilder(
             future: Hive.openBox('Sleep Report'),

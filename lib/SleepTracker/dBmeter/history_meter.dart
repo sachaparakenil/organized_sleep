@@ -18,13 +18,10 @@ class HistoryMeter extends StatelessWidget {
     double maxVoiceValue = double.parse(maxVoice);
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            "History Meter ",
-            style: kAppbarStyle,
-          ),
+        title: Text(
+          "History Meter ",
         ),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
