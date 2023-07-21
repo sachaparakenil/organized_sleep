@@ -13,9 +13,9 @@ class HistoryMeter extends StatelessWidget {
 
   final List<String> sniffing;
   final String sleepAt, wakeAt, maxVoice, avgVoice;
-
   @override
   Widget build(BuildContext context) {
+    double maxVoiceValue = double.parse(maxVoice);
     return Scaffold(
       appBar: AppBar(
         title: const Padding(
@@ -30,7 +30,8 @@ class HistoryMeter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          /*dBMeter(maxVoice),*/
+
+          dBMeter(maxVoiceValue),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
             child: Column(
