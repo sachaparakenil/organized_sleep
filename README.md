@@ -1,3 +1,6 @@
+<img src="https://github.com/sachaparakenil/organized_sleep/blob/master/assets/sleeping.png" width="60"/>
+
+
 # organized_sleep
 
 ### [organized_sleep](https://github.com/sachaparakenil/organized_sleep) is my project for PlayStore and AppStore.
