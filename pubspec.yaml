@@ -60,6 +60,10 @@ dependencies:
   flutter_local_notifications: ^14.1.2
   syncfusion_flutter_charts: ^22.1.39
   hive_flutter: ^1.1.0
+  flutter_background_service: ^3.0.1
+  android_intent_plus: ^4.0.1
+  audio_service: ^0.18.10
+  flutter_native_timezone_updated_gradle: ^2.0.3
 
 
 dev_dependencies:

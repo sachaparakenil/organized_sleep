@@ -16,7 +16,7 @@ import '../SleepTracker/dBmeter/dB_Data.dart';
 import 'home_screen.dart';
 import '../Splash_screen/splash_screen.dart';
 import 'package:alarm/alarm.dart';
-import 'package:organized_sleep/SleepTracker/dBmeter/save_main.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +28,19 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Alarm.init();
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
+  WidgetsBinding.instance.addObserver(_Handler());
+}
+
+class _Handler extends WidgetsBindingObserver {
+  AudioPlayer audioPlayer = AudioPlayer();
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      audioPlayer.resume(); // Audio player is a custom class with resume and pause static methods
+    } else {
+      audioPlayer.pause();
+    }
+  }
 }
 
 class BetterSleep extends StatelessWidget {

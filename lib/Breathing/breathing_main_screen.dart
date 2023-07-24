@@ -214,7 +214,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Future.delayed(const Duration(seconds: 5), () {
+        Future.delayed(const Duration(seconds: 3), () {
           Navigator.of(context).pop();
           setState(() {
             _stopRequested = true;
