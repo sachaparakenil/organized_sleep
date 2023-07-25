@@ -101,7 +101,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.teal, width: 1.5),
+                        border: Border.all(color: Colors.black, width: 1.5),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: ListView.builder(
@@ -177,8 +177,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                             reset();
                           },
                           style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder(), backgroundColor: Colors.tealAccent,
-                              elevation: 5),
+                              shape: const StadiumBorder(),),
                           child: const Padding(
                             padding: EdgeInsets.all(16.0),
                             child: Text(

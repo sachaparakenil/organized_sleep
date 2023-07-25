@@ -232,10 +232,10 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
               Expanded(
                 child: FloatingActionButton.extended(
                   label: const Text(
-                    "SAVE",
+                    "REPORT",
                     style: kButtonTextStyle,
                   ),
-                  heroTag: "SAVE",
+                  heroTag: "REPORT",
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5.0))),
                   backgroundColor: Color(0xFF5783DB),

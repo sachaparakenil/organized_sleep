@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../Self_meditation/RoundButton.dart';
+import '../../self_meditate/Meditate_Yourself/RoundButton.dart';
 
 class CountdownScreen extends StatefulWidget {
   const CountdownScreen({Key? key}) : super(key: key);

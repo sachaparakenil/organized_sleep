@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:organized_sleep/Home/main.dart';
+import 'package:organized_sleep/main.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);

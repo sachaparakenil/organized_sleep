@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:organized_sleep/models/details_model.dart';
+import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
 import 'package:path_provider/path_provider.dart';
-import '../Breathing/breathing_main_screen.dart';
-import '../Clock/Clock_Home/clock_home_screen.dart';
-import '../Music_melodies/music_home_screen.dart';
-import '../Clock/Alarm/alarm_screen.dart';
-import '../Clock/CountDown/countdown_screen.dart';
+import 'Clock/Clock_Home/clock_home_screen.dart';
+import 'Clock/Alarm/alarm_screen.dart';
+import 'Clock/CountDown/countdown_screen.dart';
 import 'package:hive/hive.dart';
-import '../Self_meditation/self_meditation.dart';
-import '../SleepTracker/SleepAudioTracker/recorder_homeview.dart';
-import '../SleepTracker/dBmeter/dB_Data.dart';
-import 'home_screen.dart';
-import '../Splash_screen/splash_screen.dart';
+import 'SleepTracker/SleepAudioTracker/recorder_homeview.dart';
+import 'SleepTracker/dBmeter/dB_Data.dart';
+import 'self_meditate/Breathing/breathing_main_screen.dart';
+import 'self_meditate/Meditate_Yourself/self_meditation.dart';
+import 'self_meditate/Music_melodies/music_home_screen.dart';
+import 'Home/home_screen.dart';
+import 'Splash_screen/splash_screen.dart';
 import 'package:alarm/alarm.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -62,6 +63,7 @@ class BetterSleep extends StatelessWidget {
         '/meditate': (context) => AudioPlayerPage(),
         '/selfPractice': (context) => const CountdownPage(),
         '/noiseApp': (context) => const NoiseApp(),
+        '/meditation': (context) => const Meditation(),
       },
     );
   }

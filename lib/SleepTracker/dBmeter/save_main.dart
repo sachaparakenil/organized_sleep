@@ -323,10 +323,28 @@ class SaveMainState extends State<SaveMain> {
                   valueListenable: Boxes.getData().listenable(),
                   builder: (context, box, _) {
                     var data = box.values.toList().cast<DetailsModel>();
-                    return ListView.builder(
+                    return box.isEmpty
+                        ? const Center(
+                      child: Text(
+                        'No records yet',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                        : ListView.builder(
                         itemCount: box.length,
                         itemBuilder: (context, index) {
                           int reversedIndex = data.length - 1 - index;
+                          double avgVoice = double.parse(data[reversedIndex].avgVoice);
+                          String sleepEnvironment;
+                          if (avgVoice < 50.0) {
+                            sleepEnvironment = "Peaceful";
+                          } else if (avgVoice >= 50.0 && avgVoice <= 65.0) {
+                            sleepEnvironment = "Pleasant";
+                          } else if (avgVoice > 65.0 && avgVoice < 80.0) {
+                            sleepEnvironment = "Ordinary";
+                          } else {
+                            sleepEnvironment = "Unpleasant";
+                          }
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -375,7 +393,7 @@ class SaveMainState extends State<SaveMain> {
                                                       TextButton(
                                                         child: Text('OK'),
                                                         onPressed: () {
-                                                          delete(data[index]);
+                                                          delete(data[reversedIndex]);
                                                           Navigator.pop(context);
                                                         },
                                                       ),
@@ -398,12 +416,33 @@ class SaveMainState extends State<SaveMain> {
                                       children: [
                                         Text(
                                             'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
+
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         Text(
                                             'Average Voice: ${data[reversedIndex].avgVoice} db'),
+                                        Spacer(),
+                                        Container(
+                                          child: Text('Sleep environment: $sleepEnvironment'),
+                                        ),
+                                        /*if(50 > (int.parse(data[reversedIndex].avgVoice)))
+                                          Container(
+                                              child: Text('Sleep envirnoment: Peaceful')
+                                          ),
+                                        if(50 <= (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <= 65)
+                                          Container(
+                                            child: Text('Sleep envirnoment: Pleasant')
+                                          ),
+                                        if(65< (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <80)
+                                          Container(
+                                            child: Text('Sleep envirnoment: Ordinary'),
+                                          ),
+                                        if(80<= (int.parse(data[reversedIndex].avgVoice)))
+                                          Container(
+                                            child: Text('Sleep envirnoment: Unpleasant '),
+                                          )*/
                                       ],
                                     ),
                                   ],

@@ -64,31 +64,67 @@ class _ClockScreenState extends State<ClockScreen> {
               ),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                 child: Column(
                   children: [
-                    ElevatedButton(
+                    Click(
+                      label: 'Alarm',
                       onPressed: () {
                         Navigator.pushNamed(context, '/alarm');
                       },
-                      child: const Text('Go to Alarm'),
                     ),
-                    ElevatedButton(
+                    Click(
+                      label: 'Countdown',
                       onPressed: () {
                         Navigator.pushNamed(context, '/countdown');
                       },
-                      child: const Text('Go to Countdown'),
                     ),
-                    ElevatedButton(
+                    Click(
+                      label: 'Stopwatch',
                       onPressed: () {
                         Navigator.pushNamed(context, '/stopwatch');
                       },
-                      child: const Text('Go to stopwatch'),
                     ),
                   ],
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Click extends StatelessWidget {
+  final String label;
+  final VoidCallback? onPressed;
+
+  const Click({super.key, required this.label, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 80),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          child: Center(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

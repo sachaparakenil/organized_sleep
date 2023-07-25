@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_sleep/SleepTracker/SleepAudioTracker/recorder_listview.dart';
 import 'package:organized_sleep/SleepTracker/SleepAudioTracker/recorder_view.dart';
@@ -22,23 +23,21 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
     super.initState();
     getApplicationDocumentsDirectory().then((value) {
       appDirectory = value;
-      appDirectory.list().listen((onData) {
-        if (onData.path.contains('.aac')) records.add(onData.path);
-      }).onDone(() {
-        records = records.reversed.toList();
-        setState(() {});
-      });
+      _loadRecordsInBackground(); // Load records in the background
     });
   }
 
   @override
   void dispose() {
-    appDirectory.delete();
+    // appDirectory.delete();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -102,6 +101,24 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
         ],
       ),
     );
+  }
+
+  void _loadRecordsInBackground() {
+    // Load records in the background isolate using compute.
+    compute(_getRecords, appDirectory.path).then((loadedRecords) {
+      setState(() {
+        records = loadedRecords.reversed.toList();
+      });
+    });
+  }
+
+  static List<String> _getRecords(String directoryPath) {
+    List<String> loadedRecords = [];
+    Directory appDirectory = Directory(directoryPath);
+    appDirectory.listSync().forEach((onData) {
+      if (onData.path.contains('.aac')) loadedRecords.add(onData.path);
+    });
+    return loadedRecords;
   }
 
   _onRecordComplete() {

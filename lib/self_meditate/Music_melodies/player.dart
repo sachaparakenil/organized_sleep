@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:organized_sleep/Music_melodies/Controller/player_controller.dart';
+import 'Controller/player_controller.dart';
 
 class Player extends StatelessWidget {
   final List<SongModel> data;

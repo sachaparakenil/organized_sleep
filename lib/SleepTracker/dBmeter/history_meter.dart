@@ -31,9 +31,8 @@ class HistoryMeter extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-
                 Row(
                   children: [
                     const Text(
@@ -110,14 +109,10 @@ class HistoryMeter extends StatelessWidget {
                 const SizedBox(
                   height: 4,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    print('press view button ${sniffing}');
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => LongList(sniffing: sniffing,)));
-                  },
-                  child: const Text('Click To View sniffing Data',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ElevatedButton(
+                  onPressed: () { Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => LongList(sniffing: sniffing,))); },
+                  child: Text('Sniffing Data')
                 ),
               ],
             ),
@@ -141,28 +136,30 @@ class LongList extends StatelessWidget {
         title: const Text("Sniffing Data"),
         centerTitle: true,
       ),
-      body: ListView.builder(
+      body: sniffing.isEmpty
+          ? const Center(
+        child: Text(
+          'No records yet',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+      )
+          : ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: sniffing.length,
           itemBuilder: (BuildContext context,int index){
-            return GestureDetector(
-              onTap: (){
-                print('Tapped on item #$index');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text('${index + 1}.'),
-                        SizedBox(width: 4,),
-                        Text(sniffing[index]),
-                      ],
-                    ),
-                  ],
-                ),
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Text('${index + 1}.'),
+                      SizedBox(width: 4,),
+                      Text(sniffing[index]),
+                    ],
+                  ),
+                ],
               ),
             );
           }),

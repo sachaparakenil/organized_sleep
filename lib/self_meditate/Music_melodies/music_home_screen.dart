@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:organized_sleep/Music_melodies/player.dart';
+import 'package:organized_sleep/self_meditate/Music_melodies/player.dart';
 import 'Controller/player_controller.dart';
 
 //ignore: must_be_immutable
