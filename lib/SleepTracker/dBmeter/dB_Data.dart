@@ -202,6 +202,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
               "Sleep Tracker",
             ),
           ),
+          centerTitle: true,
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Container(

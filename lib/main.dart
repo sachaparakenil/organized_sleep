@@ -5,7 +5,7 @@ import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:organized_sleep/models/details_model.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
 import 'package:path_provider/path_provider.dart';
-import 'Clock/Clock_Home/clock_home_screen.dart';
+import 'Clock/clock_home_screen.dart';
 import 'Clock/Alarm/alarm_screen.dart';
 import 'Clock/CountDown/countdown_screen.dart';
 import 'package:hive/hive.dart';

@@ -105,117 +105,157 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(
-                  "Cancel",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.blueAccent),
-                ),
-              ),
-              TextButton(
-                onPressed: saveAlarm,
-                child: Text(
-                  "Save",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.blueAccent),
-                ),
-              ),
-            ],
-          ),
+
           RawMaterialButton(
             onPressed: pickTime,
-            fillColor: Colors.grey[200],
+            fillColor:Color(0xffD3E1F6),
             child: Container(
               margin: const EdgeInsets.all(20),
               child: Text(
                 selectedTime.format(context),
-                style: Theme.of(context)
-                    .textTheme
-                    .displayMedium!
-                    .copyWith(color: Colors.blueAccent),
+                style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold, color: Color(0xff07327a))
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Loop alarm audio',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: loopAudio,
-                onChanged: (value) => setState(() => loopAudio = value),
-              ),
-            ],
+          SizedBox(height: 20,),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8.0),
+              color: Color(0xffD3E1F6),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Icon(Icons.loop),
+                Text(
+                  'Loop alarm audio',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Switch(
+                  value: loopAudio,
+                  onChanged: (value) => setState(() => loopAudio = value),
+                    activeColor: Color(0xff07327a),
+                    inactiveTrackColor: Colors.grey
+                ),
+              ],
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Vibrate',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: vibrate,
-                onChanged: (value) => setState(() => vibrate = value),
-              ),
-            ],
+          SizedBox(height: 10,),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8.0),
+              color: Color(0xffD3E1F6),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Icon(Icons.vibration),
+                Text(
+                  'Vibrate',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Switch(
+                  value: vibrate,
+                  onChanged: (value) => setState(() => vibrate = value),
+                    activeColor: Color(0xff07327a),
+                    inactiveTrackColor: Colors.grey
+                ),
+              ],
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Show notification',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Switch(
-                value: showNotification,
-                onChanged: (value) => setState(() => showNotification = value),
-              ),
-            ],
+          SizedBox(height: 10,),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8.0),
+                color: Color(0xffD3E1F6),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Icon(Icons.notification_add),
+                Text(
+                  'Show notification',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Switch(
+                  value: showNotification,
+                  onChanged: (value) => setState(() => showNotification = value),
+                    activeColor: Color(0xff07327a),
+                    inactiveTrackColor: Colors.grey
+                ),
+              ],
+            ),
           ),
+          SizedBox(height: 10,),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8.0),
+              color: Color(0xffD3E1F6),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Icon(Icons.audiotrack),
+                Text(
+                  'Sound',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      color: Color(0xff07327a),
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: SizedBox(
+                    height: 30,
+                    child: DropdownButton(
+                      value: assetAudio,
+                      items: const [
+                        DropdownMenuItem<String>(
+                          value: 'assets/marimba.mp3',
+                          child: Text('Marimba', style: TextStyle(color: Colors.white)),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'assets/nokia.mp3',
+                          child: Text('Nokia', style: TextStyle(color: Colors.white)),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'assets/mozart.mp3',
+                          child: Text('Mozart', style: TextStyle(color: Colors.white)),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'assets/star_wars.mp3',
+                          child: Text('Star Wars', style: TextStyle(color: Colors.white)),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: 'assets/one_piece.mp3',
+                          child: Text('One Piece', style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                      onChanged: (value) => setState(() => assetAudio = value!),
+                      underline: Container(),
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Sound',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              DropdownButton(
-                value: assetAudio,
-                items: const [
-                  DropdownMenuItem<String>(
-                    value: 'assets/marimba.mp3',
-                    child: Text('Marimba'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'assets/nokia.mp3',
-                    child: Text('Nokia'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'assets/mozart.mp3',
-                    child: Text('Mozart'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'assets/star_wars.mp3',
-                    child: Text('Star Wars'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'assets/one_piece.mp3',
-                    child: Text('One Piece'),
-                  ),
-                ],
-                onChanged: (value) => setState(() => assetAudio = value!),
-              ),
+              Expanded(child: Save(label: "Cancel", onPressed: () => Navigator.pop(context, false),)),
+              SizedBox(width: 30,),
+              Expanded(child: Save(label: "Save", onPressed: () => saveAlarm)),
             ],
           ),
           if (!creating)
@@ -231,6 +271,48 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
             ),
           const SizedBox(),
         ],
+      ),
+    );
+  }
+}
+
+class Save extends StatelessWidget {
+  final String label;
+  final VoidCallback? onPressed;
+
+  const Save({super.key, required this.label, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(25), // Set the border radius as desired
+        /*border: Border.all(
+          // color: Colors.black.withOpacity(0.5), // Set the border color with opacity
+          width: 2.0, // Set the border width as needed
+        ),*/
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff07327a),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          child: Center(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

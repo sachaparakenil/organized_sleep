@@ -82,6 +82,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
             "Sleep Tracker",
           ),
         ),
+        centerTitle: true,
       ),
       body: Column(
         children: [

@@ -79,6 +79,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('StopWatch'),
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),

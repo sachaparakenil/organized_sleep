@@ -22,7 +22,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
     super.initState();
     loadAlarms();
     subscription ??= Alarm.ringStream.stream.listen(
-          (alarmSettings) => navigateToRingScreen(alarmSettings),
+      (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
   }
 
@@ -43,7 +43,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
     loadAlarms();
   }
 
-  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
+/*  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
     final res = await showModalBottomSheet<bool?>(
         context: context,
         isScrollControlled: true,
@@ -58,6 +58,28 @@ class _AlarmScreenState extends State<AlarmScreen> {
         });
 
     if (res != null && res == true) loadAlarms();
+  }*/
+
+
+  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
+    final res = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          title: Center(child: Text("SET ALARM")),
+          content: SingleChildScrollView(
+            child: ExampleAlarmEditScreen(alarmSettings: settings),
+          ),
+        );
+      },
+    );
+
+    if (res != null && res == true) {
+      loadAlarms();
+    }
   }
 
   @override
@@ -69,35 +91,101 @@ class _AlarmScreenState extends State<AlarmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Alarm'), centerTitle: true,),
-      body: SafeArea(
-        child: alarms.isNotEmpty
-            ? ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemCount: alarms.length,
-          separatorBuilder: (context, index) => const Divider(),
-          itemBuilder: (context, index) {
-            return ExampleAlarmTile(
-              key: Key(alarms[index].id.toString()),
-              title: TimeOfDay(
-                hour: alarms[index].dateTime.hour,
-                minute: alarms[index].dateTime.minute,
-              ).format(context),
-              onPressed: () => navigateToAlarmScreen(alarms[index]),
-              onDismissed: () {
-                Alarm.stop(alarms[index].id).then((_) => loadAlarms());
-              },
-            );
-          },
-        )
-            : Center(
-          child: Text(
-            "Set Alarm",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('ALARM'),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+            /*image: DecorationImage(
+              image: AssetImage("assets/images/bg.png"), fit: BoxFit.fill),*/
+            color: Color(0xff02122C)),
+        child: SafeArea(
+          child: alarms.isNotEmpty
+              ? ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: alarms.length,
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemBuilder: (context, index) {
+                    return ExampleAlarmTile(
+                      key: Key(alarms[index].id.toString()),
+                      title: TimeOfDay(
+                        hour: alarms[index].dateTime.hour,
+                        minute: alarms[index].dateTime.minute,
+                      ).format(context),
+                      onPressed: () => navigateToAlarmScreen(alarms[index]),
+                      onDismissed: () {
+                        Alarm.stop(alarms[index].id).then((_) => loadAlarms());
+                      },
+                    );
+                  },
+                )
+              : Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "No Alarm Set",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),
+                    ),
+                    Text(
+                      "Set alarm first",
+                      style: TextStyle(fontSize: 18, color: Colors.white,)
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            navigateToAlarmScreen(null);
+                          },
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.alarm),
+                              SizedBox(width: 5),
+                              Text('ADD ALARM'),
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            final alarmSettings = AlarmSettings(
+                              id: 42,
+                              dateTime: DateTime.now(),
+                              assetAudioPath: 'assets/marimba.mp3',
+                            );
+                            Alarm.set(alarmSettings: alarmSettings);
+                          },
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.ring_volume),
+                              SizedBox(width: 5),
+                              Text('RING ALARM'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+                  /*child: Text(
+              "Set Alarm",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),*/
+                  ),
         ),
       ),
-      floatingActionButton: Padding(
+/*      floatingActionButton: Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,7 +210,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
     );
   }
 }

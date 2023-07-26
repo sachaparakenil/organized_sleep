@@ -16,8 +16,8 @@ class AudioPlayerPage extends StatelessWidget {
     var controller = Get.put(PlayerController());
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
         title: const Text('Playing Audio'),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<SongModel>>(
         future: controller.audioQuery.querySongs(

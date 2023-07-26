@@ -43,12 +43,17 @@ class ClockPainter extends CustomPainter {
     var centerY = size.height / 2;
     var center = Offset(centerX, centerY);
     var radius = min(centerX, centerY);
-    var fillBrush = Paint()..color = const Color(0xff444974);
+    var fillBrush = Paint()..color = const Color(0xff293759);
 
     var outlineBrush = Paint()
-      ..color = const Color(0xffEAECFF)
+      ..color = const Color(0xff12234A)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width / 20;
+      ..strokeWidth = size.width / 10;
+
+    var outlineBrushMax = Paint()
+      ..color = const Color(0xff0A1C48)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width / 10;
 
     var centerFillBrush = Paint()..color = const Color(0xffEAECFF);
 
@@ -79,8 +84,9 @@ class ClockPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 
-    canvas.drawCircle(center, radius * 0.75, fillBrush);
-    canvas.drawCircle(center, radius * 0.75, outlineBrush);
+    canvas.drawCircle(center, radius * 0.80, fillBrush);
+    canvas.drawCircle(center, radius * 0.90, outlineBrush);
+    canvas.drawCircle(center, radius * 1.1, outlineBrushMax);
 
     var hourHandX = centerX +
         radius *
@@ -104,14 +110,14 @@ class ClockPainter extends CustomPainter {
 
     var outerRadius = radius;
     var innerRadius = radius * 0.9;
-    for (var i = 0; i < 360; i += 12) {
+    /*for (var i = 0; i < 360; i += 12) {
       var x1 = centerX + outerRadius * cos(i * pi / 180);
       var y1 = centerY + outerRadius * sin(i * pi / 180);
 
       var x2 = centerX + innerRadius * cos(i * pi / 180);
       var y2 = centerY + innerRadius * sin(i * pi / 180);
       canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
-    }
+    }*/
   }
 
   @override
