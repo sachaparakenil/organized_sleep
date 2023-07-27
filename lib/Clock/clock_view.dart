@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class ClockView extends StatefulWidget {
   const ClockView({super.key, required this.size});
@@ -43,38 +45,40 @@ class ClockPainter extends CustomPainter {
     var centerY = size.height / 2;
     var center = Offset(centerX, centerY);
     var radius = min(centerX, centerY);
-    var fillBrush = Paint()..color = const Color(0xff293759);
+    var fillBrush = Paint()..color = const Color.fromARGB(110, 255, 255, 255);
 
     var outlineBrush = Paint()
-      ..color = const Color(0xff12234A)
+      ..color = const Color.fromARGB(80, 255, 255, 255)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 10;
 
     var outlineBrushMax = Paint()
-      ..color = const Color(0xff0A1C48)
+      ..color = const Color.fromARGB(50, 255, 255, 255)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 10;
 
     var centerFillBrush = Paint()..color = const Color(0xffEAECFF);
 
     var secHandBrush = Paint()
-      ..color = const Color(0xffBD956C)
+      ..color = const Color.fromARGB(90, 255, 255, 255)
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = size.width / 60;
 
     var minHandBrush = Paint()
-      ..shader =
-      const RadialGradient(colors: [Color(0xff748EF6), Color(0xff77DDFF)])
-          .createShader(Rect.fromCircle(center: center, radius: radius))
+      ..color = const Color.fromARGB(70, 255, 255, 255)
+      /*..shader =
+      const RadialGradient(colors: [Color.fromARGB(90, 255, 255, 255), Color(0x00000000)])
+          .createShader(Rect.fromCircle(center: center, radius: radius))*/
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = size.width / 30;
 
     var hourHandBrush = Paint()
-      ..shader =
+      ..color = const Color.fromARGB(255, 255, 255, 255)
+      /*..shader =
       const RadialGradient(colors: [Color(0xffEA74AB), Color(0xffC279FB)])
-          .createShader(Rect.fromCircle(center: center, radius: radius))
+          .createShader(Rect.fromCircle(center: center, radius: radius))*/
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = size.width / 24;
@@ -84,29 +88,29 @@ class ClockPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 
-    canvas.drawCircle(center, radius * 0.80, fillBrush);
-    canvas.drawCircle(center, radius * 0.90, outlineBrush);
-    canvas.drawCircle(center, radius * 1.1, outlineBrushMax);
+    canvas.drawCircle(center, radius * 0.70, fillBrush);
+    canvas.drawCircle(center, radius * 0.80, outlineBrush);
+    canvas.drawCircle(center, radius * 1.0, outlineBrushMax);
 
     var hourHandX = centerX +
         radius *
-            0.4 *
+            0.35 *
             cos((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
     var hourHandY = centerY +
         radius *
-            0.4 *
+            0.35 *
             sin((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
     canvas.drawLine(center, Offset(hourHandX, hourHandY), hourHandBrush);
 
-    var minHandX = centerX + radius * 0.6 * cos(dateTime.minute * 6 * pi / 180);
-    var minHandY = centerY + radius * 0.6 * sin(dateTime.minute * 6 * pi / 180);
+    var minHandX = centerX + radius * 0.5 * cos(dateTime.minute * 6 * pi / 180);
+    var minHandY = centerY + radius * 0.5 * sin(dateTime.minute * 6 * pi / 180);
     canvas.drawLine(center, Offset(minHandX, minHandY), minHandBrush);
 
     var secHandX = centerX + radius * 0.6 * cos(dateTime.second * 6 * pi / 180);
     var secHandY = centerY + radius * 0.6 * sin(dateTime.second * 6 * pi / 180);
     canvas.drawLine(center, Offset(secHandX, secHandY), secHandBrush);
 
-    canvas.drawCircle(center, radius * 0.12, centerFillBrush);
+    // canvas.drawCircle(center, radius * 0.12, centerFillBrush);
 
     var outerRadius = radius;
     var innerRadius = radius * 0.9;

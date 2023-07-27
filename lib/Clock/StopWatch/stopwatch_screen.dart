@@ -75,124 +75,150 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double appBarHeight = AppBar().preferredSize.height;
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: const Text('StopWatch'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Container(
+                padding: const EdgeInsets.all(5),
+                child: Image.asset(
+                  'assets/icon/back.png',
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+            ),
+          ),
+          title: const Text('STOPWATCH',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24)),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                  child: Text(
-                    "$digitHours:$digitMinutes:$digitSeconds",
-                    style:
-                    const TextStyle(fontSize: 82.0, fontWeight: FontWeight.w600),
-                  )),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Material(
-                    elevation: 5,
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.black, width: 1.5),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: ListView.builder(
-                        itemCount: laps.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  "Lap No. ${index + 1}",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
+        body: Container(
+          padding: EdgeInsets.only(top: appBarHeight),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                    child: Text(
+                      "$digitHours:$digitMinutes:$digitSeconds",
+                      style:
+                      const TextStyle(fontSize: 82.0, fontWeight: FontWeight.bold,color: Colors.white),
+                    )),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Material(
+                      elevation: 5,
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: Border.all(color: Colors.black, width: 1.5),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListView.builder(
+                          itemCount: laps.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "Lap No. ${index + 1}",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20.0,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  laps[index],
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
+                                  Text(
+                                    laps[index],
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20.0,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            (started) ? stop() : start();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(),
-                            elevation: 5,
-                            backgroundColor: started ? Colors.red : Colors.green,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text((started) ? "Pause" : "Start"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10.0),
+                        child: Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              (started) ? stop() : start();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              elevation: 5,
+                              backgroundColor: started ? Colors.red : Colors.green,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text((started) ? "Pause" : "Start"),
 
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      (started) ? addLaps() : null;
-                    },
-                    icon: const Icon(Icons.flag),
-                    color: Colors.black,
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.all(10.0),
-                      child: Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            reset();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder(),),
-                          child: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(
-                              "Reset",
-                              style: TextStyle(color: Colors.black),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    IconButton(
+                      onPressed: () {
+                        (started) ? addLaps() : null;
+                      },
+                      icon: const Icon(Icons.flag),
+                      color: Colors.black,
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10.0),
+                        child: Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              reset();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),),
+                            child: const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                "Reset",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

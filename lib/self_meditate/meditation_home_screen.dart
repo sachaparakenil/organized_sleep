@@ -32,11 +32,11 @@ class ButtonOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Button(
+    return Button1(
       label: 'Mediate YourSelf',
       onPressed: () {
         Navigator.pushNamed(context, '/selfPractice');
-      },
+      }, iconData: '',
     );
   }
 }
@@ -46,11 +46,11 @@ class ButtonTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Button(
+    return Button1(
       label: 'Breathing',
       onPressed: () {
         Navigator.pushNamed(context, '/breathing');
-      },
+      }, iconData: '',
     );
   }
 }
@@ -60,7 +60,7 @@ class ButtonThree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Button(
+    return Button1(
       label: 'Music Melodies',
       onPressed: () async {
         PermissionStatus audio = await Permission.audio.request();
@@ -77,7 +77,7 @@ class ButtonThree extends StatelessWidget {
         if (audio == PermissionStatus.permanentlyDenied) {
           openAppSettings();
         }
-      },
+      }, iconData: '',
     );
   }
 }

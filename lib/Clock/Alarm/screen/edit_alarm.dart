@@ -18,6 +18,46 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   late bool vibrate;
   late bool showNotification;
   late String assetAudio;
+  final _timePickerTheme = TimePickerThemeData(
+    backgroundColor: Color(0xffbac6e7),
+    hourMinuteShape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      side: BorderSide(color: Color(0xff07327a), width: 1),
+    ),
+    dayPeriodBorderSide: const BorderSide(color: Color(0xff07327a), width: 1),
+    dayPeriodColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected) ? Color(0xff5282d2) : Color(
+        0xffc3cfe5)),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      side: BorderSide(color: Color(0xff609ae0), width: 1),
+    ),
+    dayPeriodTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected) ? Colors.white : Color(0xff86a8e1)),
+    dayPeriodShape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      side: BorderSide(color: Color(0xff07327a), width: 4),
+    ),
+    hourMinuteColor: MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.selected) ? Color(0xff5282d2) : Color(
+        0xffc3cfe5)),
+    hourMinuteTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected) ? Colors.white : Color(0xff86a8e1)),
+    dialHandColor: Color(0xff2d70e0),
+    dialBackgroundColor: Color(0xff86a8e1),
+    hourMinuteTextStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    dayPeriodTextStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+    helpTextStyle:
+    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: InputBorder.none,
+      contentPadding: EdgeInsets.all(0),
+    ),
+    dialTextColor: MaterialStateColor.resolveWith(
+            (states) => states.contains(MaterialState.selected) ? Color(0xff07327a) : Color(
+            0xff0d60ec)),
+    entryModeIconColor: Color(0xff07327a),
+  );
 
   @override
   void initState() {
@@ -50,6 +90,21 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
     final res = await showTimePicker(
       initialTime: selectedTime,
       context: context,
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              // This uses the _timePickerTheme defined above
+              timePickerTheme: _timePickerTheme,
+              textButtonTheme: TextButtonThemeData(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith((states) => Color(0xff07327a)),
+                  foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+                  overlayColor: MaterialStateColor.resolveWith((states) => Color(0xff07327a)),
+                ),
+              ),
+            ),
+            child: child!,
+          );}
     );
     if (res != null) setState(() => selectedTime = res);
   }
@@ -101,11 +156,35 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
+          /*Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(
+                  "Cancel",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Colors.blueAccent),
+                ),
+              ),
+              TextButton(
+                onPressed: saveAlarm,
+                child: Text(
+                  "Save",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Colors.blueAccent),
+                ),
+              ),
+            ],
+          ),*/
           RawMaterialButton(
             onPressed: pickTime,
             fillColor:Color(0xffD3E1F6),
@@ -126,13 +205,15 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
               color: Color(0xffD3E1F6),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Icon(Icons.loop),
+                SizedBox(width: 5,),
+                Image(image: AssetImage('assets/icon/loop_audio.png'), height: 20, width: 20,),
+                SizedBox(width: 10),
                 Text(
                   'Loop alarm audio',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
+                Spacer(),
                 Switch(
                   value: loopAudio,
                   onChanged: (value) => setState(() => loopAudio = value),
@@ -151,13 +232,15 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
               color: Color(0xffD3E1F6),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Icon(Icons.vibration),
+                SizedBox(width: 5,),
+                Image(image: AssetImage('assets/icon/vibrate.png'), height: 20, width: 20,),
+                SizedBox(width: 10,),
                 Text(
                   'Vibrate',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
+                Spacer(),
                 Switch(
                   value: vibrate,
                   onChanged: (value) => setState(() => vibrate = value),
@@ -176,13 +259,15 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                 color: Color(0xffD3E1F6),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Icon(Icons.notification_add),
+                SizedBox(width: 5,),
+                Image(image: AssetImage('assets/icon/notification.png'), height: 20, width: 20,),
+                SizedBox(width: 10,),
                 Text(
                   'Show notification',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
+                Spacer(),
                 Switch(
                   value: showNotification,
                   onChanged: (value) => setState(() => showNotification = value),
@@ -201,13 +286,15 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
               color: Color(0xffD3E1F6),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Icon(Icons.audiotrack),
+                SizedBox(width: 5,),
+                Image(image: AssetImage('assets/icon/sound.png'), height: 20, width: 20,),
+                SizedBox(width: 10,),
                 Text(
                   'Sound',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
+                Spacer(),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
@@ -218,6 +305,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                     height: 30,
                     child: DropdownButton(
                       value: assetAudio,
+                      dropdownColor: Color(0xff07327a),
                       items: const [
                         DropdownMenuItem<String>(
                           value: 'assets/marimba.mp3',
@@ -253,22 +341,14 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Save(label: "Cancel", onPressed: () => Navigator.pop(context, false),)),
+              Expanded(child: Save(label: "Cancel", onPressed: () => Navigator.pop(context, false),color: Color(0xff07327a),)),
               SizedBox(width: 30,),
-              Expanded(child: Save(label: "Save", onPressed: () => saveAlarm)),
+              Expanded(child: Save(label: "Save", onPressed: saveAlarm,color: Color(0xff07327a),)),
             ],
           ),
+          SizedBox(height: 15,),
           if (!creating)
-            TextButton(
-              onPressed: deleteAlarm,
-              child: Text(
-                'Delete Alarm',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(color: Colors.red),
-              ),
-            ),
+            Container(padding: EdgeInsets.symmetric(horizontal: 20),child: Save(label: "Delete Alarm", onPressed: deleteAlarm,color: Color(0xffBC544B),)),
           const SizedBox(),
         ],
       ),
@@ -279,8 +359,9 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
 class Save extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
+  final Color color;
 
-  const Save({super.key, required this.label, this.onPressed});
+  const Save({super.key, required this.label, this.onPressed, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -295,7 +376,7 @@ class Save extends StatelessWidget {
         ),*/
         boxShadow: [
           BoxShadow(
-            color: Color(0xff07327a),
+            color: color,
           ),
         ],
       ),
