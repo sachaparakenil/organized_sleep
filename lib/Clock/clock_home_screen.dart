@@ -86,7 +86,7 @@ class _ClockScreenState extends State<ClockScreen> {
                       Text(
                         DateFormat("HH:mm").format(_currentTime),
                         style: const TextStyle(
-                            fontSize: 55,
+                            fontSize: 70,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
@@ -96,7 +96,7 @@ class _ClockScreenState extends State<ClockScreen> {
                             const TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

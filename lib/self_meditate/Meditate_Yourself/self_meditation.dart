@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../Clock/CountDown/countdown_screen.dart';
 import 'RoundButton.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -18,7 +19,6 @@ class _CountdownPageState extends State<CountdownPage>
   String selectedAudio = 'marimba.mp3';
   String selectedBell = 'beep.mp3';
   bool isPlaying = false;
-
 
   String get countText {
     Duration count = controller.duration! * controller.value;
@@ -56,7 +56,6 @@ class _CountdownPageState extends State<CountdownPage>
     await audioPlayer.stop();
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -89,130 +88,224 @@ class _CountdownPageState extends State<CountdownPage>
 
   @override
   Widget build(BuildContext context) {
+    final double appBarHeight = AppBar().preferredSize.height;
+    const double topSpacing = 50.0;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text("Internal Meditation"),
+        leading: Material(
+          color: Colors.transparent,
+          child: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Container(
+              padding: const EdgeInsets.all(5),
+              child: Image.asset(
+                'assets/icon/back.png',
+                width: 20,
+                height: 20,
+              ),
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          "INTERNAL MEDITATION",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.grey.shade300,
-                    value: progress,
-                    strokeWidth: 6,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    if (controller.isDismissed) {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => SizedBox(
-                          height: 300,
-                          child: CupertinoTimerPicker(
-                            initialTimerDuration: controller.duration!,
-                            onTimerDurationChanged: (time) {
-                              setState(() {
-                                controller.duration = time;
-                              });
-                            },
-                          ),
+      body: Container(
+        padding: EdgeInsets.only(top: appBarHeight +topSpacing),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: CustomPaint(
+                      painter: ProgressPainter(progress: progress),
+                      child: Container(
+                        width: 300,
+                        height: 300,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Color(0xff091939),
+                          color: Color(0xff1F53AE),
+                          value: progress,
+                          strokeWidth: 6,
                         ),
-                      );
-                    }
-                  },
-                  child: AnimatedBuilder(
-                    animation: controller,
-                    builder: (context, child) => Text(
-                      countText,
-                      style: const TextStyle(
-                        fontSize: 60,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      if (controller.isDismissed) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => SizedBox(
+                            height: 300,
+                            child: CupertinoTimerPicker(
+                              initialTimerDuration: controller.duration!,
+                              onTimerDurationChanged: (time) {
+                                setState(() {
+                                  controller.duration = time;
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, child) => Text(
+                        countText,
+                        style: const TextStyle(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Icon(CupertinoIcons.music_note_2),
-              Text(
-                'Sound',
-                style: Theme.of(context).textTheme.titleMedium,
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 30),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(27),
+                border: Border.all(
+                  color: Color(0xff42536C), // Set the border color
+                  width: 1.5, // Set the border width
+                ),
+                color: Colors.white,
               ),
-              DropdownButton(
-                value: selectedAudio,
-                items: const [
-                  DropdownMenuItem<String>(
-                    value: 'marimba.mp3',
-                    child: Text('Marimba'),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xffD3E1F6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Icon(CupertinoIcons.music_note_2),
+                        Text(
+                          'Sound',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Color(0xff07327a),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: SizedBox(
+                            height: 30,
+                            child: DropdownButton(
+                              value: selectedAudio,
+                              dropdownColor: Color(0xff07327a),
+                              items: const [
+                                DropdownMenuItem<String>(
+                                  value: 'marimba.mp3',
+                                  child: Text('Marimba', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'nokia.mp3',
+                                  child: Text('Nokia', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'mozart.mp3',
+                                  child: Text('Mozart', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'star_wars.mp3',
+                                  child: Text('Star Wars', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'one_piece.mp3',
+                                  child: Text('One Piece', style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                              underline: Container(),
+                              icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
+                              onChanged: (value) => setState(() => selectedAudio = value!),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  DropdownMenuItem<String>(
-                    value: 'nokia.mp3',
-                    child: Text('Nokia'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'mozart.mp3',
-                    child: Text('Mozart'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'star_wars.mp3',
-                    child: Text('Star Wars'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'one_piece.mp3',
-                    child: Text('One Piece'),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xffD3E1F6),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Icon(CupertinoIcons.bell),
+                        Text(
+                          'Ending Bell',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Color(0xff07327a),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: SizedBox(
+                            height: 30,
+                            child: DropdownButton(
+                              value: selectedBell,
+                              dropdownColor: Color(0xff07327a),
+                              items: const [
+                                DropdownMenuItem<String>(
+                                  value: 'beep.mp3',
+                                  child: Text('One Shot', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Beep1.mp3',
+                                  child: Text('Grammar', style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                              underline: Container(),
+                              icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
+                              onChanged: (value) => setState(() => selectedBell = value!),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-                onChanged: (value) => setState(() => selectedAudio = value!),
               ),
-
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Icon(CupertinoIcons.bell),
-              Text(
-                'Ending Bell',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              DropdownButton(
-                value: selectedBell,
-                items: const [
-                  DropdownMenuItem<String>(
-                    value: 'beep.mp3',
-                    child: Text('One Shot'),
-                  ),
-                  DropdownMenuItem<String>(
-                    value: 'Beep1.mp3',
-                    child: Text('Grammar'),
-                  ),
-                ],
-                onChanged: (value) => setState(() => selectedBell = value!),
-              ),
-
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Button4(label: isPlaying == true ? 'PAUSE' : 'START', iconData: isPlaying == true ? 'assets/icon/pause.png' : 'assets/icon/play.png',onPressed: () {
                     if (controller.isAnimating) {
                       controller.stop();
                       pauseAudio();
@@ -221,35 +314,27 @@ class _CountdownPageState extends State<CountdownPage>
                       });
                     } else {
                       controller.reverse(
-                          from: controller.value == 0 ? 1.0 : controller.value);
+                          from:
+                          controller.value == 0 ? 1.0 : controller.value);
                       setState(() async {
                         playAudio();
                         isPlaying = true;
                       });
                     }
-                  },
-                  child: RoundButton(
-                    icon: isPlaying == true ? Icons.pause : Icons.play_arrow,
-                  ),
-                ),
-                const SizedBox(width: 30,),
-                GestureDetector(
-                  onTap: () {
+                  },),
+                  Button4(label: 'STOP', iconData: 'assets/icon/dismiss.png',onPressed: () {
                     controller.reset();
                     setState(() {
                       isPlaying = false;
                       stopAudio();
                     });
-                  },
-                  child: const RoundButton(
-                    icon: Icons.stop,
-                  ),
-                ),
-              ],
+                  },)
+                ],
+              ),
             ),
-          ),
+            SizedBox(height: 30),
           ],
-
+        ),
       ),
     );
   }

@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 30,
+                width: 40,
               ),
               Container(
                 child: Stack(
@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 10,
+                width: 5,
               ),
               Container(
                 // margin: EdgeInsets.only(right: 10.0),
@@ -186,7 +186,7 @@ class Button1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right: 200, left: 8, top: 0, bottom: 15),
+      padding: EdgeInsets.only(right: 200, left: 30, top: 0, bottom: 15),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

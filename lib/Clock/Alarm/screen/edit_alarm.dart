@@ -330,7 +330,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                       ],
                       onChanged: (value) => setState(() => assetAudio = value!),
                       underline: Container(),
-                      icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                      icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
                     ),
                   ),
                 ),

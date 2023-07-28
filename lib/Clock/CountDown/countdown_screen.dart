@@ -1,7 +1,6 @@
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../self_meditate/Meditate_Yourself/RoundButton.dart';
 
 class CountdownScreen extends StatefulWidget {
   const CountdownScreen({Key? key}) : super(key: key);
@@ -103,31 +102,26 @@ class _CountdownScreenState extends State<CountdownScreen>
                   SizedBox(
                     width: 300,
                     height: 300,
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.grey.shade300,
+                    child: /*CircularProgressIndicator(
+                      color: Color(0xff10213B),
+                      backgroundColor: Color(0xff1F54AF),
                       value: progress,
-                      strokeWidth: 6,
+                      strokeWidth: 14,
+                    ),*/CustomPaint(
+                      painter: ProgressPainter(progress: progress),
+                      child: Container(
+                        width: 300,
+                        height: 300,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Color(0xff091939),
+                          color: Color(0xff1F53AE),
+                          value: progress,
+                          strokeWidth: 6,
+                        ),
+                      ),
                     ),
                   ),
                   GestureDetector(
-                    /*onTap: () {
-                      if (controller.isDismissed) {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => Container(
-                            height: 300,
-                            child: CupertinoTimerPicker(
-                              initialTimerDuration: controller.duration!,
-                              onTimerDurationChanged: (time) {
-                                setState(() {
-                                  controller.duration = time;
-                                });
-                              },
-                            ),
-                          ),
-                        );
-                      }
-                    },*/
                     onTap: () {
                       if (controller.isDismissed) {
                         showModalBottomSheet(
@@ -146,7 +140,6 @@ class _CountdownScreenState extends State<CountdownScreen>
                         );
                       }
                     },
-
                     child: AnimatedBuilder(
                       animation: controller,
                       builder: (context, child) => Text(
@@ -203,7 +196,7 @@ class _CountdownScreenState extends State<CountdownScreen>
                       });
                     }
                   },),
-                  Button4(label: 'RESET', iconData: 'assets/icon/dismiss.png',onPressed: () {
+                  Button4(label: 'STOP', iconData: 'assets/icon/dismiss.png',onPressed: () {
                     controller.reset();
                     setState(() {
                       isPlaying = false;
@@ -261,8 +254,8 @@ class Button4 extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xff0A1933), // Transparent at top left
-                  Color.fromRGBO(255, 255, 255, 0.1), // White at bottom right
+                  Color(0xff0A1933),
+                  Color.fromRGBO(255, 255, 255, 0.1),
                 ],
               ),
             ),
@@ -275,8 +268,8 @@ class Button4 extends StatelessWidget {
                     image: AssetImage(
                       iconData,
                     ),
-                    width: 30,
-                    height: 30,
+                    width: 20,
+                    height: 20,
                   ),
                   const SizedBox(width: 6.0),
                   Center(
@@ -293,5 +286,70 @@ class Button4 extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ProgressPainter extends CustomPainter {
+  final double progress;
+
+  ProgressPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint dotPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final Paint shadePaint = Paint()
+      ..color = Colors.white.withOpacity(0.05) // Adjust the color of the shading here
+      ..style = PaintingStyle.fill;
+
+    // Draw circular dot
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    // canvas.drawCircle(center, radius, dotPaint);
+
+    // Draw color shading based on the progress
+    double angle = 2 * pi * progress;
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: size.width / 2),
+      -pi / 2,
+      angle,
+      true,
+      shadePaint,
+    );
+
+    var centerX = size.width / 2;
+    var centerY = size.height / 2;
+    var radius = min(centerX, centerY);
+
+    var dashBrush = Paint()
+      ..color = Color(0xff4B5E7D)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    var outerRadius = radius - 3;
+    var innerRadius = radius * 0.94;
+    var innerRadius1 = radius * 0.88;
+    for (var i = 0; i < 360; i += 5) {
+      var x1 = centerX + outerRadius * cos(i * pi / 180);
+      var y1 = centerY + outerRadius * sin(i * pi / 180);
+
+      var x2 = centerX + innerRadius * cos(i * pi / 180);
+      var y2 = centerY + innerRadius * sin(i * pi / 180);
+      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+    }
+    for (var i = 0; i < 360; i += 20) {
+      var x1 = centerX + outerRadius * cos(i * pi / 180);
+      var y1 = centerY + outerRadius * sin(i * pi / 180);
+
+      var x2 = centerX + innerRadius1 * cos(i * pi / 180);
+      var y2 = centerY + innerRadius1 * sin(i * pi / 180);
+      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+import '../../Clock/CountDown/countdown_screen.dart';
+
 class BreathingScreen extends StatefulWidget {
   const BreathingScreen({super.key});
 
@@ -20,75 +22,159 @@ class _BreathingScreenState extends State<BreathingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double appBarHeight = AppBar().preferredSize.height;
+    const double topSpacing = 50.0;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Breathing App'),
+        leading: Material(
+          color: Colors.transparent,
+          child: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Container(
+              padding: const EdgeInsets.all(5),
+              child: Image.asset(
+                'assets/icon/back.png',
+                width: 20,
+                height: 20,
+              ),
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text('BREATHING', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("“As you breathe in, cherish yourself. As you breathe out, cherish all beings.”", style: TextStyle(fontSize: 18),),
-            const SizedBox(height: 20,),
-            const Text("Dalai Lama", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-            const SizedBox(height: 40,),
-            Container(
-              height: 100,
-              width: 200,
-              color: Colors.blueGrey,
-              padding: const EdgeInsets.all(20),
-              child: Center(
-                child: Text(
-                  _statusText,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: _statusColor,
+      body: Container(
+        padding: EdgeInsets.only(top: appBarHeight+topSpacing),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("“As you breathe in, cherish yourself. As you breathe out, cherish all beings.”", style: TextStyle(fontSize: 18, color: Colors.white),),
+              const SizedBox(height: 20,),
+              const Text("Dalai Lama", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),),
+              const SizedBox(height: 40,),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Color(0xff254467), // Set the border color
+                    width: 1.5, // Set the border width
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xff0A1933), // Transparent at top left
+                      Color.fromRGBO(
+                          255, 255, 255, 0.1), // White at bottom right
+                    ],
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                margin: EdgeInsets.symmetric(horizontal: 100,vertical: 10),
+                child: Center(
+                  child: Text(
+                    _statusText,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: _statusColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('Inhale Duration: $_selectedInhaleDuration seconds'),
-                ElevatedButton(
-                  onPressed:
-                  _isBreathing ? null : () => _showDurationDialog('Inhale'),
-                  child: const Text('Change'),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 30),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(27),
+                  border: Border.all(
+                    color: Color(0xff42536C), // Set the border color
+                    width: 1.5, // Set the border width
+                  ),
+                  color: Colors.white,
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('Hold Duration: $_selectedHoldDuration seconds'),
-                ElevatedButton(
-                  onPressed:
-                  _isBreathing ? null : () => _showDurationDialog('Hold'),
-                  child: const Text('Change'),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        // border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xffD3E1F6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Inhale Duration: $_selectedInhaleDuration seconds'),
+                          ElevatedButton(
+                            onPressed:
+                            _isBreathing ? null : () => _showDurationDialog('Inhale'),
+                            child: const Text('Change'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        // border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xffD3E1F6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Hold Duration: $_selectedHoldDuration seconds'),
+                          ElevatedButton(
+                            onPressed:
+                            _isBreathing ? null : () => _showDurationDialog('Hold'),
+                            child: const Text('Change'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        // border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xffD3E1F6),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Exhale Duration: $_selectedExhaleDuration seconds'),
+                          ElevatedButton(
+                            onPressed:
+                            _isBreathing ? null : () => _showDurationDialog('Exhale'),
+                            child: const Text('Change'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('Exhale Duration: $_selectedExhaleDuration seconds'),
-                ElevatedButton(
-                  onPressed:
-                  _isBreathing ? null : () => _showDurationDialog('Exhale'),
-                  child: const Text('Change'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: _isBreathing ? _stopBreathing : _startBreathing,
-              child: _isBreathing ? const Text('Stop Breathing') : const Text('Start Breathing'),
-            ),
-          ],
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: _isBreathing ? _stopBreathing : _startBreathing,
+                child: _isBreathing ? const Text('Stop Breathing') : const Text('Start Breathing'),
+              ),
+              // Button4(label: 'STOP BREATHING', iconData: '',)
+            ],
+          ),
         ),
       ),
     );

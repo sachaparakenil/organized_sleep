@@ -27,8 +27,18 @@ class _SplashState extends State<Splash> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/bg.jpg'),
+            image: AssetImage('assets/icon/splash_bg.png'),
             fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(70.0),
+          child: Center(
+            child: Image(
+              image: AssetImage(
+                "assets/icon/splash_icon.png",
+              ),
+            ),
           ),
         ),
       ),
