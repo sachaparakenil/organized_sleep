@@ -8,46 +8,57 @@ class Meditation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*final double appBarHeight = AppBar().preferredSize.height;
+    const double topSpacing = 50.0;*/
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        leading: Material(
-          color: Colors.transparent,
-          child: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Container(
-              padding: const EdgeInsets.all(5),
-              child: Image.asset(
-                'assets/icon/back.png',
-                width: 20,
-                height: 20,
+        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Container(
+                padding: const EdgeInsets.all(5),
+                child: Image.asset(
+                  'assets/icon/back.png',
+                  width: 20,
+                  height: 20,
+                ),
               ),
             ),
           ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('MEDITATION',style: TextStyle(fontWeight: FontWeight.bold),),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
-        ),
-        child: const Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ButtonOne(),
-              ButtonTwo(),
-              ButtonThree(),
-            ],
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          title: const Text(
+            'MEDITATION',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-      ),
-    );
+        body: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/icon/bg5.png"),
+                      fit: BoxFit.fill),
+                ),
+                child: Container(
+                  child: Row(
+                    children: [
+                      ButtonOne(),
+                      ButtonTwo(),
+                      ButtonThree(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -60,7 +71,8 @@ class ButtonOne extends StatelessWidget {
       label: 'Mediate\nYourSelf',
       onPressed: () {
         Navigator.pushNamed(context, '/selfPractice');
-      }, iconData: 'assets/icon/self_medication.png',
+      },
+      iconData: 'assets/icon/meditate.png',
     );
   }
 }
@@ -74,7 +86,8 @@ class ButtonTwo extends StatelessWidget {
       label: 'Breathing\nExercise',
       onPressed: () {
         Navigator.pushNamed(context, '/breathing');
-      }, iconData: 'assets/icon/self_medication.png',
+      },
+      iconData: 'assets/icon/breathing.png',
     );
   }
 }
@@ -101,11 +114,11 @@ class ButtonThree extends StatelessWidget {
         if (audio == PermissionStatus.permanentlyDenied) {
           openAppSettings();
         }
-      }, iconData: 'assets/icon/self_medication.png',
+      },
+      iconData: 'assets/icon/music (1).png',
     );
   }
 }
-
 
 class Button5 extends StatelessWidget {
   final String label;

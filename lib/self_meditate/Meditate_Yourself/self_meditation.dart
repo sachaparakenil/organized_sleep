@@ -321,14 +321,14 @@ class _CountdownPageState extends State<CountdownPage>
                         isPlaying = true;
                       });
                     }
-                  },),
+                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),),
                   Button4(label: 'STOP', iconData: 'assets/icon/dismiss.png',onPressed: () {
                     controller.reset();
                     setState(() {
                       isPlaying = false;
                       stopAudio();
                     });
-                  },)
+                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),)
                 ],
               ),
             ),

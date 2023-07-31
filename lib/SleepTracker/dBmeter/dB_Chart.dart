@@ -18,9 +18,11 @@ class DBChart extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: const Color(0xFFEDEEEF), width: 1.5),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          // border: Border.all(color: const Color(0xFFEDEEEF), width: 1.5),
         ),
         child: SfCartesianChart(
 

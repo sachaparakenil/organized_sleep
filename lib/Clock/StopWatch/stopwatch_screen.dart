@@ -246,14 +246,14 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                             : 'assets/icon/play.png',
                         onPressed: () {
                           (started) ? stop() : start();
-                        },
+                        }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),
                       ),
                       Button4(
                         label: "STOP",
                         iconData: 'assets/icon/dismiss.png',
                         onPressed: () {
                           reset();
-                        },
+                        }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),
                       ),
                     ],
                   ),

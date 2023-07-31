@@ -23,16 +23,16 @@ class _dBMeterState extends State<dBMeter> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Color(0xFFEDEEEF), width: 1.5),
+          // border: Border.all(color: Color(0xFFEDEEEF), width: 1.5),
         ),
         child: SfRadialGauge(
           title: const GaugeTitle(
               text: "Sleep Tracking Machine",
-              textStyle: TextStyle(color: Color(0xFF4B4E4F))),
+              textStyle: TextStyle(color: Colors.white)),
           enableLoadingAnimation: true,
           axes: [
             RadialAxis(
-              axisLineStyle: const AxisLineStyle(
+              /*axisLineStyle: const AxisLineStyle(
                 thickness: 0.18,
                 thicknessUnit: GaugeSizeUnit.factor,
                 gradient: SweepGradient(colors: <Color>[
@@ -40,57 +40,79 @@ class _dBMeterState extends State<dBMeter> {
                   Color(0xFFFFB13B),
                   Color(0xffFF7A7A),
                 ], stops: <double>[
-                  0.13,
+                  0.50,
                   0.66,
                   1.00
                 ]),
-              ),
+              ),*/
+              axisLabelStyle: GaugeTextStyle(
+                  color: Colors.white, fontSize: 15,
+                  fontWeight: FontWeight.bold, fontFamily: 'Times'),
               minimum: 0,
               maximum: 150,
-              pointers: [
+
+              pointers: <GaugePointer>[
                 NeedlePointer(
-                  value: widget.maxDB,
-                  enableAnimation: true,
-                  lengthUnit: GaugeSizeUnit.factor,
-                  needleLength: 0.5,
-                  needleEndWidth: 13,
-                  gradient: const LinearGradient(colors: <Color>[
-                    Color(0xFF313131),
-                    Color(0xFF313131),
-                    Color(0xFF313131),
-                    Color(0xFF313131),
-                  ], stops: <double>[
-                    0,
-                    0.5,
-                    0.5,
-                    1
-                  ]),
-                  needleColor: const Color(0xFFF67280),
+                    value: widget.maxDB,
+                    enableAnimation: true,
+                    lengthUnit: GaugeSizeUnit.factor,
+                    needleLength: 0.8,
+                    needleEndWidth:  11,
+                    gradient: const LinearGradient(
+                        colors: <Color>[
+                          Colors.white, Colors.white,
+                          Colors.white, Colors.white],
+                        stops: <double>[0, 0.5, 0.5, 1]),
+                    needleColor: const Color(0xFFF67280),
                   knobStyle: const KnobStyle(
-                    knobRadius: 0.06,
-                    borderColor: Colors.grey,
+
+                    knobRadius: 0.1,
+                    borderColor: Color(0xff1D5778),
                     sizeUnit: GaugeSizeUnit.factor,
                     color: Colors.white,
-                    borderWidth: 0.07,
+                    borderWidth: 0.1,
                     // color: Colors.white,
-                  ),
-                ),
+                  ),),
+
               ],
+              majorTickStyle: MajorTickStyle(
+                length: 0.1,
+                lengthUnit: GaugeSizeUnit.factor,
+                color: Color(0xff445D86), // Color of the major ticks
+              ),
+              minorTickStyle: MinorTickStyle(
+                length: 0.05,
+                lengthUnit: GaugeSizeUnit.factor,
+                color: Color(0xff445D86), // Color of the minor ticks
+              ),
               ranges: [
                 GaugeRange(
+                  startWidth: 3,
+                  endWidth: 3,
                   startValue: 0,
-                  endValue: 50,
+                  endValue: 80,
                   color: const Color(0xff33CC66),
                 ),
                 GaugeRange(
-                  startValue: 50,
+                  startWidth: 7,
+                  endWidth: 7,
+                  startValue: 75,
                   endValue: 100,
                   color: const Color(0xFFFFB13B),
                 ),
                 GaugeRange(
+                  startWidth: 9,
+                  endWidth: 9,
                   startValue: 100,
+                  endValue: 125,
+                  color: const Color(0xff337EFF),
+                ),
+                GaugeRange(
+                  startWidth: 12,
+                  endWidth: 12,
+                  startValue: 125,
                   endValue: 160,
-                  color: const Color(0xffFF7A7A),
+                  color: const Color(0xffF80058),
                 ),
               ],
               annotations: [
@@ -101,6 +123,7 @@ class _dBMeterState extends State<dBMeter> {
                       style: const TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                   ),

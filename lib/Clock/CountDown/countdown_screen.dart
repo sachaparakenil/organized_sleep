@@ -195,13 +195,13 @@ class _CountdownScreenState extends State<CountdownScreen>
                         isPlaying = true;
                       });
                     }
-                  },),
+                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),),
                   Button4(label: 'STOP', iconData: 'assets/icon/dismiss.png',onPressed: () {
                     controller.reset();
                     setState(() {
                       isPlaying = false;
                     });
-                  },)
+                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),)
                 ],
               ),
             ),
@@ -218,14 +218,18 @@ class Button4 extends StatelessWidget {
   final String label;
   final String iconData;
   final VoidCallback? onPressed;
+  final Color buttonColor1;
+  final Color buttonColor2;
 
   const Button4(
-      {super.key, required this.label, this.onPressed, required this.iconData});
+      {super.key, required this.label, this.onPressed, required this.iconData, required this.buttonColor1, required this.buttonColor2});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
+        height: 60,
+        width: 90,
         padding: EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
         child: ElevatedButton(
           onPressed: onPressed,
@@ -254,8 +258,8 @@ class Button4 extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xff0A1933),
-                  Color.fromRGBO(255, 255, 255, 0.1),
+                  buttonColor1,
+                  buttonColor2,
                 ],
               ),
             ),
