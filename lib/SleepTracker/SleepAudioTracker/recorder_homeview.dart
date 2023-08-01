@@ -39,7 +39,25 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
 
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Material(
+          color: Colors.transparent,
+          child: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Container(
+              padding: const EdgeInsets.all(5),
+              child: Image.asset(
+                'assets/icon/back.png',
+                width: 20,
+                height: 20,
+              ),
+            ),
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
@@ -84,22 +102,28 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 4,
-            child: RecordListView(
-              records: records,
-              appDirectory: appDirectory,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: RecordListView(
+                records: records,
+                appDirectory: appDirectory,
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: RecorderView(
-              onSaved: _onRecordComplete,
+            Expanded(
+              flex: 1,
+              child: RecorderView(
+                onSaved: _onRecordComplete,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

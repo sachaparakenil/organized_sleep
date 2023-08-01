@@ -215,7 +215,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
         title: const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Text(
-            "Sleep Tracker",
+            "Sleep Tracker",style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         actions: [

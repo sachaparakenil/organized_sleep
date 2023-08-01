@@ -365,12 +365,16 @@ class _RecordListViewState extends State<RecordListView>
   @override
   Widget build(BuildContext context) {
     return widget.records.isEmpty
-        ? const Center(
-      child: Text(
-        'No records yet',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-      ),
-    )
+        ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(image: AssetImage('assets/icon/snore_thumb.png'),height: 200,width: 200,),
+            Text(
+              'No Sound Yet',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold,color: Colors.white),
+            ),
+          ],
+        )
         : Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(

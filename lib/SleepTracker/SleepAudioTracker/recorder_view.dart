@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:organized_sleep/Clock/Alarm/alarm_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -74,7 +75,10 @@ class _RecorderViewState extends State<RecorderView> {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(CircleBorder()),
                 ),
-                child: Icon(_recordIcon),
+                child: Button2(onPressed: () async {
+                  await _onRecordButtonPressed();
+                  setState(() {});
+                },label: 'Record Snoring', iconData: 'assets/icon/record.png',),
               ),
                _recordText == "Recording..."
                   ? Image.asset('assets/waves_gif1.gif',

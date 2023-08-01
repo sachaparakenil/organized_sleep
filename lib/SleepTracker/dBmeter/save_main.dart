@@ -251,6 +251,7 @@ import 'package:organized_sleep/models/details_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../boxes/boxes.dart';
+import '../../constant.dart';
 import 'history_meter.dart';
 
 class SaveMain extends StatefulWidget {
@@ -264,7 +265,6 @@ class SaveMainState extends State<SaveMain> {
   SaveMainState();
   final box = Boxes.getData();
 
-
   void deleteAll() async {
     box.clear();
   }
@@ -275,8 +275,16 @@ class SaveMainState extends State<SaveMain> {
 
   @override
   Widget build(BuildContext context) {
+    final double appBarHeight = AppBar().preferredSize.height;
+    const double topSpacing = 50.0;
+    // List<String> sleep = sleepAt.split(" ");
+    // List<String> wake = wakeAt.split(" ");
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -313,147 +321,362 @@ class SaveMainState extends State<SaveMain> {
                   }),
             ),
           ],
-          title: Text('Sleep Report'),
+          leading: Material(
+            color: Colors.transparent,
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Container(
+                padding: const EdgeInsets.all(5),
+                child: Image.asset(
+                  'assets/icon/back.png',
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+            ),
+          ),
+          title: Text(
+            'Sleep Report',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
         ),
-        body: FutureBuilder(
-            future: Hive.openBox('Sleep Report'),
-            builder: (context, snapshot) {
-              return ValueListenableBuilder<Box<DetailsModel>>(
-                  valueListenable: Boxes.getData().listenable(),
-                  builder: (context, box, _) {
-                    var data = box.values.toList().cast<DetailsModel>();
-                    return box.isEmpty
-                        ? const Center(
-                      child: Text(
-                        'No records yet',
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                        : ListView.builder(
-                        itemCount: box.length,
-                        itemBuilder: (context, index) {
-                          int reversedIndex = data.length - 1 - index;
-                          double avgVoice = double.parse(data[reversedIndex].avgVoice);
-                          String sleepEnvironment;
-                          if (avgVoice < 50.0) {
-                            sleepEnvironment = "Peaceful";
-                          } else if (avgVoice >= 50.0 && avgVoice <= 65.0) {
-                            sleepEnvironment = "Pleasant";
-                          } else if (avgVoice > 65.0 && avgVoice < 80.0) {
-                            sleepEnvironment = "Ordinary";
-                          } else {
-                            sleepEnvironment = "Unpleasant";
-                          }
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HistoryMeter(
-                                    maxVoice: data[reversedIndex].maxVoice,
-                                    sleepAt: data[reversedIndex].sleepAt.toString(),
-                                    wakeAt: data[reversedIndex].wakeAt.toString(),
-                                    avgVoice: data[reversedIndex].avgVoice.toString(),
-                                    sniffing: data[reversedIndex].sniffing,
-                                  ),
+        body: Container(
+          padding: EdgeInsets.only(top: appBarHeight + topSpacing),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
+          ),
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: FutureBuilder(
+                future: Hive.openBox('Sleep Report'),
+                builder: (context, snapshot) {
+                  return ValueListenableBuilder<Box<DetailsModel>>(
+                      valueListenable: Boxes.getData().listenable(),
+                      builder: (context, box, _) {
+                        var data = box.values.toList().cast<DetailsModel>();
+                        return box.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'No records yet',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              );
-                            },
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Sleep At: ${data[reversedIndex].sleepAt}'),
-                                        Spacer(),
-                                        InkWell(
-                                            onTap: (){
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: const Text('Warning!',
-                                                        style: TextStyle(color: Colors.red)),
-                                                    content: const Text(
-                                                        'Do you really want to delete this data?'),
-                                                    actions: [
-                                                      TextButton(
-                                                        child: const Text('Cancel'),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                      TextButton(
-                                                        child: Text('OK'),
-                                                        onPressed: () {
-                                                          delete(data[reversedIndex]);
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-
-                                            },
-                                            child: Icon(Icons.delete)),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Wake At: ${data[reversedIndex].wakeAt}'),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
-
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Average Voice: ${data[reversedIndex].avgVoice} db'),
-                                        Spacer(),
-                                        Container(
-                                          child: Text('Sleep environment: $sleepEnvironment'),
+                              )
+                            : ListView.builder(
+                                itemCount: box.length,
+                                itemBuilder: (context, index) {
+                                  int reversedIndex = data.length - 1 - index;
+                                  double avgVoice = double.parse(
+                                      data[reversedIndex].avgVoice);
+                                  String sleepEnvironment;
+                                  List<String> sleep = data[reversedIndex]
+                                      .sleepAt.split(" ");
+                                  List<String> wake = data[reversedIndex]
+                                      .wakeAt.split(" ");
+                                  if (avgVoice < 50.0) {
+                                    sleepEnvironment = "Peaceful";
+                                  } else if (avgVoice >= 50.0 &&
+                                      avgVoice <= 65.0) {
+                                    sleepEnvironment = "Pleasant";
+                                  } else if (avgVoice > 65.0 &&
+                                      avgVoice < 80.0) {
+                                    sleepEnvironment = "Ordinary";
+                                  } else {
+                                    sleepEnvironment = "Unpleasant";
+                                  }
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HistoryMeter(
+                                            maxVoice:
+                                                data[reversedIndex].maxVoice,
+                                            sleepAt: data[reversedIndex]
+                                                .sleepAt
+                                                .toString(),
+                                            wakeAt: data[reversedIndex]
+                                                .wakeAt
+                                                .toString(),
+                                            avgVoice: data[reversedIndex]
+                                                .avgVoice
+                                                .toString(),
+                                            sniffing:
+                                                data[reversedIndex].sniffing,
+                                          ),
                                         ),
-                                        /*if(50 > (int.parse(data[reversedIndex].avgVoice)))
-                                          Container(
-                                              child: Text('Sleep envirnoment: Peaceful')
-                                          ),
-                                        if(50 <= (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <= 65)
-                                          Container(
-                                            child: Text('Sleep envirnoment: Pleasant')
-                                          ),
-                                        if(65< (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <80)
-                                          Container(
-                                            child: Text('Sleep envirnoment: Ordinary'),
-                                          ),
-                                        if(80<= (int.parse(data[reversedIndex].avgVoice)))
-                                          Container(
-                                            child: Text('Sleep envirnoment: Unpleasant '),
-                                          )*/
-                                      ],
+                                      );
+                                    },
+                                    child: Card(
+                                      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20)
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    'Sleep Report      '),
+                                                Text(sleepEnvironment),
+                                                Spacer(),
+                                                InkWell(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                        context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                                'Warning!',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red)),
+                                                            content: const Text(
+                                                                'Do you really want to delete this data?'),
+                                                            actions: [
+                                                              TextButton(
+                                                                child: const Text(
+                                                                    'Cancel'),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ),
+                                                              TextButton(
+                                                                child:
+                                                                Text('OK'),
+                                                                onPressed: () {
+                                                                  delete(data[
+                                                                  reversedIndex]);
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Icon(Icons.delete)),
+                                              ],
+                                            ),
+                                            SizedBox(height: 8,),
+                                            Row(
+                                              children: [
+                                                Text('${sleep[0]} - ${wake[0]}'),
+                                              ],
+                                            ),
+                                            SizedBox(height: 5,),
+                                            /*Row(
+                                              children: [
+                                                Text(
+                                                    'Sleep At: ${data[reversedIndex].sleepAt}'),
+                                                Spacer(),
+                                                InkWell(
+                                                    onTap: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return AlertDialog(
+                                                            title: const Text(
+                                                                'Warning!',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .red)),
+                                                            content: const Text(
+                                                                'Do you really want to delete this data?'),
+                                                            actions: [
+                                                              TextButton(
+                                                                child: const Text(
+                                                                    'Cancel'),
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ),
+                                                              TextButton(
+                                                                child:
+                                                                    Text('OK'),
+                                                                onPressed: () {
+                                                                  delete(data[
+                                                                      reversedIndex]);
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Icon(Icons.delete)),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    'Wake At: ${data[reversedIndex].wakeAt}'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                    'Average Voice: ${data[reversedIndex].avgVoice} db'),
+                                                Spacer(),
+                                                Container(
+                                                  child: Text(
+                                                      'Sleep environment: $sleepEnvironment'),
+                                                ),
+                                                *//*if(50 > (int.parse(data[reversedIndex].avgVoice)))
+                                              Container(
+                                                  child: Text('Sleep envirnoment: Peaceful')
+                                              ),
+                                            if(50 <= (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <= 65)
+                                              Container(
+                                                child: Text('Sleep envirnoment: Pleasant')
+                                              ),
+                                            if(65< (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <80)
+                                              Container(
+                                                child: Text('Sleep envirnoment: Ordinary'),
+                                              ),
+                                            if(80<= (int.parse(data[reversedIndex].avgVoice)))
+                                              Container(
+                                                child: Text('Sleep envirnoment: Unpleasant '),
+                                              )*//*
+                                              ],
+                                            ),*/
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(
+                                                        color:
+                                                        Color(0xff254467), // Set the border color
+                                                        width: 1.5, // Set the border width
+                                                      ),
+                                                        color: Color(0xff26344A)
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Text(sleep[1], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                                                        SizedBox(height: 5,),
+                                                        Row(
+                                                          children: [
+                                                            Image(image: AssetImage('assets/icon/sleep.png'),height: 15,width: 15,),
+                                                            SizedBox(width: 3,),
+                                                            Text('Sleep At',style: sSaveSubText),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(
+                                                        color:
+                                                        Color(0xff254467), // Set the border color
+                                                        width: 1.5, // Set the border width
+                                                      ),
+                                                        color: Color(0xff26344A)
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Text(wake[1], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                                                        SizedBox(height: 5,),
+                                                        Row(
+                                                          children: [
+                                                            Image(image: AssetImage('assets/icon/wakeup.png'),height: 15,width: 15,),
+                                                            SizedBox(width: 3,),
+                                                            Text('Wake At',style: sSaveSubText),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(
+                                                        color:
+                                                        Color(0xff254467), // Set the border color
+                                                        width: 1.5, // Set the border width
+                                                      ),
+                                                        color: Color(0xff26344A)
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Text('${data[reversedIndex].maxVoice} db', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                                                        SizedBox(height: 5,),
+                                                        Text('Max Noise',style: sSaveSubText)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      border: Border.all(
+                                                        color:
+                                                        Color(0xff254467), // Set the border color
+                                                        width: 1.5, // Set the border width
+                                                      ),
+                                                      color: Color(0xff26344A)
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Text('${data[reversedIndex].avgVoice} db', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                                        SizedBox(height: 5,),
+                                                        Text('Avg Noise',style: sSaveSubText)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        });
-                  });
-            }));
+                                  );
+                                });
+                      });
+                }),
+          ),
+        ));
   }
 }
-
-
