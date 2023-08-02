@@ -370,7 +370,7 @@ class _RecordListViewState extends State<RecordListView>
           children: [
             Image(image: AssetImage('assets/icon/snore_thumb.png'),height: 200,width: 200,),
             Text(
-              'No Sound Yet',
+              'No Sound Yet...',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold,color: Colors.white),
             ),
           ],

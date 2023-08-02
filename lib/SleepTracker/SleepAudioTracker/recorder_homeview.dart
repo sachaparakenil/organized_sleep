@@ -110,7 +110,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
         child: Column(
           children: [
             Expanded(
-              flex: 4,
+              flex: 6,
               child: RecordListView(
                 records: records,
                 appDirectory: appDirectory,

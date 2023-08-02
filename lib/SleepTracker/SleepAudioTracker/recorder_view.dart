@@ -63,10 +63,6 @@ class _RecorderViewState extends State<RecorderView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-               _recordText == "Recording..."
-                  ? Image.asset('assets/waves_gif1.gif',
-                  width: 125, height: 125)
-                  : const SizedBox.shrink(),
               TextButton(
                 onPressed: () async {
                   await _onRecordButtonPressed();
@@ -75,22 +71,21 @@ class _RecorderViewState extends State<RecorderView> {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(CircleBorder()),
                 ),
-                child: Button2(onPressed: () async {
-                  await _onRecordButtonPressed();
-                  setState(() {});
-                },label: 'Record Snoring', iconData: 'assets/icon/record.png',),
+                child: Container(
+                  height: 60 ,
+                  child: Button2(onPressed: () async {
+                    await _onRecordButtonPressed();
+                    setState(() {});
+                  },label: 'Record Snoring', iconData: 'assets/icon/record.png',),
+                ),
               ),
-               _recordText == "Recording..."
-                  ? Image.asset('assets/waves_gif1.gif',
-                  width: 125, height: 125)
-                  : const SizedBox.shrink(),
             ],
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(_recordText),
+              child: Text(_recordText,style: TextStyle(color: Colors.white),),
             ),
           ),
         ],

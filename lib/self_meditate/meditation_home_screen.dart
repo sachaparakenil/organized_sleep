@@ -100,20 +100,7 @@ class ButtonThree extends StatelessWidget {
     return Button5(
       label: 'Music\nMelodies',
       onPressed: () async {
-        PermissionStatus audio = await Permission.audio.request();
-        if (audio == PermissionStatus.granted) {
           Navigator.pushNamed(context, '/meditate');
-        }
-        if (await Permission.storage.request().isGranted) {
-          Navigator.pushNamed(context, '/meditate');
-        }
-        if (audio == PermissionStatus.denied) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("This Permission is Required")));
-        }
-        if (audio == PermissionStatus.permanentlyDenied) {
-          openAppSettings();
-        }
       },
       iconData: 'assets/icon/music (1).png',
     );

@@ -307,7 +307,7 @@ class SaveMainState extends State<SaveMain> {
                               },
                             ),
                             TextButton(
-                              child: Text('OK'),
+                              child: const Text('OK'),
                               onPressed: () {
                                 deleteAll();
                                 Navigator.pop(context);
@@ -335,7 +335,7 @@ class SaveMainState extends State<SaveMain> {
               ),
             ),
           ),
-          title: Text(
+          title: const Text(
             'Sleep Report',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -343,7 +343,7 @@ class SaveMainState extends State<SaveMain> {
         ),
         body: Container(
           padding: EdgeInsets.only(top: appBarHeight + topSpacing),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
           ),
@@ -359,11 +359,17 @@ class SaveMainState extends State<SaveMain> {
                         var data = box.values.toList().cast<DetailsModel>();
                         return box.isEmpty
                             ? const Center(
-                                child: Text(
-                                  'No records yet',
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image(image: AssetImage('assets/icon/snore_thumb.png'),height: 200,width: 200,),
+                                    Text(
+                                      'No Reports yet',
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold, color: Colors.white),
+                                    ),
+                                  ],
                                 ),
                               )
                             : ListView.builder(
@@ -373,20 +379,25 @@ class SaveMainState extends State<SaveMain> {
                                   double avgVoice = double.parse(
                                       data[reversedIndex].avgVoice);
                                   String sleepEnvironment;
+                                  Color environmentColor;
                                   List<String> sleep = data[reversedIndex]
                                       .sleepAt.split(" ");
                                   List<String> wake = data[reversedIndex]
                                       .wakeAt.split(" ");
-                                  if (avgVoice < 50.0) {
-                                    sleepEnvironment = "Peaceful";
-                                  } else if (avgVoice >= 50.0 &&
-                                      avgVoice <= 65.0) {
-                                    sleepEnvironment = "Pleasant";
-                                  } else if (avgVoice > 65.0 &&
+                                  if (avgVoice < 60.0) {
+                                    sleepEnvironment = "Good";
+                                    environmentColor = Colors.green;
+                                  } else if (avgVoice >= 60.0 &&
+                                      avgVoice <= 70.0) {
+                                    sleepEnvironment = "Moderate";
+                                    environmentColor = Colors.amber;
+                                  } else if (avgVoice > 70.0 &&
                                       avgVoice < 80.0) {
-                                    sleepEnvironment = "Ordinary";
+                                    sleepEnvironment = "Loud";
+                                    environmentColor = Colors.orangeAccent;
                                   } else {
-                                    sleepEnvironment = "Unpleasant";
+                                    sleepEnvironment = "Very Loud";
+                                    environmentColor = Colors.redAccent;
                                   }
                                   return GestureDetector(
                                     onTap: () {
@@ -412,7 +423,10 @@ class SaveMainState extends State<SaveMain> {
                                       );
                                     },
                                     child: Card(
-                                      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:BorderRadius.circular(20)
+                                      ),
+                                      margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 15, horizontal: 10),
@@ -427,10 +441,16 @@ class SaveMainState extends State<SaveMain> {
                                           children: [
                                             Row(
                                               children: [
-                                                Text(
-                                                    'Sleep Report      '),
-                                                Text(sleepEnvironment),
-                                                Spacer(),
+                                                const Text(
+                                                    'Sleep Report      ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                                                Container(
+                                                  padding: const EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(25),
+                                                      color: environmentColor,
+                                                    ),
+                                                    child: Text(sleepEnvironment, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+                                                const Spacer(),
                                                 InkWell(
                                                     onTap: () {
                                                       showDialog(
@@ -456,7 +476,7 @@ class SaveMainState extends State<SaveMain> {
                                                               ),
                                                               TextButton(
                                                                 child:
-                                                                Text('OK'),
+                                                                const Text('OK'),
                                                                 onPressed: () {
                                                                   delete(data[
                                                                   reversedIndex]);
@@ -469,203 +489,22 @@ class SaveMainState extends State<SaveMain> {
                                                         },
                                                       );
                                                     },
-                                                    child: Icon(Icons.delete)),
+                                                    child: const Icon(Icons.delete)),
                                               ],
                                             ),
-                                            SizedBox(height: 8,),
+                                            const SizedBox(height: 8,),
                                             Row(
                                               children: [
-                                                Text('${sleep[0]} - ${wake[0]}'),
+                                                Text('${sleep[0]} - ${wake[0]}', style: const TextStyle(color: Colors.grey),),
                                               ],
                                             ),
-                                            SizedBox(height: 5,),
-                                            /*Row(
-                                              children: [
-                                                Text(
-                                                    'Sleep At: ${data[reversedIndex].sleepAt}'),
-                                                Spacer(),
-                                                InkWell(
-                                                    onTap: () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: const Text(
-                                                                'Warning!',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .red)),
-                                                            content: const Text(
-                                                                'Do you really want to delete this data?'),
-                                                            actions: [
-                                                              TextButton(
-                                                                child: const Text(
-                                                                    'Cancel'),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                              ),
-                                                              TextButton(
-                                                                child:
-                                                                    Text('OK'),
-                                                                onPressed: () {
-                                                                  delete(data[
-                                                                      reversedIndex]);
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                              ),
-                                                            ],
-                                                          );
-                                                        },
-                                                      );
-                                                    },
-                                                    child: Icon(Icons.delete)),
-                                              ],
-                                            ),
+                                            const SizedBox(height: 5,),
                                             Row(
                                               children: [
-                                                Text(
-                                                    'Wake At: ${data[reversedIndex].wakeAt}'),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    'Maximum Voice: ${data[reversedIndex].maxVoice} db'),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                    'Average Voice: ${data[reversedIndex].avgVoice} db'),
-                                                Spacer(),
-                                                Container(
-                                                  child: Text(
-                                                      'Sleep environment: $sleepEnvironment'),
-                                                ),
-                                                *//*if(50 > (int.parse(data[reversedIndex].avgVoice)))
-                                              Container(
-                                                  child: Text('Sleep envirnoment: Peaceful')
-                                              ),
-                                            if(50 <= (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <= 65)
-                                              Container(
-                                                child: Text('Sleep envirnoment: Pleasant')
-                                              ),
-                                            if(65< (int.parse(data[reversedIndex].avgVoice)) && (int.parse(data[reversedIndex].avgVoice)) <80)
-                                              Container(
-                                                child: Text('Sleep envirnoment: Ordinary'),
-                                              ),
-                                            if(80<= (int.parse(data[reversedIndex].avgVoice)))
-                                              Container(
-                                                child: Text('Sleep envirnoment: Unpleasant '),
-                                              )*//*
-                                              ],
-                                            ),*/
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      border: Border.all(
-                                                        color:
-                                                        Color(0xff254467), // Set the border color
-                                                        width: 1.5, // Set the border width
-                                                      ),
-                                                        color: Color(0xff26344A)
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(sleep[1], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
-                                                        SizedBox(height: 5,),
-                                                        Row(
-                                                          children: [
-                                                            Image(image: AssetImage('assets/icon/sleep.png'),height: 15,width: 15,),
-                                                            SizedBox(width: 3,),
-                                                            Text('Sleep At',style: sSaveSubText),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      border: Border.all(
-                                                        color:
-                                                        Color(0xff254467), // Set the border color
-                                                        width: 1.5, // Set the border width
-                                                      ),
-                                                        color: Color(0xff26344A)
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(wake[1], style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
-                                                        SizedBox(height: 5,),
-                                                        Row(
-                                                          children: [
-                                                            Image(image: AssetImage('assets/icon/wakeup.png'),height: 15,width: 15,),
-                                                            SizedBox(width: 3,),
-                                                            Text('Wake At',style: sSaveSubText),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      border: Border.all(
-                                                        color:
-                                                        Color(0xff254467), // Set the border color
-                                                        width: 1.5, // Set the border width
-                                                      ),
-                                                        color: Color(0xff26344A)
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text('${data[reversedIndex].maxVoice} db', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
-                                                        SizedBox(height: 5,),
-                                                        Text('Max Noise',style: sSaveSubText)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      border: Border.all(
-                                                        color:
-                                                        Color(0xff254467), // Set the border color
-                                                        width: 1.5, // Set the border width
-                                                      ),
-                                                      color: Color(0xff26344A)
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text('${data[reversedIndex].avgVoice} db', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                                                        SizedBox(height: 5,),
-                                                        Text('Avg Noise',style: sSaveSubText)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                )
+                                                AtBox(label: sleep[1], iconData: 'assets/icon/sleep.png', title: 'Sleep At'),
+                                                AtBox(label: wake[1], iconData: 'assets/icon/wakeup.png', title: 'Wake At'),
+                                                NoiseBox(label: '${data[reversedIndex].maxVoice} db', title: 'Max Noise'),
+                                                NoiseBox(label: '${data[reversedIndex].avgVoice} db', title: 'Avg Noise')
                                               ],
                                             )
                                           ],
@@ -678,5 +517,90 @@ class SaveMainState extends State<SaveMain> {
                 }),
           ),
         ));
+  }
+}
+
+class NoiseBox extends StatelessWidget {
+  final String label;
+  final String title;
+
+  const NoiseBox(
+      {super.key, required this.label, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color:
+            const Color(0xff254467), // Set the border color
+            width: 1.5, // Set the border width
+          ),
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xff637ba8),
+              Color(0xff02122C),
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(height: 5,),
+            Text(title,style: sSaveSubText)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AtBox extends StatelessWidget {
+  final String label;
+  final String iconData;
+  final String title;
+
+  const AtBox(
+      {super.key, required this.label, required this.iconData, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color:
+            const Color(0xff254467), // Set the border color
+            width: 1.5, // Set the border width
+          ),
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xff637ba8),
+              Color(0xff02122C),
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+            const SizedBox(height: 5,),
+            Row(
+              children: [
+                Image(image: AssetImage(iconData),height: 15,width: 15,),
+                const SizedBox(width: 3,),
+                Text(title,style: sSaveSubText),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

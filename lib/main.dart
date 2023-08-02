@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:organized_sleep/models/details_model.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
+import 'package:organized_sleep/self_meditate/music_demo/assets_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Clock/clock_home_screen.dart';
 import 'Clock/Alarm/alarm_screen.dart';
@@ -60,7 +61,7 @@ class BetterSleep extends StatelessWidget {
         '/breathing': (context) => const BreathingScreen(),
         '/Clock': (context) => const ClockScreen(),
         '/sleep': (context) =>  const RecorderHomeView(),
-        '/meditate': (context) => AudioPlayerPage(),
+        '/meditate': (context) => const AssetsAudio(),
         '/selfPractice': (context) => const CountdownPage(),
         '/noiseApp': (context) => const NoiseApp(),
         '/meditation': (context) => const Meditation(),

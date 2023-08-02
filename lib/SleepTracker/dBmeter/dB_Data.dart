@@ -90,7 +90,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     if (maxDB > 80 && chartData.isNotEmpty && chartData.last.maxDB! <= 80) {
       DateTime now = DateTime.now();
       String formattedDate =
-          'Noise crossed 80dB at ${DateFormat('E, d MMM yyyy HH:mm').format(now)}';
+          DateFormat('E, d MMM yyyy HH:mm').format(now);
       if (noiseCrossed80dBList.contains(formattedDate)) {
       } else {
         noiseCrossed80dBList.add(formattedDate);
