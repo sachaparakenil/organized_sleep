@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:organized_sleep/models/details_model.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
@@ -29,6 +30,12 @@ Future<void> main() async {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Alarm.init();
+
+  /*await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.meditation.audioservice.MediaButtonReceiver',
+    androidNotificationChannelName: 'Meditation',
+    androidNotificationOngoing: true,
+  );*/
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
   WidgetsBinding.instance.addObserver(_Handler());
 }
@@ -61,7 +68,7 @@ class BetterSleep extends StatelessWidget {
         '/breathing': (context) => const BreathingScreen(),
         '/Clock': (context) => const ClockScreen(),
         '/sleep': (context) =>  const RecorderHomeView(),
-        '/meditate': (context) => const AssetsAudio(),
+        '/meditate': (context) =>  const AssetsAudio(),
         '/selfPractice': (context) => const CountdownPage(),
         '/noiseApp': (context) => const NoiseApp(),
         '/meditation': (context) => const Meditation(),

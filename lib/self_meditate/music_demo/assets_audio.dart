@@ -1,36 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
 
+import 'SongDetailScreen.dart';
 
-class AssetsAudio extends StatelessWidget {
+
+class AssetsAudio extends StatefulWidget {
   const AssetsAudio({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'MUSIC MELODIES'),
-    );
-  }
+  State<AssetsAudio> createState() => _AssetsAudioState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _AssetsAudioState extends State<AssetsAudio> {
 
   //variable
   Color bgColor = Colors.blueGrey;
@@ -62,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(widget.title),
+        title: Text('MUSIC MELODIES'),
         centerTitle: true,
       ),
       body:  Container(
@@ -84,11 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 List? songs = jsonMap?.keys.toList();
                 // List? songs = jsonMap?.keys.where((element) => element.endsWith(".mp3")).toList();
 
+                List? mp3Songs = songs
+                    ?.where((path) => path.endsWith(".mp3") && path.startsWith("assets/Sounds/"))
+                    .cast<String>() // Explicitly cast the filtered list to List<String>
+                    .toList();
+
                 return ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: songs?.length,
+                  itemCount: mp3Songs?.length,
                   itemBuilder: (context, index){
-                    var path = songs![index].toString();
+                    var path = mp3Songs![index].toString();
                     var title = path.split("/").last.toString(); //get file name
                     title = title.replaceAll("%20", ""); //remove %20 characters
                     title = title.split(".").first;
@@ -120,9 +108,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         onTap: () async{
                           toast(context, "Playing: $title");
                           //play this song
-                          await _player.setAsset(path);
-                          await _player.play();
+                          /*await _player.setAsset(path);
+                          await _player.play();*/
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongDetailScreen(songPath: path, songTitle: title),
+                            ),
+                          );
                         },
+
                       ),
                     );
                   },
