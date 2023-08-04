@@ -21,19 +21,19 @@ import 'Splash_screen/splash_screen.dart';
 import 'package:alarm/alarm.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(DetailsModelAdapter());
   await Hive.openBox<DetailsModel>("Sleep Report");
-
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Alarm.init();
 
-  /*await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.meditation.audioservice.MediaButtonReceiver',
-    androidNotificationChannelName: 'Meditation',
+/*  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );*/
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));

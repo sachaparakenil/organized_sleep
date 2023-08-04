@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
 
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:just_audio/just_audio.dart';
 import 'SongDetailScreen.dart';
 
 
@@ -14,11 +16,6 @@ class AssetsAudio extends StatefulWidget {
 }
 
 class _AssetsAudioState extends State<AssetsAudio> {
-
-  //variable
-  Color bgColor = Colors.blueGrey;
-  //player
-  final AudioPlayer _player = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +56,11 @@ class _AssetsAudioState extends State<AssetsAudio> {
           removeTop: true,
           child: FutureBuilder<String>(
             future: DefaultAssetBundle.of(context).loadString("AssetManifest.json"),
-            // future: rootBundle.loadString("AssetManifest.json"),
             builder: (context, item){
               if(item.hasData){
 
                 Map? jsonMap = json.decode(item.data!);
                 List? songs = jsonMap?.keys.toList();
-                // List? songs = jsonMap?.keys.where((element) => element.endsWith(".mp3")).toList();
 
                 List? mp3Songs = songs
                     ?.where((path) => path.endsWith(".mp3") && path.startsWith("assets/Sounds/"))
@@ -113,11 +108,10 @@ class _AssetsAudioState extends State<AssetsAudio> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SongDetailScreen(songPath: path, songTitle: title),
+                              builder: (context) => SongDetailScreen(songIndex: index, songPath: path, songTitle: title, songList: mp3Songs,),
                             ),
                           );
                         },
-
                       ),
                     );
                   },
