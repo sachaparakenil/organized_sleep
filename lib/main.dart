@@ -6,6 +6,8 @@ import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:organized_sleep/models/details_model.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
 import 'package:organized_sleep/self_meditate/music_demo/assets_audio.dart';
+import 'package:organized_sleep/self_meditate/notification_test/test.dart';
+import 'package:organized_sleep/self_meditate/notification_test/test_main_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Clock/clock_home_screen.dart';
 import 'Clock/Alarm/alarm_screen.dart';
@@ -31,11 +33,11 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Alarm.init();
 
-  /*await JustAudioBackground.init(
+  await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
-  );*/
+  );
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
   WidgetsBinding.instance.addObserver(_Handler());
 }
@@ -68,7 +70,7 @@ class BetterSleep extends StatelessWidget {
         '/breathing': (context) => const BreathingScreen(),
         '/Clock': (context) => const ClockScreen(),
         '/sleep': (context) =>  const RecorderHomeView(),
-        '/meditate': (context) =>  const AssetsAudio(),
+        '/meditate': (context) =>  const AudioPlayerScreen(),
         '/selfPractice': (context) => const CountdownPage(),
         '/noiseApp': (context) => const NoiseApp(),
         '/meditation': (context) => const Meditation(),

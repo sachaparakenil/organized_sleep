@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
@@ -99,8 +100,10 @@ class _AssetsAudioState extends State<AssetsAudio> {
                         onTap: () async{
                           toast(context, "Playing: $title");
                           //play this song
-                          /*await _player.setAsset(path);
-                          await _player.play();*/
+                          */
+/*await _player.setAsset(path);
+                          await _player.play();*//*
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -132,4 +135,4 @@ class _AssetsAudioState extends State<AssetsAudio> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
     ));
   }
-}
+}*/
