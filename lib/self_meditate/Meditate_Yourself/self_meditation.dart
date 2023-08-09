@@ -16,7 +16,7 @@ class _CountdownPageState extends State<CountdownPage>
   late AnimationController controller;
   AudioPlayer audioPlayer = AudioPlayer();
   // AudioCache audioCache = AudioCache();
-  String selectedAudio = 'marimba.mp3';
+  String selectedAudio = 'Sounds/OM.mp3';
   String selectedBell = 'beep.mp3';
   bool isPlaying = false;
 
@@ -35,12 +35,10 @@ class _CountdownPageState extends State<CountdownPage>
     }
   }
 
-  void playAudio() async {
-    await audioPlayer.play(AssetSource(selectedAudio));
+  void playAudio() {
+    audioPlayer.play(AssetSource(selectedAudio));
     audioPlayer.onPlayerComplete.listen((event) {
-      audioPlayer.play(
-        AssetSource(selectedAudio),
-      );
+      playAudio(); // Continue playing loop
     });
   }
 
@@ -170,9 +168,9 @@ class _CountdownPageState extends State<CountdownPage>
                       builder: (context, child) => Text(
                         countText,
                         style: const TextStyle(
-                          fontSize: 60,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
                         ),
                       ),
                     ),
@@ -222,24 +220,40 @@ class _CountdownPageState extends State<CountdownPage>
                               dropdownColor: Color(0xff07327a),
                               items: const [
                                 DropdownMenuItem<String>(
-                                  value: 'marimba.mp3',
-                                  child: Text('Marimba', style: TextStyle(color: Colors.white)),
+                                  value: 'Sounds/OM.mp3',
+                                  child: Text('OM', style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
-                                  value: 'nokia.mp3',
-                                  child: Text('Nokia', style: TextStyle(color: Colors.white)),
+                                  value: 'Sounds/Nature-Meditation.mp3',
+                                  child: Text('Nature', style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
-                                  value: 'mozart.mp3',
-                                  child: Text('Mozart', style: TextStyle(color: Colors.white)),
+                                  value: 'Sounds/Birds.mp3',
+                                  child: Text('Birds', style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
-                                  value: 'star_wars.mp3',
-                                  child: Text('Star Wars', style: TextStyle(color: Colors.white)),
+                                  value: 'Sounds/Ocean.mp3',
+                                  child: Text('Ocean', style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
-                                  value: 'one_piece.mp3',
-                                  child: Text('One Piece', style: TextStyle(color: Colors.white)),
+                                  value: 'Sounds/Om-Meditation-3.mp3',
+                                  child: Text('Meditation', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Sounds/Om-Meditation2.mp3',
+                                  child: Text('Om Meditation', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Sounds/Rain-Relaxing.mp3',
+                                  child: Text('Rain', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Sounds/River.mp3',
+                                  child: Text('River', style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
+                                  value: 'Sounds/Water-Dripping.mp3',
+                                  child: Text('Water', style: TextStyle(color: Colors.white)),
                                 ),
                               ],
                               underline: Container(),

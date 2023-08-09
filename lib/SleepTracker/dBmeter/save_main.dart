@@ -295,23 +295,40 @@ class SaveMainState extends State<SaveMain> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
                           title: const Text('Warning!',
                               style: TextStyle(color: Colors.red)),
                           content: const Text(
                               'Do you really want to delete all data?'),
                           actions: [
-                            TextButton(
-                              child: const Text('Cancel'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                            Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                                color: Color(0xff07327a), // Set the background color
+                              ),
+                              child: TextButton(
+                                child: const Text('Cancel', style: TextStyle(color: Colors.white),),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
                             ),
-                            TextButton(
-                              child: const Text('OK'),
-                              onPressed: () {
-                                deleteAll();
-                                Navigator.pop(context);
-                              },
+                            Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                                color: Color(0xff07327a), // Set the background color
+                              ),
+                              child: TextButton(
+                                child: const Text('OK', style: TextStyle(color: Colors.white),),
+                                onPressed: () {
+                                  deleteAll();
+                                  Navigator.pop(context);
+                                },
+                              ),
                             ),
                           ],
                         );
@@ -458,6 +475,9 @@ class SaveMainState extends State<SaveMain> {
                                                         builder: (BuildContext
                                                         context) {
                                                           return AlertDialog(
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                                                            ),
                                                             title: const Text(
                                                                 'Warning!',
                                                                 style: TextStyle(
@@ -466,23 +486,37 @@ class SaveMainState extends State<SaveMain> {
                                                             content: const Text(
                                                                 'Do you really want to delete this data?'),
                                                             actions: [
-                                                              TextButton(
-                                                                child: const Text(
-                                                                    'Cancel'),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
+                                                              Container(
+                                                                height: 40,
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                                                                  color: Color(0xff07327a), // Set the background color
+                                                                ),
+                                                                child: TextButton(
+                                                                  child: const Text(
+                                                                      'Cancel', style: TextStyle(color: Colors.white),),
+                                                                  onPressed: () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                ),
                                                               ),
-                                                              TextButton(
-                                                                child:
-                                                                const Text('OK'),
-                                                                onPressed: () {
-                                                                  delete(data[
-                                                                  reversedIndex]);
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
+                                                              Container(
+                                                                height: 40,
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                                                                  color: Color(0xff07327a), // Set the background color
+                                                                ),
+                                                                child: TextButton(
+                                                                  child:
+                                                                  const Text('OK', style: TextStyle(color: Colors.white),),
+                                                                  onPressed: () {
+                                                                    delete(data[
+                                                                    reversedIndex]);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                ),
                                                               ),
                                                             ],
                                                           );
