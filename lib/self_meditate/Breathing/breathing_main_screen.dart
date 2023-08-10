@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-import '../../Clock/CountDown/countdown_screen.dart';
-
 class BreathingScreen extends StatefulWidget {
   const BreathingScreen({super.key});
 
@@ -14,9 +12,9 @@ class BreathingScreen extends StatefulWidget {
 class _BreathingScreenState extends State<BreathingScreen> {
   String _statusText = 'Inhale';
   Color _statusColor = Colors.green.shade100;
-  int _selectedInhaleDuration = 4;
+/*  int _selectedInhaleDuration = 4;
   int _selectedExhaleDuration = 4;
-  int _selectedHoldDuration = 2;
+  int _selectedHoldDuration = 2;*/
   bool _isBreathing = false;
   FlutterTts speakFTTS = FlutterTts();
   int inhale = 4;
@@ -47,15 +45,18 @@ class _BreathingScreenState extends State<BreathingScreen> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('BREATHING', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+        title: const Text(
+          'BREATHING',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body: CustomScrollView(slivers: [
         SliverFillRemaining(
           hasScrollBody: false,
           child: Container(
-            padding: EdgeInsets.only(top: appBarHeight+topSpacing),
-            decoration: BoxDecoration(
+            padding: EdgeInsets.only(top: appBarHeight + topSpacing),
+            decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/icon/bg4.png"), fit: BoxFit.fill),
             ),
@@ -63,15 +64,40 @@ class _BreathingScreenState extends State<BreathingScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
+                  const Row(
                     children: [
-                      Image(image: AssetImage('assets/icon/meditation_ic.png'),height: 200,width: 200,),
+                      Image(
+                        image: AssetImage('assets/icon/meditation_ic.png'),
+                        height: 200,
+                        width: 200,
+                      ),
                       Column(
                         children: [
-                          Text('”', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
-                          Text("As you breathe in, \n      cherish yourself. \nAs you breathe out, \n    cherish all beings.", style: TextStyle(fontSize: 20, color: Colors.white),),
-                          Text('”', style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Colors.white),),
-                          Text("Dalai Lama", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),),
+                          Text(
+                            '”',
+                            style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "As you breathe in, \n      cherish yourself. \nAs you breathe out, \n    cherish all beings.",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                          Text(
+                            '”',
+                            style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            "Dalai Lama",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.white),
+                          ),
                         ],
                       ),
                     ],
@@ -80,10 +106,10 @@ class _BreathingScreenState extends State<BreathingScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: Color(0xff254467), // Set the border color
+                        color: const Color(0xff254467), // Set the border color
                         width: 1.5, // Set the border width
                       ),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -93,8 +119,10 @@ class _BreathingScreenState extends State<BreathingScreen> {
                         ],
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    margin: EdgeInsets.symmetric(horizontal: 100,vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 10),
                     child: Center(
                       child: Text(
                         _statusText,
@@ -107,12 +135,14 @@ class _BreathingScreenState extends State<BreathingScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(27),
                       border: Border.all(
-                        color: Color(0xff42536C), // Set the border color
+                        color: const Color(0xff42536C), // Set the border color
                         width: 1.5, // Set the border width
                       ),
                       color: Colors.white,
@@ -120,72 +150,49 @@ class _BreathingScreenState extends State<BreathingScreen> {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
                           decoration: BoxDecoration(
                             // border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(16),
-                            color: Color(0xffD3E1F6),
+                            color: const Color(0xffD3E1F6),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Inhale Duration ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                              Spacer(),
-                              /*ElevatedButton(
-                                onPressed:
-                                _isBreathing ? null : () => _showDurationDialog('Inhale'),
-                                child: const Text('Change'),
-                              ),*/
-                              /*DropdownButton(
-                                value: inhale,
-                                dropdownColor: Color(0xff07327a),
-                                items: const [
-                                  DropdownMenuItem<int>(
-                                    value: 1,
-                                    child: Text('Marimba', style: TextStyle(color: Colors.white)),
-                                  ),
-                                  DropdownMenuItem<int>(
-                                    value: 2,
-                                    child: Text('Nokia', style: TextStyle(color: Colors.white)),
-                                  ),
-                                  DropdownMenuItem<int>(
-                                    value: 3,
-                                    child: Text('Mozart', style: TextStyle(color: Colors.white)),
-                                  ),
-                                  DropdownMenuItem<int>(
-                                    value: 4,
-                                    child: Text('Star Wars', style: TextStyle(color: Colors.white)),
-                                  ),
-                                  DropdownMenuItem<int>(
-                                    value: 5,
-                                    child: Text('One Piece', style: TextStyle(color: Colors.white)),
-                                  ),
-                                ],
-                                underline: Container(),
-                                icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
-                                onChanged: (value) => setState(() => selectedAudio = value!),
-                              ),*/
+                              const Text(
+                                'Inhale Duration ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const Spacer(),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
-                                  color: Color(0xff07327a),
+                                  color: const Color(0xff07327a),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: SizedBox(
                                   height: 30,
                                   child: DropdownButton<int>(
                                     value: inhale,
-                                    dropdownColor: Color(0xff07327a),
+                                    dropdownColor: const Color(0xff07327a),
                                     items: List.generate(10, (index) {
                                       return DropdownMenuItem<int>(
                                         value: index + 1,
-                                        child: Text("${index+1} Seconds", style: TextStyle(color: Colors.white)),
+                                        child: Text("${index + 1} Seconds",
+                                            style: const TextStyle(
+                                                color: Colors.white)),
                                       );
                                     }),
                                     underline: Container(),
-                                    icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
-                                    onChanged: (value) => setState(() => inhale = value!),
+                                    icon: const Icon(Icons.arrow_drop_down,
+                                        color: Color(0xff335796)),
+                                    onChanged: (value) =>
+                                        setState(() => inhale = value!),
                                     /*onChanged: (int? value) {
                                       setState(() {
                                         initialValue = value ?? 1;
@@ -199,116 +206,114 @@ class _BreathingScreenState extends State<BreathingScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
                           decoration: BoxDecoration(
                             // border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(16),
-                            color: Color(0xffD3E1F6),
+                            color: const Color(0xffD3E1F6),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Hold Duration ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                              Spacer(),
+                              const Text(
+                                'Hold Duration ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const Spacer(),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
-                                  color: Color(0xff07327a),
+                                  color: const Color(0xff07327a),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: SizedBox(
                                   height: 30,
                                   child: DropdownButton<int>(
                                     value: hold,
-                                    dropdownColor: Color(0xff07327a),
+                                    dropdownColor: const Color(0xff07327a),
                                     items: List.generate(10, (index) {
                                       return DropdownMenuItem<int>(
                                         value: index + 1,
-                                        child: Text("${index+1} Seconds", style: TextStyle(color: Colors.white)),
+                                        child: Text("${index + 1} Seconds",
+                                            style: const TextStyle(
+                                                color: Colors.white)),
                                       );
                                     }),
                                     underline: Container(),
-                                    icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
-                                    onChanged: (value) => setState(() => hold = value!),
-                                    /*onChanged: (int? value) {
-                                      setState(() {
-                                        initialValue = value ?? 1;
-                                        selectedDuration = value ?? 1;
-                                      });
-                                    },*/
+                                    icon: const Icon(Icons.arrow_drop_down,
+                                        color: Color(0xff335796)),
+                                    onChanged: (value) =>
+                                        setState(() => hold = value!),
                                   ),
                                 ),
                               ),
-                              /*ElevatedButton(
-                                onPressed:
-                                _isBreathing ? null : () => _showDurationDialog('Hold'),
-                                child: const Text('Change'),
-                              ),*/
                             ],
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
                           decoration: BoxDecoration(
                             // border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(16),
-                            color: Color(0xffD3E1F6),
+                            color: const Color(0xffD3E1F6),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Exhale Duration ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                              Spacer(),
+                              const Text(
+                                'Exhale Duration ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const Spacer(),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 decoration: BoxDecoration(
-                                  color: Color(0xff07327a),
+                                  color: const Color(0xff07327a),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: SizedBox(
                                   height: 30,
                                   child: DropdownButton<int>(
                                     value: exhale,
-                                    dropdownColor: Color(0xff07327a),
+                                    dropdownColor: const Color(0xff07327a),
                                     items: List.generate(10, (index) {
                                       return DropdownMenuItem<int>(
                                         value: index + 1,
-                                        child: Text("${index+1} Seconds", style: TextStyle(color: Colors.white)),
+                                        child: Text("${index + 1} Seconds",
+                                            style: const TextStyle(
+                                                color: Colors.white)),
                                       );
                                     }),
                                     underline: Container(),
-                                    icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
-                                    onChanged: (value) => setState(() => exhale = value!),
-                                    /*onChanged: (int? value) {
-                                      setState(() {
-                                        initialValue = value ?? 1;
-                                        selectedDuration = value ?? 1;
-                                      });
-                                    },*/
+                                    icon: const Icon(Icons.arrow_drop_down,
+                                        color: Color(0xff335796)),
+                                    onChanged: (value) =>
+                                        setState(() => exhale = value!),
                                   ),
                                 ),
                               ),
-                              /*ElevatedButton(
-                                onPressed:
-                                _isBreathing ? null : () => _showDurationDialog('Exhale'),
-                                child: const Text('Change'),
-                              ),*/
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                  /*ElevatedButton(
-                    onPressed: _isBreathing ? _stopBreathing : _startBreathing,
-                    child: _isBreathing ? const Text('Stop Breathing') : const Text('Start Breathing'),
-                  ),*/
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 10),
                     child: ElevatedButton(
-                      onPressed: _isBreathing ? _stopBreathing : _startBreathing,
+                      onPressed:
+                          _isBreathing ? _stopBreathing : _startBreathing,
                       style: ElevatedButton.styleFrom(
                         // backgroundColor: Color.fromRGBO(255, 255, 255, 0.5),
                         foregroundColor: Colors.black,
@@ -319,28 +324,42 @@ class _BreathingScreenState extends State<BreathingScreen> {
 
                         disabledForegroundColor: Colors.black.withOpacity(0.38),
                         disabledBackgroundColor: Colors.black.withOpacity(0.12),
-                        padding: EdgeInsets.zero, // To remove padding, if needed
+                        padding:
+                            EdgeInsets.zero, // To remove padding, if needed
                         elevation: 0, // Disabled text color
-                        minimumSize: Size(100, 40),
+                        minimumSize: const Size(100, 40),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: Color(0xff3060A3), // Set the border color
+                            color:
+                                const Color(0xff3060A3), // Set the border color
                             width: 1, // Set the border width
                           ),
-                          color: Color(0xff1466F2),
+                          color: const Color(0xff1466F2),
                         ),
                         child: Container(
-                          padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+                          padding: const EdgeInsets.only(
+                              top: 15, bottom: 15, right: 7, left: 7),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const SizedBox(width: 6.0),
                               Center(
-                                child: _isBreathing ? const Text('Stop Breathing', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),) : const Text('Start Breathing', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)
-                              ),
+                                  child: _isBreathing
+                                      ? const Text(
+                                          'Stop Breathing',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        )
+                                      : const Text(
+                                          'Start Breathing',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        )),
                             ],
                           ),
                         ),
@@ -351,12 +370,12 @@ class _BreathingScreenState extends State<BreathingScreen> {
               ),
             ),
           ),
-        ),]
-      ),
+        ),
+      ]),
     );
   }
 
-  void _showDurationDialog(String type) {
+/*  void _showDurationDialog(String type) {
     int initialValue = 1;
     int selectedDuration = 1;
 
@@ -425,7 +444,7 @@ class _BreathingScreenState extends State<BreathingScreen> {
         );
       },
     );
-  }
+  }*/
 
   bool _stopRequested = false;
 
@@ -456,8 +475,8 @@ class _BreathingScreenState extends State<BreathingScreen> {
     });
   }
 
-  Future<void> _animateBreath(int duration, String statusText,
-      Color statusColor) async {
+  Future<void> _animateBreath(
+      int duration, String statusText, Color statusColor) async {
     setState(() {
       _statusText = statusText;
       _statusColor = statusColor;
@@ -485,10 +504,10 @@ class _BreathingScreenState extends State<BreathingScreen> {
 
         return const AlertDialog(
           title: Text('Breathing Stop Requested'),
-          content: Text('Breathing will stop after completing the current task.'),
+          content:
+              Text('Breathing will stop after completing the current task.'),
         );
       },
     );
   }
-
 }

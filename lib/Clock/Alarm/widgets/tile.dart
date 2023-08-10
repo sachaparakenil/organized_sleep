@@ -39,24 +39,34 @@ class ExampleAlarmTile extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black, width: 4),
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                new BoxShadow(color: Color(0xffF4FAFE),),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0xffF4FAFE),
+                ),
               ],
             ),
             child: Row(
-
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Image(image: AssetImage('assets/icon/alarm_.png'), color: Color(0xff0A1933), height: 30,width: 30,),
+                const Image(
+                  image: AssetImage('assets/icon/alarm_.png'),
+                  color: Color(0xff0A1933),
+                  height: 30,
+                  width: 30,
+                ),
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff0A1933)
-                  ),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff0A1933)),
                 ),
-                Image(image: AssetImage('assets/icon/enter.png'), color: Color(0xff0A1933), height: 20,width: 20,),
+                const Image(
+                  image: AssetImage('assets/icon/enter.png'),
+                  color: Color(0xff0A1933),
+                  height: 20,
+                  width: 20,
+                ),
               ],
             ),
           ),

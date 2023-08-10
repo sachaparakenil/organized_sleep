@@ -31,8 +31,8 @@ class _SplashState extends State<Splash> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(70.0),
+        child: const Padding(
+          padding: EdgeInsets.all(70.0),
           child: Center(
             child: Image(
               image: AssetImage(

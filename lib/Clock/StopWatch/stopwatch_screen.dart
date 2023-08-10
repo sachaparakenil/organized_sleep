@@ -104,7 +104,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
         ),
         body: Container(
           padding: EdgeInsets.only(top: appBarHeight),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
           ),
@@ -115,15 +115,16 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Color(0xff254467), // Set the border color
+                      color: const Color(0xff254467), // Set the border color
                       width: 1.5, // Set the border width
                     ),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
@@ -138,103 +139,103 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: '$digitHours',
-                            style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),
+                            text: digitHours,
+                            style: const TextStyle(
+                                fontSize: 50,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text: 'HOURS',
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           ),
                           TextSpan(
                             text: ' $digitMinutes',
-                            style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 50,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text: 'MIN',
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           ),
                           TextSpan(
                             text: ' $digitSeconds',
-                            style: TextStyle(
-                                fontSize: 50, color: Color(0xff337EFF), fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 50,
+                                color: Color(0xff337EFF),
+                                fontWeight: FontWeight.bold),
                           ),
-                          TextSpan(
+                          const TextSpan(
                             text: 'SEC',
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           ),
                         ],
                       ),
                     ),
-                  ), /*Text(
-                        "$digitHours hour:$digitMinutes min:$digitSeconds sec",
-                        style:
-                        const TextStyle(fontSize: 82.0, fontWeight: FontWeight.bold,color: Colors.white),
-                      )*/
-                ),
-                /*Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: Button4(label: 'LAP', iconData: 'assets/icon/lap.png',onPressed: () {
-                    (started) ? addLaps() : null;
-                  },),
-                ),*/
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
-              child: ElevatedButton(
-                onPressed: (){
-                  (started) ? addLaps() : null;
-                },
-                style: ElevatedButton.styleFrom(
-                  // backgroundColor: Color.fromRGBO(255, 255, 255, 0.5),
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17),
-                  ),
-
-                  disabledForegroundColor: Colors.black.withOpacity(0.38),
-                  disabledBackgroundColor: Colors.black.withOpacity(0.12),
-                  padding: EdgeInsets.zero, // To remove padding, if needed
-                  elevation: 0, // Disabled text color
-                  minimumSize: Size(100, 40),
-                ),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                      color: Color(0xff3060A3), // Set the border color
-                      width: 1, // Set the border width
-                    ),
-                    color: Color(0xff1466F2),
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage(
-                              'assets/icon/lap.png'
-                          ),
-                          width: 20,
-                          height: 20,
-                        ),
-                        const SizedBox(width: 6.0),
-                        Center(
-                          child: Text(
-                            'LAP',
-                            style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
-              ),
-            ),
                 Container(
-                  margin:
-                      EdgeInsets.only(top: 0, right: 10, left: 10, bottom: 0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      (started) ? addLaps() : null;
+                    },
+                    style: ElevatedButton.styleFrom(
+                      // backgroundColor: Color.fromRGBO(255, 255, 255, 0.5),
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(17),
+                      ),
+
+                      disabledForegroundColor: Colors.black.withOpacity(0.38),
+                      disabledBackgroundColor: Colors.black.withOpacity(0.12),
+                      padding: EdgeInsets.zero, // To remove padding, if needed
+                      elevation: 0, // Disabled text color
+                      minimumSize: const Size(100, 40),
+                    ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(
+                          color:
+                              const Color(0xff3060A3), // Set the border color
+                          width: 1, // Set the border width
+                        ),
+                        color: const Color(0xff1466F2),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 15, right: 7, left: 7),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image(
+                              image: AssetImage('assets/icon/lap.png'),
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 6.0),
+                            Center(
+                              child: Text(
+                                'LAP',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                      top: 0, right: 10, left: 10, bottom: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -246,62 +247,70 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                             : 'assets/icon/play.png',
                         onPressed: () {
                           (started) ? stop() : start();
-                        }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),
+                        },
+                        buttonColor1: const Color(0xff0A1933),
+                        buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
                       ),
                       Button4(
                         label: "STOP",
                         iconData: 'assets/icon/dismiss.png',
                         onPressed: () {
                           reset();
-                        }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),
+                        },
+                        buttonColor1: const Color(0xff0A1933),
+                        buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
                       ),
                     ],
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                        color: Color(0xff254467), // Set the border color
+                        color: const Color(0xff254467), // Set the border color
                         width: 1.5, // Set the border width
                       ),
                       color: Colors.white,
                     ),
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: laps.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(13),
-                            color: Color(0xffD3E1F6)
-                          ),
-                          margin: const EdgeInsets.all(10.0),
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                "Lap No. ${index + 1}",
-                                style: const TextStyle(
-                                  color: Color(0xff0A1933),
-                                  fontSize: 20.0,
+                    child: MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: laps.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(13),
+                                color: const Color(0xffD3E1F6)),
+                            margin: const EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Lap No. ${index + 1}",
+                                  style: const TextStyle(
+                                    color: Color(0xff0A1933),
+                                    fontSize: 20.0,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                laps[index],
-                                style: const TextStyle(
-                                  color: Color(0xff0A1933),
-                                  fontSize: 20.0,
+                                Text(
+                                  laps[index],
+                                  style: const TextStyle(
+                                    color: Color(0xff0A1933),
+                                    fontSize: 20.0,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

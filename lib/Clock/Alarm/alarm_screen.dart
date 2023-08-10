@@ -43,23 +43,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
     loadAlarms();
   }
 
-/*  Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
-    final res = await showModalBottomSheet<bool?>(
-        context: context,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        builder: (context) {
-          return FractionallySizedBox(
-            heightFactor: 0.6,
-            child: ExampleAlarmEditScreen(alarmSettings: settings),
-          );
-        });
-
-    if (res != null && res == true) loadAlarms();
-  }*/
-
   Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
     final res = await showDialog<bool>(
       context: context,
@@ -68,7 +51,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          title: Center(child: Text("SET ALARM")),
+          title: const Center(child: Text("SET ALARM")),
           content: SingleChildScrollView(
             child: ExampleAlarmEditScreen(alarmSettings: settings),
           ),
@@ -119,57 +102,36 @@ class _AlarmScreenState extends State<AlarmScreen> {
       body: Stack(children: [
         Container(
           padding: EdgeInsets.only(top: appBarHeight),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
           ),
           child: SafeArea(
             child: alarms.isNotEmpty
-                ? /*ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: alarms.length,
-                    separatorBuilder: (context, index) => const Divider(),
-                    itemBuilder: (context, index) {
-                      return ExampleAlarmTile(
-                        key: Key(alarms[index].id.toString()),
-                        title: TimeOfDay(
-                          hour: alarms[index].dateTime.hour,
-                          minute: alarms[index].dateTime.minute,
-                        ).format(context),
-                        onPressed: () => navigateToAlarmScreen(alarms[index]),
-                        onDismissed: () {
-                          Alarm.stop(alarms[index].id).then((_) => loadAlarms());
-                        },
-                      );
-                    },
-                  )*/
-                Column(
+                ? Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Expanded(
-                        child: Container(
-                          child: ListView.separated(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: alarms.length,
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            itemBuilder: (context, index) {
-                              return ExampleAlarmTile(
-                                key: Key(alarms[index].id.toString()),
-                                title: TimeOfDay(
-                                  hour: alarms[index].dateTime.hour,
-                                  minute: alarms[index].dateTime.minute,
-                                ).format(context),
-                                onPressed: () =>
-                                    navigateToAlarmScreen(alarms[index]),
-                                onDismissed: () {
-                                  Alarm.stop(alarms[index].id)
-                                      .then((_) => loadAlarms());
-                                },
-                              );
-                            },
-                          ),
+                        child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: alarms.length,
+                          separatorBuilder: (context, index) => const Divider(),
+                          itemBuilder: (context, index) {
+                            return ExampleAlarmTile(
+                              key: Key(alarms[index].id.toString()),
+                              title: TimeOfDay(
+                                hour: alarms[index].dateTime.hour,
+                                minute: alarms[index].dateTime.minute,
+                              ).format(context),
+                              onPressed: () =>
+                                  navigateToAlarmScreen(alarms[index]),
+                              onDismissed: () {
+                                Alarm.stop(alarms[index].id)
+                                    .then((_) => loadAlarms());
+                              },
+                            );
+                          },
                         ),
                       ),
                       Row(
@@ -197,7 +159,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       )
                     ],
@@ -206,110 +168,30 @@ class _AlarmScreenState extends State<AlarmScreen> {
                     child: Column(
                     children: [
                       Container(
-                          padding: EdgeInsets.symmetric(horizontal: 30),
-                          child: Image(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: const Image(
                               image: AssetImage("assets/icon/alarm_ic'.png"))),
-                      SizedBox(
+                      const SizedBox(
                         height: 24,
                       ),
-                      Text(
+                      const Text(
                         "No Alarm Set",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
                             color: Colors.white),
                       ),
-                      Text("Set alarm first",
+                      const Text("Set alarm first",
                           style: TextStyle(
                             fontSize: 22,
                             color: Colors.white,
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          /*Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(
-                                  10), // Set the border radius as desired
-                              border: Border.all(
-                                color: Colors.white.withOpacity(
-                                    0.5), // Set the border color with opacity
-                                width: 2.0, // Set the border width as needed
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(255, 255, 255, 0.5),
-                                  blurRadius: 5.0,
-                                ),
-                              ],
-                            ),
-                            child: TextButton(
-                              onPressed: () {
-                                navigateToAlarmScreen(null);
-                              },
-                              child: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.alarm,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'ADD ALARM',
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(
-                                  10), // Set the border radius as desired
-                              border: Border.all(
-                                color: Colors.white.withOpacity(
-                                    0.5), // Set the border color with opacity
-                                width: 2.0, // Set the border width as needed
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color.fromRGBO(255, 255, 255, 0.5),
-                                  blurRadius: 5.0,
-                                ),
-                              ],
-                            ),
-                            child: TextButton(
-                              onPressed: () {
-                                final alarmSettings = AlarmSettings(
-                                  id: 42,
-                                  dateTime: DateTime.now(),
-                                  assetAudioPath: 'assets/marimba.mp3',
-                                );
-                                Alarm.set(alarmSettings: alarmSettings);
-                              },
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.ring_volume,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'RING ALARM',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),*/
                           Button2(
                             label: 'ADD ALARM',
                             iconData: 'assets/icon/add_alarm.png',
@@ -352,7 +234,7 @@ class Button2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
+        padding: const EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
@@ -367,16 +249,16 @@ class Button2 extends StatelessWidget {
             disabledBackgroundColor: Colors.black.withOpacity(0.12),
             padding: EdgeInsets.zero, // To remove padding, if needed
             elevation: 0, // Disabled text color
-            minimumSize: Size(100, 40),
+            minimumSize: const Size(100, 40),
           ),
           child: Ink(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: Color(0xff254467), // Set the border color
+                color: const Color(0xff254467), // Set the border color
                 width: 1.5, // Set the border width
               ),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -386,7 +268,8 @@ class Button2 extends StatelessWidget {
               ),
             ),
             child: Container(
-              padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+              padding:
+                  const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -401,7 +284,7 @@ class Button2 extends StatelessWidget {
                   Center(
                     child: Text(
                       label,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),

@@ -3,18 +3,15 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'package:organized_sleep/Clock/CountDown/countdown_screen.dart';
 import 'package:organized_sleep/SleepTracker/dBmeter/save_main.dart';
 import 'package:organized_sleep/models/details_model.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../boxes/boxes.dart';
-import '../SleepAudioTracker/constants.dart';
 import '../SleepAudioTracker/recorder_homeview.dart';
-import 'dB_Chart.dart';
-import 'dB_meter.dart';
+import 'db_chart.dart';
+import 'db_meter.dart';
 
 class NoiseApp extends StatefulWidget {
   const NoiseApp({super.key});
@@ -68,10 +65,18 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     }
   }
 
-  @override
+/*  @override
   void dispose() {
     super.dispose();
     stop();
+  }*/
+  @override
+  void dispose() {
+    super.dispose();
+    if (noiseSubscription != null) {
+      noiseSubscription!.cancel();
+    }
+    chartData.clear();
   }
 
   //method for taking noise data
@@ -89,8 +94,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     // Check if the noise crosses 80dB and store DateTime value in the List
     if (maxDB > 80 && chartData.isNotEmpty && chartData.last.maxDB! <= 80) {
       DateTime now = DateTime.now();
-      String formattedDate =
-          DateFormat('E, d MMM yyyy HH:mm').format(now);
+      String formattedDate = DateFormat('E, d MMM yyyy HH:mm').format(now);
       if (noiseCrossed80dBList.contains(formattedDate)) {
       } else {
         noiseCrossed80dBList.add(formattedDate);
@@ -124,7 +128,9 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     try {
       noiseSubscription = noiseMeter.noise.listen(onData);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -215,42 +221,44 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
         title: const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Text(
-            "Sleep Tracker",style: TextStyle(fontWeight: FontWeight.bold),
+            "Sleep Tracker",
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         actions: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   fixedSize: const Size(100, 34), // specify width, height
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                        20,
-                      ))),
+                    20,
+                  ))),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>  const SaveMain()),
+                  MaterialPageRoute(builder: (context) => const SaveMain()),
                 );
               },
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(image: AssetImage('assets/icon/report.png'), height: 20,width: 20,),
-                  Text('Report', style: TextStyle(color: Colors.white, ),)
+                  Image(
+                    image: AssetImage('assets/icon/report.png'),
+                    height: 20,
+                    width: 20,
+                  ),
+                  Text(
+                    'Report',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )
                 ],
               ),
             ),
           ),
-          /*Button4(label: "Report", iconData: 'assets/icon/report.png',onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>  const SaveMain()),
-            );
-          }, buttonColor1: Color(0xff0F5DE4), buttonColor2: Color(0xff0F5DE4),)*/
         ],
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -258,7 +266,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -267,7 +275,9 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
               iconData: isRecording
                   ? 'assets/icon/dismiss.png'
                   : 'assets/icon/play.png',
-              onPressed: isRecording ? stop : start, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),
+              onPressed: isRecording ? stop : start,
+              buttonColor1: const Color(0xff0A1933),
+              buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
             ),
             Button4(
               label: "RECORD",
@@ -278,21 +288,23 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
                   MaterialPageRoute(
                       builder: (context) => const RecorderHomeView()),
                 );
-              }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),
+              },
+              buttonColor1: const Color(0xff0A1933),
+              buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
             )
           ],
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(top: appBarHeight+topSpacing),
-        decoration: BoxDecoration(
+        padding: EdgeInsets.only(top: appBarHeight + topSpacing),
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(height: 350, child: dBMeter(maxDB)),
+            SizedBox(height: 350, child: DbMeter(maxDB)),
 
             // Chart according the noise meter
             Expanded(child: DBChart(chartData: chartData)),

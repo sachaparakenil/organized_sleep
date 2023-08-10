@@ -5,7 +5,6 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:organized_sleep/Clock/StopWatch/stopwatch_screen.dart';
 import 'package:organized_sleep/models/details_model.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
-import 'package:organized_sleep/self_meditate/music_demo/assets_audio.dart';
 import 'package:organized_sleep/self_meditate/music_player/music_main_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'Clock/clock_home_screen.dart';
@@ -13,15 +12,13 @@ import 'Clock/Alarm/alarm_screen.dart';
 import 'Clock/CountDown/countdown_screen.dart';
 import 'package:hive/hive.dart';
 import 'SleepTracker/SleepAudioTracker/recorder_homeview.dart';
-import 'SleepTracker/dBmeter/dB_Data.dart';
+import 'SleepTracker/dBmeter/db_data.dart';
 import 'self_meditate/Breathing/breathing_main_screen.dart';
 import 'self_meditate/Meditate_Yourself/self_meditation.dart';
-import 'self_meditate/Music_melodies/music_home_screen.dart';
 import 'Home/home_screen.dart';
 import 'Splash_screen/splash_screen.dart';
 import 'package:alarm/alarm.dart';
 import 'package:audioplayers/audioplayers.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +43,8 @@ class _Handler extends WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      audioPlayer.resume(); // Audio player is a custom class with resume and pause static methods
+      audioPlayer
+          .resume(); // Audio player is a custom class with resume and pause static methods
     } else {
       audioPlayer.pause();
     }
@@ -68,8 +66,8 @@ class BetterSleep extends StatelessWidget {
         '/stopwatch': (context) => const StopWatchScreen(),
         '/breathing': (context) => const BreathingScreen(),
         '/Clock': (context) => const ClockScreen(),
-        '/sleep': (context) =>  const RecorderHomeView(),
-        '/meditate': (context) =>  const AssetsAudio(),
+        '/sleep': (context) => const RecorderHomeView(),
+        '/meditate': (context) => const AssetsAudio(),
         '/selfPractice': (context) => const CountdownPage(),
         '/noiseApp': (context) => const NoiseApp(),
         '/meditation': (context) => const Meditation(),

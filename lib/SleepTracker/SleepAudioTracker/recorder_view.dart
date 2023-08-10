@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_sleep/Clock/Alarm/alarm_screen.dart';
 import 'package:path_provider/path_provider.dart';
@@ -69,14 +70,18 @@ class _RecorderViewState extends State<RecorderView> {
                   setState(() {});
                 },
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all(CircleBorder()),
+                  shape: MaterialStateProperty.all(const CircleBorder()),
                 ),
-                child: Container(
-                  height: 60 ,
-                  child: Button2(onPressed: () async {
-                    await _onRecordButtonPressed();
-                    setState(() {});
-                  },label: 'Record Snoring', iconData: 'assets/icon/record.png',),
+                child: SizedBox(
+                  height: 60,
+                  child: Button2(
+                    onPressed: () async {
+                      await _onRecordButtonPressed();
+                      setState(() {});
+                    },
+                    label: 'Record Snoring',
+                    iconData: 'assets/icon/record.png',
+                  ),
                 ),
               ),
             ],
@@ -85,7 +90,10 @@ class _RecorderViewState extends State<RecorderView> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Text(_recordText,style: TextStyle(color: Colors.white),),
+              child: Text(
+                _recordText,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],
@@ -146,7 +154,8 @@ class _RecorderViewState extends State<RecorderView> {
 
   _initRecorder() async {
     Directory appDirectory = await getApplicationDocumentsDirectory();
-    String filePath = '${appDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
+    String filePath =
+        '${appDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.aac';
     await audioRecord.start(path: filePath);
   }
 
@@ -156,7 +165,9 @@ class _RecorderViewState extends State<RecorderView> {
         await audioRecord.start();
       }
     } catch (e) {
-      print('Error Start Recording : $e');
+      if (kDebugMode) {
+        print('Error Start Recording : $e');
+      }
     }
   }
 
@@ -165,7 +176,9 @@ class _RecorderViewState extends State<RecorderView> {
       await audioRecord.stop();
       widget.onSaved();
     } catch (e) {
-      print('Error Stopping record : $e');
+      if (kDebugMode) {
+        print('Error Stopping record : $e');
+      }
     }
   }
 }

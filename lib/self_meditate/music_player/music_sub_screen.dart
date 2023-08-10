@@ -29,7 +29,7 @@ class AudioPlayerScreen extends StatefulWidget {
 class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   late AudioPlayer _audioPlayer;
   final int songIndex;
-  ValueNotifier<int> _currentSongIndexNotifier;
+  final ValueNotifier<int> _currentSongIndexNotifier;
   final _playlist = ConcatenatingAudioSource(
     children: [
       AudioSource.asset("assets/Sounds/Bird.mp3",
@@ -243,7 +243,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         padding: const EdgeInsets.all(20),
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
         ),
@@ -267,8 +267,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     return CustomCircularProgressIndicator(
                       progress: progressValue,
                       strokeWidth: 6,
-                      backgroundColor: Color(0xff091939),
-                      progressColor: Color(0xff1F53AE),
+                      backgroundColor: const Color(0xff091939),
+                      progressColor: const Color(0xff1F53AE),
                     );
                   },
                 ),
@@ -279,7 +279,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image(
+                    child: const Image(
                       image: AssetImage('assets/icon/music_thumb.png'),
                       height: 240, // Adjust the height of the image
                       width: 240, // Adjust the width of the image
@@ -300,7 +300,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     title: metadata.title, artist: metadata.artist ?? '');
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             StreamBuilder(
@@ -309,15 +309,15 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                   final positionData = snapshot.data;
                   return ProgressBar(
                     barHeight: 8,
-                    timeLabelTextStyle: TextStyle(
+                    timeLabelTextStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                     thumbRadius: 9,
                     thumbColor: Colors.white,
-                    baseBarColor: Color(0xff102349),
-                    progressBarColor: Color(0xff1F53AE),
-                    bufferedBarColor: Color(0xff091939),
+                    baseBarColor: const Color(0xff102349),
+                    progressBarColor: const Color(0xff1F53AE),
+                    bufferedBarColor: const Color(0xff091939),
                     progress: positionData?.position ?? Duration.zero,
                     buffered: positionData?.bufferedPosition ?? Duration.zero,
                     total: positionData?.duration ?? Duration.zero,
@@ -345,28 +345,6 @@ class MediaMetadata extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /*DecoratedBox(
-          decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                offset: Offset(2, 4),
-                blurRadius: 4,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: const Image(
-              image: AssetImage('assets/music_thumb.png'),
-              height: 300,
-              width: 300,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),*/
-
         const SizedBox(
           height: 20,
         ),
@@ -410,8 +388,8 @@ class Controls extends StatelessWidget {
             onPressed: onNext,
             color: Colors.white,
             iconSize: 50,
-            icon: Icon(Icons.skip_previous_rounded)),
-        SizedBox(width: 20,),
+            icon: const Icon(Icons.skip_previous_rounded)),
+        const SizedBox(width: 20,),
         StreamBuilder<PlayerState>(
             stream: audioPlayer.playerStateStream,
             builder: (context, snapshot) {
@@ -421,7 +399,7 @@ class Controls extends StatelessWidget {
               if (!(playing ?? false)) {
                 return ClipOval(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xff196EFF),
                     ),
                     child: IconButton(
@@ -435,7 +413,7 @@ class Controls extends StatelessWidget {
               } else if (processingState != ProcessingState.completed) {
                 return ClipOval(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xff196EFF),
                     ),
                     child: IconButton(
@@ -449,7 +427,7 @@ class Controls extends StatelessWidget {
               }
               return ClipOval(
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xff196EFF),
                   ),
                   child: const Icon(
@@ -460,12 +438,12 @@ class Controls extends StatelessWidget {
                 ),
               );
             }),
-        SizedBox(width: 20,),
+        const SizedBox(width: 20,),
         IconButton(
             onPressed: onPrevious,
             color: Colors.white,
             iconSize: 50,
-            icon: Icon(Icons.skip_next_rounded)),
+            icon: const Icon(Icons.skip_next_rounded)),
       ],
     );
   }
@@ -477,7 +455,7 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   final Color backgroundColor;
   final Color progressColor;
 
-  CustomCircularProgressIndicator({
+  const CustomCircularProgressIndicator({super.key,
     required this.progress,
     this.strokeWidth = 6,
     this.backgroundColor = const Color(0xff061CCE),
@@ -493,7 +471,7 @@ class CustomCircularProgressIndicator extends StatelessWidget {
         backgroundColor: backgroundColor,
         progressColor: progressColor,
       ),
-      size: Size.square(300),
+      size: const Size.square(300),
       child: Container(
         width: 280,
         height: 280,
@@ -506,7 +484,7 @@ class CustomCircularProgressIndicator extends StatelessWidget {
           child: Container(
             width: 16, // Adjust the size of the thumb indicator
             height: 16, // Adjust the size of the thumb indicator
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.transparent,
             ),
@@ -544,7 +522,7 @@ class _CustomCircularProgressIndicatorPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     canvas.drawCircle(center, radius, backgroundPaint);
-    final startAngle = -pi / 2;
+    const startAngle = -pi / 2;
     final sweepAngle = 2 * pi * progress;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),

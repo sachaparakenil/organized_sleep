@@ -20,20 +20,20 @@ class Player extends StatelessWidget {
             Obx(
               () => Expanded(
                   child: Container(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      height: 300,
-                      width: 300,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                    child: QueryArtworkWidget(
-                      id: data[controller.playIndex.value].id,
-                      type: ArtworkType.AUDIO,
-                      artworkHeight: double.infinity,
-                      artworkWidth: double.infinity,
-                      nullArtworkWidget: const Icon(Icons.music_note),
-                    ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                height: 300,
+                width: 300,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: QueryArtworkWidget(
+                  id: data[controller.playIndex.value].id,
+                  type: ArtworkType.AUDIO,
+                  artworkHeight: double.infinity,
+                  artworkWidth: double.infinity,
+                  nullArtworkWidget: const Icon(Icons.music_note),
+                ),
               )),
             ),
             const SizedBox(
@@ -55,8 +55,8 @@ class Player extends StatelessWidget {
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style:
-                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
                       height: 12,
@@ -77,8 +77,9 @@ class Player extends StatelessWidget {
                           Text(controller.position.value),
                           Expanded(
                               child: Slider(
-                                  min:
-                                      const Duration(seconds: 0).inSeconds.toDouble(),
+                                  min: const Duration(seconds: 0)
+                                      .inSeconds
+                                      .toDouble(),
                                   max: controller.max.value,
                                   value: controller.value.value,
                                   onChanged: (newValue) {
@@ -99,7 +100,7 @@ class Player extends StatelessWidget {
                         IconButton(
                             onPressed: () {
                               controller.playSong(
-                                  data[controller.playIndex.value -1].uri,
+                                  data[controller.playIndex.value - 1].uri,
                                   controller.playIndex.value - 1);
                             },
                             icon: const Icon(
@@ -134,7 +135,7 @@ class Player extends StatelessWidget {
                         IconButton(
                             onPressed: () {
                               controller.playSong(
-                                  data[controller.playIndex.value+ 1].uri,
+                                  data[controller.playIndex.value + 1].uri,
                                   controller.playIndex.value + 1);
                             },
                             icon: const Icon(

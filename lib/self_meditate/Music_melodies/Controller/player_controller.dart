@@ -22,7 +22,7 @@ class PlayerController extends GetxController {
     checkPermission();
   }
 
-  updatePosition(){
+  updatePosition() {
     audioPlayer.durationStream.listen((d) {
       duration.value = d.toString().split(".")[0];
       max.value = d!.inSeconds.toDouble();
@@ -33,12 +33,12 @@ class PlayerController extends GetxController {
     });
   }
 
-  changeDurationToSeconds(seconds){
+  changeDurationToSeconds(seconds) {
     var duration = Duration(seconds: seconds);
     audioPlayer.seek(duration);
   }
 
-  playSong(String? uri,index) {
+  playSong(String? uri, index) {
     playIndex.value = index;
     try {
       audioPlayer.setAudioSource(
@@ -49,7 +49,9 @@ class PlayerController extends GetxController {
       audioPlayer.play();
       isPlaying(true);
       updatePosition();
-    } on Exception catch (e) {print(e.toString());}
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 
   checkPermission() async {

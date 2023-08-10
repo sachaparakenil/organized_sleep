@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../Clock/clock_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,66 +19,57 @@ class HomeScreen extends StatelessWidget {
               left: 16.0, top: 40.0, right: 16.0, bottom: 0),
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 40,
               ),
-              Container(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 40.0,
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(0xff173761),
-                      ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xff173761),
                     ),
-                    IconButton(
-                      icon: Image.asset(
-                        'assets/icon/no_ad.png',
-                        width: 30,
-                        height: 30,
-                      ),
-                      onPressed: () {
-                        // Handle button tap
-                      },
+                  ),
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/icon/no_ad.png',
+                      width: 30,
+                      height: 30,
                     ),
-                  ],
-                ),
+                    onPressed: () {
+                      // Handle button tap
+                    },
+                  ),
+                ],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
-              Container(
-                // margin: EdgeInsets.only(right: 10.0),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 40.0,
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(0xff173761),
-                        /*border: Border.all(
-                          color: Colors.white,
-                          width: 1.0,
-                        ),*/
-                      ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: const Color(0xff173761),
                     ),
-                    IconButton(
-                      icon: Image.asset(
-                        'assets/icon/info.png',
-                        width: 30,
-                        height: 30,
-                      ),
-                      onPressed: () {
-                        // Handle button tap
-                      },
+                  ),
+                  IconButton(
+                    icon: Image.asset(
+                      'assets/icon/info.png',
+                      width: 30,
+                      height: 30,
                     ),
-                  ],
-                ),
+                    onPressed: () {
+                      // Handle button tap
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -95,7 +85,7 @@ class HomeScreen extends StatelessWidget {
         child: Center(
           child: Container(
             padding: EdgeInsets.only(top: appBarHeight + topSpacing),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ButtonOne(),
@@ -186,7 +176,7 @@ class Button1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right: 200, left: 30, top: 0, bottom: 15),
+      padding: const EdgeInsets.only(right: 200, left: 30, top: 0, bottom: 15),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -207,10 +197,10 @@ class Button1 extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: Color(0xff254467), // Set the border color
+              color: const Color(0xff254467), // Set the border color
               width: 1.5, // Set the border width
             ),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
@@ -220,11 +210,14 @@ class Button1 extends StatelessWidget {
             ),
           ),
           child: Container(
-            padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+            padding:
+                const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(width: 10,),
+                const SizedBox(
+                  width: 10,
+                ),
                 Image(
                   image: AssetImage(
                     iconData,
@@ -236,7 +229,7 @@ class Button1 extends StatelessWidget {
                 Center(
                   child: Text(
                     label,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),

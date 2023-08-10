@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 // pending testing on different device
 
@@ -18,17 +16,17 @@ class DBChart extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(25),
           // border: Border.all(color: const Color(0xFFEDEEEF), width: 1.5),
         ),
         child: SfCartesianChart(
-
           title: ChartTitle(
               text: 'Graph of noise from the background',
-              textStyle: const TextStyle(color: Color(0xFFE1E4E8), fontSize: 13),
+              textStyle:
+                  const TextStyle(color: Color(0xFFE1E4E8), fontSize: 13),
               alignment: ChartAlignment.far),
           series: <AreaSeries<ChartData, double>>[
             AreaSeries(

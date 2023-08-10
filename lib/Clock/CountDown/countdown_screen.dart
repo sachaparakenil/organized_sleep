@@ -26,7 +26,6 @@ class _CountdownScreenState extends State<CountdownScreen>
 
   void notify() {
     if (countText == '00:00:00') {
-
       setState(() {
         isPlaying = false;
       });
@@ -84,12 +83,15 @@ class _CountdownScreenState extends State<CountdownScreen>
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("COUNTDOWN",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),),
+        title: const Text(
+          "COUNTDOWN",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        ),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
         ),
@@ -102,19 +104,14 @@ class _CountdownScreenState extends State<CountdownScreen>
                   SizedBox(
                     width: 300,
                     height: 300,
-                    child: /*CircularProgressIndicator(
-                      color: Color(0xff10213B),
-                      backgroundColor: Color(0xff1F54AF),
-                      value: progress,
-                      strokeWidth: 14,
-                    ),*/CustomPaint(
+                    child: CustomPaint(
                       painter: ProgressPainter(progress: progress),
-                      child: Container(
+                      child: SizedBox(
                         width: 300,
                         height: 300,
                         child: CircularProgressIndicator(
-                          backgroundColor: Color(0xff091939),
-                          color: Color(0xff1F53AE),
+                          backgroundColor: const Color(0xff091939),
+                          color: const Color(0xff1F53AE),
                           value: progress,
                           strokeWidth: 6,
                         ),
@@ -160,59 +157,90 @@ class _CountdownScreenState extends State<CountdownScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Button4(label: isPlaying == true ? 'PAUSE' : 'START', iconData: isPlaying == true ? 'assets/icon/pause.png' : 'assets/icon/play.png',onPressed: () {
-                    if(countText == '00:00:00'){
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Warning!',
-                                style: TextStyle(color: Colors.red)),
-                            content: const Text(
-                                'Please Select CountDown Time'),
-                            actions: [
-                              TextButton(
-                                child: const Text('Ok'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                  Button4(
+                    label: isPlaying == true ? 'PAUSE' : 'START',
+                    iconData: isPlaying == true
+                        ? 'assets/icon/pause.png'
+                        : 'assets/icon/play.png',
+                    onPressed: () {
+                      if (countText == '00:00:00') {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    20), // Adjust the radius as needed
                               ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                    if (controller.isAnimating) {
-                      controller.stop();
+                              title: const Text('Warning!',
+                                  style: TextStyle(color: Colors.red)),
+                              content:
+                                  const Text('Please Select CountDown Time'),
+                              actions: [
+                                Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        20), // Adjust the radius as needed
+                                    color: const Color(
+                                        0xff07327a), // Set the background color
+                                  ),
+                                  child: TextButton(
+                                    child: const Text(
+                                      'Ok',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                      if (controller.isAnimating) {
+                        controller.stop();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                      } else if (controller.duration != Duration.zero) {
+                        controller.reverse(
+                          from: controller.value == 0 ? 1.0 : controller.value,
+                        );
+                        setState(() {
+                          isPlaying = true;
+                        });
+                      }
+                    },
+                    buttonColor1: const Color(0xff0A1933),
+                    buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
+                  ),
+                  Button4(
+                    label: 'STOP',
+                    iconData: 'assets/icon/dismiss.png',
+                    onPressed: () {
+                      controller.reset();
                       setState(() {
                         isPlaying = false;
                       });
-                    } else if (controller.duration != Duration.zero) {
-                      controller.reverse(
-                        from: controller.value == 0 ? 1.0 : controller.value,
-                      );
-                      setState(() {
-                        isPlaying = true;
-                      });
-                    }
-                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),),
-                  Button4(label: 'STOP', iconData: 'assets/icon/dismiss.png',onPressed: () {
-                    controller.reset();
-                    setState(() {
-                      isPlaying = false;
-                    });
-                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),)
+                    },
+                    buttonColor1: const Color(0xff0A1933),
+                    buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
           ],
         ),
       ),
     );
   }
 }
-
 
 class Button4 extends StatelessWidget {
   final String label;
@@ -222,7 +250,12 @@ class Button4 extends StatelessWidget {
   final Color buttonColor2;
 
   const Button4(
-      {super.key, required this.label, this.onPressed, required this.iconData, required this.buttonColor1, required this.buttonColor2});
+      {super.key,
+      required this.label,
+      this.onPressed,
+      required this.iconData,
+      required this.buttonColor1,
+      required this.buttonColor2});
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +263,7 @@ class Button4 extends StatelessWidget {
       child: Container(
         height: 60,
         width: 90,
-        padding: EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
+        padding: const EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
@@ -245,13 +278,13 @@ class Button4 extends StatelessWidget {
             disabledBackgroundColor: Colors.black.withOpacity(0.12),
             padding: EdgeInsets.zero, // To remove padding, if needed
             elevation: 0, // Disabled text color
-            minimumSize: Size(100, 40),
+            minimumSize: const Size(100, 40),
           ),
           child: Ink(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
-                color: Color(0xff254467), // Set the border color
+                color: const Color(0xff254467), // Set the border color
                 width: 1.5, // Set the border width
               ),
               gradient: LinearGradient(
@@ -264,7 +297,8 @@ class Button4 extends StatelessWidget {
               ),
             ),
             child: Container(
-              padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+              padding:
+                  const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -279,7 +313,7 @@ class Button4 extends StatelessWidget {
                   Center(
                     child: Text(
                       label,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -300,12 +334,9 @@ class ProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint dotPaint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-
     final Paint shadePaint = Paint()
-      ..color = Colors.white.withOpacity(0.05) // Adjust the color of the shading here
+      ..color =
+          Colors.white.withOpacity(0.05) // Adjust the color of the shading here
       ..style = PaintingStyle.fill;
 
     // Draw circular dot
@@ -327,7 +358,7 @@ class ProgressPainter extends CustomPainter {
     var radius = min(centerX, centerY);
 
     var dashBrush = Paint()
-      ..color = Color(0xff4B5E7D)
+      ..color = const Color(0xff4B5E7D)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 

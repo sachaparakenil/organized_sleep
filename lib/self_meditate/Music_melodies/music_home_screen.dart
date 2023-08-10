@@ -45,8 +45,7 @@ class AudioPlayerPage extends StatelessWidget {
                         () => ListTile(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
-                          title:
-                              Text(snapshot.data![index].displayNameWOExt),
+                          title: Text(snapshot.data![index].displayNameWOExt),
                           subtitle: Text("${snapshot.data![index].artist}"),
                           leading: QueryArtworkWidget(
                             id: snapshot.data![index].id,
@@ -66,9 +65,9 @@ class AudioPlayerPage extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) => Player(
                                           data: snapshot.data!,
-                                        )
-                                ));
-                            controller.playSong(snapshot.data![index].uri, index);
+                                        )));
+                            controller.playSong(
+                                snapshot.data![index].uri, index);
                           },
                         ),
                       ),

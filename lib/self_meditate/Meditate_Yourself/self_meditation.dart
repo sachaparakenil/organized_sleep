@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Clock/CountDown/countdown_screen.dart';
-import 'RoundButton.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class CountdownPage extends StatefulWidget {
@@ -16,7 +15,7 @@ class _CountdownPageState extends State<CountdownPage>
   late AnimationController controller;
   AudioPlayer audioPlayer = AudioPlayer();
   // AudioCache audioCache = AudioCache();
-  String selectedAudio = 'Sounds/OM.mp3';
+  String selectedAudio = 'Sounds/Om-Meditation2.mp3';
   String selectedBell = 'beep.mp3';
   bool isPlaying = false;
 
@@ -82,6 +81,7 @@ class _CountdownPageState extends State<CountdownPage>
   void dispose() {
     controller.dispose();
     super.dispose();
+    stopAudio();
   }
 
   @override
@@ -116,8 +116,8 @@ class _CountdownPageState extends State<CountdownPage>
       ),
       backgroundColor: Colors.white,
       body: Container(
-        padding: EdgeInsets.only(top: appBarHeight +topSpacing),
-        decoration: BoxDecoration(
+        padding: EdgeInsets.only(top: appBarHeight + topSpacing),
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
         ),
@@ -132,12 +132,12 @@ class _CountdownPageState extends State<CountdownPage>
                     height: 300,
                     child: CustomPaint(
                       painter: ProgressPainter(progress: progress),
-                      child: Container(
+                      child: SizedBox(
                         width: 300,
                         height: 300,
                         child: CircularProgressIndicator(
-                          backgroundColor: Color(0xff091939),
-                          color: Color(0xff1F53AE),
+                          backgroundColor: const Color(0xff091939),
+                          color: const Color(0xff1F53AE),
                           value: progress,
                           strokeWidth: 6,
                         ),
@@ -170,8 +170,7 @@ class _CountdownPageState extends State<CountdownPage>
                         style: const TextStyle(
                             fontSize: 60,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white
-                        ),
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -179,12 +178,12 @@ class _CountdownPageState extends State<CountdownPage>
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 30),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(27),
                 border: Border.all(
-                  color: Color(0xff42536C), // Set the border color
+                  color: const Color(0xff42536C), // Set the border color
                   width: 1.5, // Set the border width
                 ),
                 color: Colors.white,
@@ -192,73 +191,87 @@ class _CountdownPageState extends State<CountdownPage>
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20),
                     decoration: BoxDecoration(
                       // border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(16),
-                      color: Color(0xffD3E1F6),
+                      color: const Color(0xffD3E1F6),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         const Icon(CupertinoIcons.music_note_2),
-                        Text(
+                        const Text(
                           'Sound',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
-                            color: Color(0xff07327a),
+                            color: const Color(0xff07327a),
                             borderRadius: BorderRadius.circular(25),
                           ),
                           child: SizedBox(
                             height: 30,
                             child: DropdownButton(
                               value: selectedAudio,
-                              dropdownColor: Color(0xff07327a),
+                              dropdownColor: const Color(0xff07327a),
                               items: const [
                                 DropdownMenuItem<String>(
+                                  value: 'Sounds/Om-Meditation2.mp3',
+                                  child: Text('Om Meditation',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                DropdownMenuItem<String>(
                                   value: 'Sounds/OM.mp3',
-                                  child: Text('OM', style: TextStyle(color: Colors.white)),
+                                  child: Text('OM',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/Nature-Meditation.mp3',
-                                  child: Text('Nature', style: TextStyle(color: Colors.white)),
+                                  child: Text('Nature',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/Birds.mp3',
-                                  child: Text('Birds', style: TextStyle(color: Colors.white)),
+                                  child: Text('Birds',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/Ocean.mp3',
-                                  child: Text('Ocean', style: TextStyle(color: Colors.white)),
+                                  child: Text('Ocean',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/Om-Meditation-3.mp3',
-                                  child: Text('Meditation', style: TextStyle(color: Colors.white)),
-                                ),
-                                DropdownMenuItem<String>(
-                                  value: 'Sounds/Om-Meditation2.mp3',
-                                  child: Text('Om Meditation', style: TextStyle(color: Colors.white)),
+                                  child: Text('Meditation',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/Rain-Relaxing.mp3',
-                                  child: Text('Rain', style: TextStyle(color: Colors.white)),
+                                  child: Text('Rain',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/River.mp3',
-                                  child: Text('River', style: TextStyle(color: Colors.white)),
+                                  child: Text('River',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Sounds/Water-Dripping.mp3',
-                                  child: Text('Water', style: TextStyle(color: Colors.white)),
+                                  child: Text('Water',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ],
                               underline: Container(),
-                              icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
-                              onChanged: (value) => setState(() => selectedAudio = value!),
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Color(0xff335796)),
+                              onChanged: (value) =>
+                                  setState(() => selectedAudio = value!),
                             ),
                           ),
                         ),
@@ -266,45 +279,52 @@ class _CountdownPageState extends State<CountdownPage>
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20),
                     decoration: BoxDecoration(
                       // border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(16),
-                      color: Color(0xffD3E1F6),
+                      color: const Color(0xffD3E1F6),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         const Icon(CupertinoIcons.bell),
-                        Text(
+                        const Text(
                           'Ending Bell',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
-                            color: Color(0xff07327a),
+                            color: const Color(0xff07327a),
                             borderRadius: BorderRadius.circular(25),
                           ),
                           child: SizedBox(
                             height: 30,
                             child: DropdownButton(
                               value: selectedBell,
-                              dropdownColor: Color(0xff07327a),
+                              dropdownColor: const Color(0xff07327a),
                               items: const [
                                 DropdownMenuItem<String>(
                                   value: 'beep.mp3',
-                                  child: Text('One Shot', style: TextStyle(color: Colors.white)),
+                                  child: Text('One Shot',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                                 DropdownMenuItem<String>(
                                   value: 'Beep1.mp3',
-                                  child: Text('Grammar', style: TextStyle(color: Colors.white)),
+                                  child: Text('Grammar',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ],
                               underline: Container(),
-                              icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
-                              onChanged: (value) => setState(() => selectedBell = value!),
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Color(0xff335796)),
+                              onChanged: (value) =>
+                                  setState(() => selectedBell = value!),
                             ),
                           ),
                         ),
@@ -319,34 +339,48 @@ class _CountdownPageState extends State<CountdownPage>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Button4(label: isPlaying == true ? 'PAUSE' : 'START', iconData: isPlaying == true ? 'assets/icon/pause.png' : 'assets/icon/play.png',onPressed: () {
-                    if (controller.isAnimating) {
-                      controller.stop();
-                      pauseAudio();
+                  Button4(
+                    label: isPlaying == true ? 'PAUSE' : 'START',
+                    iconData: isPlaying == true
+                        ? 'assets/icon/pause.png'
+                        : 'assets/icon/play.png',
+                    onPressed: () {
+                      if (controller.isAnimating) {
+                        controller.stop();
+                        pauseAudio();
+                        setState(() {
+                          isPlaying = false;
+                        });
+                      } else {
+                        controller.reverse(
+                            from:
+                                controller.value == 0 ? 1.0 : controller.value);
+                        setState(() async {
+                          playAudio();
+                          isPlaying = true;
+                        });
+                      }
+                    },
+                    buttonColor1: const Color(0xff0A1933),
+                    buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
+                  ),
+                  Button4(
+                    label: 'STOP',
+                    iconData: 'assets/icon/dismiss.png',
+                    onPressed: () {
+                      controller.reset();
                       setState(() {
                         isPlaying = false;
+                        stopAudio();
                       });
-                    } else {
-                      controller.reverse(
-                          from:
-                          controller.value == 0 ? 1.0 : controller.value);
-                      setState(() async {
-                        playAudio();
-                        isPlaying = true;
-                      });
-                    }
-                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),),
-                  Button4(label: 'STOP', iconData: 'assets/icon/dismiss.png',onPressed: () {
-                    controller.reset();
-                    setState(() {
-                      isPlaying = false;
-                      stopAudio();
-                    });
-                  }, buttonColor1: Color(0xff0A1933), buttonColor2: Color.fromRGBO(255, 255, 255, 0.1),)
+                    },
+                    buttonColor1: const Color(0xff0A1933),
+                    buttonColor2: const Color.fromRGBO(255, 255, 255, 0.1),
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),

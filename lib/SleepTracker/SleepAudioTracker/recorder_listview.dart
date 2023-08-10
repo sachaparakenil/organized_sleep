@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -49,8 +49,6 @@ class _RecordListViewState extends State<RecordListView>
     audioPlayer.stop();
   }
 
-
-
   FutureBuilder<DateTime> dateAndTime(int i) {
     return FutureBuilder<DateTime>(
       future: getFileLastModified(widget.records.elementAt(i)),
@@ -62,21 +60,21 @@ class _RecordListViewState extends State<RecordListView>
 
           String time = DateFormat.jm().format(lastModified); // Format the time
           String date =
-          DateFormat.yMMMd().format(lastModified); // Format the date
+              DateFormat.yMMMd().format(lastModified); // Format the date
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('Date: $date', style: TextStyle(fontSize: 16)),
+              Text('Date: $date', style: const TextStyle(fontSize: 16)),
 
               // SizedBox(height: 2),
-              Text('Time: $time', style: TextStyle(fontSize: 16)),
+              Text('Time: $time', style: const TextStyle(fontSize: 16)),
               // Text(time, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             ],
           );
         } else {
-          return Text('File does not exist.');
+          return const Text('File does not exist.');
         }
       },
     );
@@ -90,49 +88,64 @@ class _RecordListViewState extends State<RecordListView>
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title:
-              const Text('Rename!', style: TextStyle(color: Colors.blue)),
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(20), // Adjust the radius as needed
+              ),
+              title: const Text('Rename!',
+                  style: TextStyle(color: Color(0xff07327a))),
               content: const Text('Do you really want to rename this file!'),
               actions: [
                 TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
+                        borderSide: const BorderSide(color: Color(0xff07327a)),
                         borderRadius: BorderRadius.circular(10)),
                     hintText: 'Enter New Name',
                     helperText: 'Keep it meaningful',
                     labelText: 'Rename',
                     prefixIcon: const Icon(
                       Icons.drive_file_rename_outline_rounded,
-                      color: Colors.blue,
+                      color: Color(0xff07327a),
                     ),
                   ),
                   controller: renameController,
                 ),
-                TextButton(
-                  child: Text('Rename'),
-                  onPressed: () async {
-                    Navigator.pop(context);
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                        20), // Adjust the radius as needed
+                    color: const Color(0xff07327a), // Set the background color
+                  ),
+                  child: TextButton(
+                    child: const Text(
+                      'Rename',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context);
 
-                    await changeFileNameOnly(
-                        file, "${renameController.text}.aac");
-                    // records.clear();
-                    var path = file.path;
-                    var lastSeparator =
-                    path.lastIndexOf(Platform.pathSeparator);
-                    var newPath =
-                        "${path.substring(0, lastSeparator + 1)}${renameController.text}.aac";
-                    widget.records[position] = newPath;
+                      await changeFileNameOnly(
+                          file, "${renameController.text}.aac");
+                      // records.clear();
+                      var path = file.path;
+                      var lastSeparator =
+                          path.lastIndexOf(Platform.pathSeparator);
+                      var newPath =
+                          "${path.substring(0, lastSeparator + 1)}${renameController.text}.aac";
+                      widget.records[position] = newPath;
 
-                    setState(() {});
-                  },
+                      setState(() {});
+                    },
+                  ),
                 ),
               ],
             );
           },
         );
       },
-      icon: Icon(Icons.edit),
+      icon: const Icon(Icons.edit),
     );
   }
 
@@ -144,23 +157,51 @@ class _RecordListViewState extends State<RecordListView>
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(20), // Adjust the radius as needed
+                ),
                 title:
-                const Text('Warning!', style: TextStyle(color: Colors.red)),
+                    const Text('Warning!', style: TextStyle(color: Colors.red)),
                 content: const Text('Do you really want to delete this file!'),
                 actions: [
-                  TextButton(
-                    child: Text('Cancel'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                  Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          20), // Adjust the radius as needed
+                      color:
+                          const Color(0xff07327a), // Set the background color
+                    ),
+                    child: TextButton(
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      deleteFile(File(widget.records.elementAt(i)), i);
-                      // deleteAllFilesInFolder();
-                      Navigator.pop(context);
-                    },
+                  Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          20), // Adjust the radius as needed
+                      color:
+                          const Color(0xff07327a), // Set the background color
+                    ),
+                    child: TextButton(
+                      child: const Text(
+                        'OK',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        deleteFile(File(widget.records.elementAt(i)), i);
+                        // deleteAllFilesInFolder();
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                 ],
               );
@@ -169,7 +210,7 @@ class _RecordListViewState extends State<RecordListView>
 
           setState(() {});
         },
-        icon: Icon(Icons.delete));
+        icon: const Icon(Icons.delete));
   }
 
   IconButton resetIcon() {
@@ -178,7 +219,7 @@ class _RecordListViewState extends State<RecordListView>
       onPressed: () {
         _onStop();
       },
-      icon: Icon(Icons.stop),
+      icon: const Icon(Icons.stop),
     );
   }
 
@@ -187,9 +228,9 @@ class _RecordListViewState extends State<RecordListView>
       iconSize: 43,
       icon: _selectedIndex == i
           ? _isPlaying
-            ? Icon(Icons.pause)
-            : Icon(Icons.play_arrow)
-          : Icon(Icons.play_arrow),
+              ? const Icon(Icons.pause)
+              : const Icon(Icons.play_arrow)
+          : const Icon(Icons.play_arrow),
       onPressed: () {
         if (_isPlaying) {
           _onPause();
@@ -211,42 +252,13 @@ class _RecordListViewState extends State<RecordListView>
         });
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     setState(() {});
   }
 
-/*  Future<void> _onPlay({required String filePath, required int index}) async {
-    if (!_isPlaying) {
-      audioPlayer.play(UrlSource(filePath));
-      setState(() {
-        _selectedIndex = index;
-        _completedPercentage = 0.0;
-        _isPlaying = true;
-      });
-
-      audioPlayer.onPlayerComplete.listen((_) {
-        setState(() {
-          _isPlaying = false;
-          // isRecording = false;
-          _completedPercentage = 0.0;
-        });
-      });
-      audioPlayer.onDurationChanged.listen((duration) {
-        setState(() {
-          _totalDuration = duration.inMicroseconds;
-        });
-      });
-
-      audioPlayer.onPositionChanged.listen((duration) {
-        setState(() {
-          _currentDuration = duration.inMicroseconds;
-          _completedPercentage =
-              _currentDuration.toDouble() / _totalDuration.toDouble();
-        });
-      });
-    }
-  }*/
   Future<void> _onPlay({required String filePath, required int index}) async {
     if (!_isPlaying) {
       await audioPlayer.stop();
@@ -273,12 +285,12 @@ class _RecordListViewState extends State<RecordListView>
       audioPlayer.onPositionChanged.listen((duration) {
         setState(() {
           _currentDuration = duration.inMilliseconds;
-          _completedPercentage = _currentDuration.toDouble() / _totalDuration.toDouble();
+          _completedPercentage =
+              _currentDuration.toDouble() / _totalDuration.toDouble();
         });
       });
     }
   }
-
 
   Future<void> _onStop() async {
     audioPlayer.stop();
@@ -365,131 +377,143 @@ class _RecordListViewState extends State<RecordListView>
   @override
   Widget build(BuildContext context) {
     return widget.records.isEmpty
-        ? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(image: AssetImage('assets/icon/snore_thumb.png'),height: 200,width: 200,),
-            Text(
-              'No Sound Yet...',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold,color: Colors.white),
-            ),
-          ],
-        )
+        ? const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage('assets/icon/snore_thumb.png'),
+                height: 200,
+                width: 200,
+              ),
+              Text(
+                'No Sound Yet...',
+                style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+            ],
+          )
         : Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: ListView.builder(
-          itemCount: widget.records.length,
-          shrinkWrap: true,
-          reverse: false,
-          itemBuilder: (BuildContext context, int i) {
-            File file = File(widget.records.elementAt(i));
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: ListView.builder(
+                itemCount: widget.records.length,
+                shrinkWrap: true,
+                reverse: false,
+                itemBuilder: (BuildContext context, int i) {
+                  File file = File(widget.records.elementAt(i));
 
-            String fileName = file.path.split('/').last;
-            // print("File Name:${renameController}");
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 8),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: kListCardBackGroundColor,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // Shadow color
-                      spreadRadius: 1, // Spread radius
-                      blurRadius: 2.5, // Blur radius
-                      offset: Offset(0, 2), // Offset in x and y direction
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 8, left: 8, top: 8),
-                  child: ExpansionTile(
-                    // this new index is for getting new recording first
-                    // title: Text('New recoding ${widget.records.length - i}'),
-                    title: Text(
-                      fileName,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 2),
-                        dateAndTime(i),
-                      ],
-                    ),
-                    trailing:
-                    _selectedIndex == i && isExpanded
-                        ? Icon(Icons.keyboard_arrow_up)
-                        : Icon(Icons.keyboard_arrow_down),
+                  String fileName = file.path.split('/').last;
+                  // print("File Name:${renameController}");
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: kListCardBackGroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5), // Shadow color
+                            spreadRadius: 1, // Spread radius
+                            blurRadius: 2.5, // Blur radius
+                            offset: const Offset(
+                                0, 2), // Offset in x and y direction
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: 8, left: 8, top: 8),
+                        child: ExpansionTile(
+                          // this new index is for getting new recording first
+                          // title: Text('New recoding ${widget.records.length - i}'),
+                          title: Text(
+                            fileName,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 2),
+                              dateAndTime(i),
+                            ],
+                          ),
+                          trailing: _selectedIndex == i && isExpanded
+                              ? const Icon(Icons.keyboard_arrow_up)
+                              : const Icon(Icons.keyboard_arrow_down),
 
+                          onExpansionChanged: (bool expanded) {
+                            setState(() {
+                              isExpanded = expanded;
+                              _selectedIndex = i;
+                            });
+                          },
 
-                    onExpansionChanged: (bool expanded) {
-                      setState(() {
-                        isExpanded = expanded;
-                        _selectedIndex = i;
-                      });
-                    },
-
-                    children: [
-                      // dropDown container
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTapDown: (TapDownDetails details) {
-                                // Calculate the new audio position based on the tap position
-                                double tapPosition = details.localPosition.dx;
-                                double totalWidth = MediaQuery.of(context).size.width;
-                                int newAudioPosition =
-                                (tapPosition / totalWidth * _totalDuration).toInt();
+                            // dropDown container
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTapDown: (TapDownDetails details) {
+                                      // Calculate the new audio position based on the tap position
+                                      double tapPosition =
+                                          details.localPosition.dx;
+                                      double totalWidth =
+                                          MediaQuery.of(context).size.width;
+                                      int newAudioPosition = (tapPosition /
+                                              totalWidth *
+                                              _totalDuration)
+                                          .toInt();
 
-                                // Update the audio player's position
-                                audioPlayer.seek(Duration(milliseconds: newAudioPosition));
-                              },
-                              child: LinearProgressIndicator(
-                                semanticsLabel: fileName,
-                                minHeight: 6,
-                                backgroundColor: const Color(0xFFCED3D9),
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Color(0xFF1C95FF)),
-                                value: _selectedIndex == i
-                                    ? _completedPercentage
-                                    : 0,
+                                      // Update the audio player's position
+                                      audioPlayer.seek(Duration(
+                                          milliseconds: newAudioPosition));
+                                    },
+                                    child: LinearProgressIndicator(
+                                      semanticsLabel: fileName,
+                                      minHeight: 6,
+                                      backgroundColor: const Color(0xFFCED3D9),
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              Color(0xFF1C95FF)),
+                                      value: _selectedIndex == i
+                                          ? _completedPercentage
+                                          : 0,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      playPauseIcon(i),
+                                      resetIcon(),
+                                      deleteIcon(context, i),
+                                      renameIcon(context, file, i),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                playPauseIcon(i),
-                                resetIcon(),
-                                deleteIcon(context, i),
-                                renameIcon(context, file, i),
-                              ],
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

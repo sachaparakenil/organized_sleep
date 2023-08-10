@@ -19,44 +19,53 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   late bool showNotification;
   late String assetAudio;
   final _timePickerTheme = TimePickerThemeData(
-    backgroundColor: Color(0xffbac6e7),
+    backgroundColor: const Color(0xffbac6e7),
     hourMinuteShape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: Color(0xff07327a), width: 1),
     ),
     dayPeriodBorderSide: const BorderSide(color: Color(0xff07327a), width: 1),
     dayPeriodColor: MaterialStateColor.resolveWith((states) =>
-    states.contains(MaterialState.selected) ? Color(0xff5282d2) : Color(
-        0xffc3cfe5)),
+        states.contains(MaterialState.selected)
+            ? const Color(0xff5282d2)
+            : const Color(0xffc3cfe5)),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: Color(0xff609ae0), width: 1),
     ),
-    dayPeriodTextColor: MaterialStateColor.resolveWith(
-            (states) => states.contains(MaterialState.selected) ? Colors.white : Color(0xff86a8e1)),
+    dayPeriodTextColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.white
+            : const Color(0xff86a8e1)),
     dayPeriodShape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: Color(0xff07327a), width: 4),
     ),
     hourMinuteColor: MaterialStateColor.resolveWith((states) =>
-    states.contains(MaterialState.selected) ? Color(0xff5282d2) : Color(
-        0xffc3cfe5)),
-    hourMinuteTextColor: MaterialStateColor.resolveWith(
-            (states) => states.contains(MaterialState.selected) ? Colors.white : Color(0xff86a8e1)),
-    dialHandColor: Color(0xff2d70e0),
-    dialBackgroundColor: Color(0xff86a8e1),
-    hourMinuteTextStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    dayPeriodTextStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-    helpTextStyle:
-    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        states.contains(MaterialState.selected)
+            ? const Color(0xff5282d2)
+            : const Color(0xffc3cfe5)),
+    hourMinuteTextColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? Colors.white
+            : const Color(0xff86a8e1)),
+    dialHandColor: const Color(0xff2d70e0),
+    dialBackgroundColor: const Color(0xff86a8e1),
+    hourMinuteTextStyle:
+        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    dayPeriodTextStyle:
+        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+    helpTextStyle: const TextStyle(
+        fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
     inputDecorationTheme: const InputDecorationTheme(
       border: InputBorder.none,
       contentPadding: EdgeInsets.all(0),
     ),
-    dialTextColor: MaterialStateColor.resolveWith(
-            (states) => states.contains(MaterialState.selected) ? Color(0xff07327a) : Color(
-            0xff0d60ec)),
-    entryModeIconColor: Color(0xff07327a),
+    dialTextColor: MaterialStateColor.resolveWith((states) =>
+        states.contains(MaterialState.selected)
+            ? const Color(0xff07327a)
+            : const Color(0xff0d60ec)),
+    entryModeIconColor: const Color(0xff07327a),
   );
 
   @override
@@ -88,8 +97,8 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
 
   Future<void> pickTime() async {
     final res = await showTimePicker(
-      initialTime: selectedTime,
-      context: context,
+        initialTime: selectedTime,
+        context: context,
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
@@ -97,15 +106,18 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
               timePickerTheme: _timePickerTheme,
               textButtonTheme: TextButtonThemeData(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith((states) => Color(0xff07327a)),
-                  foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
-                  overlayColor: MaterialStateColor.resolveWith((states) => Color(0xff07327a)),
+                  backgroundColor: MaterialStateColor.resolveWith(
+                      (states) => const Color(0xff07327a)),
+                  foregroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.white),
+                  overlayColor: MaterialStateColor.resolveWith(
+                      (states) => const Color(0xff07327a)),
                 ),
               ),
             ),
             child: child!,
-          );}
-    );
+          );
+        });
     if (res != null) setState(() => selectedTime = res);
   }
 
@@ -187,168 +199,233 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
           ),*/
           RawMaterialButton(
             onPressed: pickTime,
-            fillColor:Color(0xffD3E1F6),
+            fillColor: const Color(0xffD3E1F6),
             child: Container(
               margin: const EdgeInsets.all(20),
-              child: Text(
-                selectedTime.format(context),
-                style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold, color: Color(0xff07327a))
-              ),
+              child: Text(selectedTime.format(context),
+                  style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff07327a))),
             ),
           ),
-          SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               // border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8.0),
-              color: Color(0xffD3E1F6),
+              color: const Color(0xffD3E1F6),
             ),
             child: Row(
               children: [
-                SizedBox(width: 5,),
-                Image(image: AssetImage('assets/icon/loop_audio.png'), height: 20, width: 20,),
-                SizedBox(width: 10),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Image(
+                  image: AssetImage('assets/icon/loop_audio.png'),
+                  height: 20,
+                  width: 20,
+                ),
+                const SizedBox(width: 10),
                 Text(
                   'Loop alarm audio',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Spacer(),
+                const Spacer(),
                 Switch(
-                  value: loopAudio,
-                  onChanged: (value) => setState(() => loopAudio = value),
-                    activeColor: Color(0xff07327a),
-                    inactiveTrackColor: Colors.grey
-                ),
+                    value: loopAudio,
+                    onChanged: (value) => setState(() => loopAudio = value),
+                    activeColor: const Color(0xff07327a),
+                    inactiveTrackColor: Colors.grey),
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               // border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8.0),
-              color: Color(0xffD3E1F6),
+              color: const Color(0xffD3E1F6),
             ),
             child: Row(
               children: [
-                SizedBox(width: 5,),
-                Image(image: AssetImage('assets/icon/vibrate.png'), height: 20, width: 20,),
-                SizedBox(width: 10,),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Image(
+                  image: AssetImage('assets/icon/vibrate.png'),
+                  height: 20,
+                  width: 20,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Text(
                   'Vibrate',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Spacer(),
+                const Spacer(),
                 Switch(
-                  value: vibrate,
-                  onChanged: (value) => setState(() => vibrate = value),
-                    activeColor: Color(0xff07327a),
-                    inactiveTrackColor: Colors.grey
-                ),
+                    value: vibrate,
+                    onChanged: (value) => setState(() => vibrate = value),
+                    activeColor: const Color(0xff07327a),
+                    inactiveTrackColor: Colors.grey),
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
               // border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8.0),
-                color: Color(0xffD3E1F6),
+              color: const Color(0xffD3E1F6),
             ),
             child: Row(
               children: [
-                SizedBox(width: 5,),
-                Image(image: AssetImage('assets/icon/notification.png'), height: 20, width: 20,),
-                SizedBox(width: 10,),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Image(
+                  image: AssetImage('assets/icon/notification.png'),
+                  height: 20,
+                  width: 20,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Text(
                   'Show notification',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Spacer(),
+                const Spacer(),
                 Switch(
-                  value: showNotification,
-                  onChanged: (value) => setState(() => showNotification = value),
-                    activeColor: Color(0xff07327a),
-                    inactiveTrackColor: Colors.grey
-                ),
+                    value: showNotification,
+                    onChanged: (value) =>
+                        setState(() => showNotification = value),
+                    activeColor: const Color(0xff07327a),
+                    inactiveTrackColor: Colors.grey),
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
               // border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8.0),
-              color: Color(0xffD3E1F6),
+              color: const Color(0xffD3E1F6),
             ),
             child: Row(
               children: [
-                SizedBox(width: 5,),
-                Image(image: AssetImage('assets/icon/sound.png'), height: 20, width: 20,),
-                SizedBox(width: 10,),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Image(
+                  image: AssetImage('assets/icon/sound.png'),
+                  height: 20,
+                  width: 20,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
                 Text(
                   'Sound',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Spacer(),
+                const Spacer(),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                      color: Color(0xff07327a),
+                    color: const Color(0xff07327a),
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: SizedBox(
                     height: 30,
                     child: DropdownButton(
                       value: assetAudio,
-                      dropdownColor: Color(0xff07327a),
+                      dropdownColor: const Color(0xff07327a),
                       items: const [
                         DropdownMenuItem<String>(
                           value: 'assets/marimba.mp3',
-                          child: Text('Marimba', style: TextStyle(color: Colors.white)),
+                          child: Text('Marimba',
+                              style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem<String>(
                           value: 'assets/nokia.mp3',
-                          child: Text('Nokia', style: TextStyle(color: Colors.white)),
+                          child: Text('Nokia',
+                              style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem<String>(
                           value: 'assets/mozart.mp3',
-                          child: Text('Mozart', style: TextStyle(color: Colors.white)),
+                          child: Text('Mozart',
+                              style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem<String>(
                           value: 'assets/star_wars.mp3',
-                          child: Text('Star Wars', style: TextStyle(color: Colors.white)),
+                          child: Text('Star Wars',
+                              style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem<String>(
                           value: 'assets/one_piece.mp3',
-                          child: Text('One Piece', style: TextStyle(color: Colors.white)),
+                          child: Text('One Piece',
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ],
                       onChanged: (value) => setState(() => assetAudio = value!),
                       underline: Container(),
-                      icon: Icon(Icons.arrow_drop_down, color: Color(0xff335796)),
+                      icon: const Icon(Icons.arrow_drop_down,
+                          color: Color(0xff335796)),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Save(label: "Cancel", onPressed: () => Navigator.pop(context, false),color: Color(0xff07327a),)),
-              SizedBox(width: 30,),
-              Expanded(child: Save(label: "Save", onPressed: saveAlarm,color: Color(0xff07327a),)),
+              Expanded(
+                  child: Save(
+                label: "Cancel",
+                onPressed: () => Navigator.pop(context, false),
+                color: const Color(0xff07327a),
+              )),
+              const SizedBox(
+                width: 30,
+              ),
+              Expanded(
+                  child: Save(
+                label: "Save",
+                onPressed: saveAlarm,
+                color: const Color(0xff07327a),
+              )),
             ],
           ),
-          SizedBox(height: 15,),
+          const SizedBox(
+            height: 15,
+          ),
           if (!creating)
-            Container(padding: EdgeInsets.symmetric(horizontal: 20),child: Save(label: "Delete Alarm", onPressed: deleteAlarm,color: Color(0xffBC544B),)),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Save(
+                  label: "Delete Alarm",
+                  onPressed: deleteAlarm,
+                  color: const Color(0xffBC544B),
+                )),
           const SizedBox(),
         ],
       ),
@@ -361,7 +438,8 @@ class Save extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color color;
 
-  const Save({super.key, required this.label, this.onPressed, required this.color});
+  const Save(
+      {super.key, required this.label, this.onPressed, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -369,7 +447,8 @@ class Save extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(25), // Set the border radius as desired
+        borderRadius:
+            BorderRadius.circular(25), // Set the border radius as desired
         /*border: Border.all(
           // color: Colors.black.withOpacity(0.5), // Set the border color with opacity
           width: 2.0, // Set the border width as needed

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../Home/home_screen.dart';
 
 class Meditation extends StatelessWidget {
   const Meditation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    /*final double appBarHeight = AppBar().preferredSize.height;
-    const double topSpacing = 50.0;*/
+    final double appBarHeight = AppBar().preferredSize.height;
+    const double topSpacing = 170.0;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
@@ -41,13 +38,16 @@ class Meditation extends StatelessWidget {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/icon/bg5.png"),
                       fit: BoxFit.fill),
                 ),
                 child: Container(
-                  child: Row(
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.only(top: appBarHeight + topSpacing),
+                  child:  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ButtonOne(),
                       ButtonTwo(),
@@ -100,7 +100,7 @@ class ButtonThree extends StatelessWidget {
     return Button5(
       label: 'Music\nMelodies',
       onPressed: () async {
-          Navigator.pushNamed(context, '/meditate');
+        Navigator.pushNamed(context, '/meditate');
       },
       iconData: 'assets/icon/music (1).png',
     );
@@ -120,7 +120,7 @@ class Button5 extends StatelessWidget {
     return Expanded(
       child: Container(
         height: 150,
-        padding: EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
+        padding: const EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
@@ -135,16 +135,16 @@ class Button5 extends StatelessWidget {
             disabledBackgroundColor: Colors.black.withOpacity(0.12),
             padding: EdgeInsets.zero, // To remove padding, if needed
             elevation: 0, // Disabled text color
-            minimumSize: Size(100, 40),
+            minimumSize: const Size(100, 40),
           ),
           child: Ink(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(17),
               border: Border.all(
-                color: Color(0xff254467), // Set the border color
+                color: const Color(0xff254467), // Set the border color
                 width: 1.5, // Set the border width
               ),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -154,7 +154,7 @@ class Button5 extends StatelessWidget {
               ),
             ),
             child: Container(
-              padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+              padding: const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -169,7 +169,7 @@ class Button5 extends StatelessWidget {
                   Center(
                     child: Text(
                       label,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),

@@ -35,9 +35,6 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -62,29 +59,57 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              20), // Adjust the radius as needed
+                        ),
                         title: const Text('Warning!',
                             style: TextStyle(color: Colors.red)),
                         content: const Text(
                             'Do you really want to delete all files!'),
                         actions: [
-                          TextButton(
-                            child: const Text('Cancel'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                          Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  20), // Adjust the radius as needed
+                              color: const Color(
+                                  0xff07327a), // Set the background color
+                            ),
+                            child: TextButton(
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
                           ),
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              deleteAllFilesInFolder();
-                              Navigator.pop(context);
-                            },
+                          Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  20), // Adjust the radius as needed
+                              color: const Color(
+                                  0xff07327a), // Set the background color
+                            ),
+                            child: TextButton(
+                              child: const Text(
+                                'OK',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {
+                                deleteAllFilesInFolder();
+                                Navigator.pop(context);
+                              },
+                            ),
                           ),
                         ],
                       );
@@ -103,7 +128,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
         ),
@@ -153,7 +178,9 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
     }).onDone(() {
       records.sort();
       records = records.reversed.toList();
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
@@ -168,7 +195,9 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
         });
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     setState(() {});
   }
@@ -188,7 +217,9 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
             0, records.length); // Clear the file list after deletion
       });
     } else {
-      print('Folder does not exist');
+      if (kDebugMode) {
+        print('Folder does not exist');
+      }
     }
   }
 }

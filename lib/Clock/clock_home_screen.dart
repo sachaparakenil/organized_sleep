@@ -57,7 +57,10 @@ class _ClockScreenState extends State<ClockScreen> {
           ),
         ),
         centerTitle: true,
-        title: const Text('CLOCK', style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text(
+          'CLOCK',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -96,7 +99,8 @@ class _ClockScreenState extends State<ClockScreen> {
                             const TextStyle(fontSize: 20, color: Colors.white),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -145,7 +149,7 @@ class Click extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
+        padding: const EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
@@ -160,16 +164,16 @@ class Click extends StatelessWidget {
             disabledBackgroundColor: Colors.black.withOpacity(0.12),
             padding: EdgeInsets.zero, // To remove padding, if needed
             elevation: 0, // Disabled text color
-            minimumSize: Size(100, 40),
+            minimumSize: const Size(100, 40),
           ),
           child: Ink(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(17),
               border: Border.all(
-                color: Color(0xff254467), // Set the border color
+                color: const Color(0xff254467), // Set the border color
                 width: 1.5, // Set the border width
               ),
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
@@ -179,11 +183,12 @@ class Click extends StatelessWidget {
               ),
             ),
             child: Container(
-              padding: EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+              padding:
+                  const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Image(
+                  Image(
                     image: AssetImage(
                       iconData,
                     ),
@@ -194,13 +199,13 @@ class Click extends StatelessWidget {
                   Center(
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           'Goto',
                           style: TextStyle(fontSize: 10, color: Colors.white),
                         ),
                         Text(
                           label,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 13,
                               color: Colors.white,
                               fontWeight: FontWeight.bold),

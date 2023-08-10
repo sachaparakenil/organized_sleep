@@ -296,8 +296,7 @@ class SaveMainState extends State<SaveMain> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)
-                          ),
+                              borderRadius: BorderRadius.circular(20)),
                           title: const Text('Warning!',
                               style: TextStyle(color: Colors.red)),
                           content: const Text(
@@ -306,11 +305,16 @@ class SaveMainState extends State<SaveMain> {
                             Container(
                               height: 40,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
-                                color: Color(0xff07327a), // Set the background color
+                                borderRadius: BorderRadius.circular(
+                                    20), // Adjust the radius as needed
+                                color: const Color(
+                                    0xff07327a), // Set the background color
                               ),
                               child: TextButton(
-                                child: const Text('Cancel', style: TextStyle(color: Colors.white),),
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -319,11 +323,16 @@ class SaveMainState extends State<SaveMain> {
                             Container(
                               height: 40,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
-                                color: Color(0xff07327a), // Set the background color
+                                borderRadius: BorderRadius.circular(
+                                    20), // Adjust the radius as needed
+                                color: const Color(
+                                    0xff07327a), // Set the background color
                               ),
                               child: TextButton(
-                                child: const Text('OK', style: TextStyle(color: Colors.white),),
+                                child: const Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 onPressed: () {
                                   deleteAll();
                                   Navigator.pop(context);
@@ -379,12 +388,18 @@ class SaveMainState extends State<SaveMain> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image(image: AssetImage('assets/icon/snore_thumb.png'),height: 200,width: 200,),
+                                    Image(
+                                      image: AssetImage(
+                                          'assets/icon/snore_thumb.png'),
+                                      height: 200,
+                                      width: 200,
+                                    ),
                                     Text(
                                       'No Reports yet',
                                       style: TextStyle(
                                           fontSize: 25,
-                                          fontWeight: FontWeight.bold, color: Colors.white),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -397,10 +412,10 @@ class SaveMainState extends State<SaveMain> {
                                       data[reversedIndex].avgVoice);
                                   String sleepEnvironment;
                                   Color environmentColor;
-                                  List<String> sleep = data[reversedIndex]
-                                      .sleepAt.split(" ");
-                                  List<String> wake = data[reversedIndex]
-                                      .wakeAt.split(" ");
+                                  List<String> sleep =
+                                      data[reversedIndex].sleepAt.split(" ");
+                                  List<String> wake =
+                                      data[reversedIndex].wakeAt.split(" ");
                                   if (avgVoice < 60.0) {
                                     sleepEnvironment = "Good";
                                     environmentColor = Colors.green;
@@ -441,15 +456,16 @@ class SaveMainState extends State<SaveMain> {
                                     },
                                     child: Card(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:BorderRadius.circular(20)
-                                      ),
-                                      margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 25),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 15, horizontal: 10),
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20)
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -459,24 +475,42 @@ class SaveMainState extends State<SaveMain> {
                                             Row(
                                               children: [
                                                 const Text(
-                                                    'Sleep Report      ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                                                  'Sleep Report      ',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                ),
                                                 Container(
-                                                  padding: const EdgeInsets.all(5),
+                                                    padding:
+                                                        const EdgeInsets.all(5),
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(25),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              25),
                                                       color: environmentColor,
                                                     ),
-                                                    child: Text(sleepEnvironment, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+                                                    child: Text(
+                                                      sleepEnvironment,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
                                                 const Spacer(),
                                                 InkWell(
                                                     onTap: () {
                                                       showDialog(
                                                         context: context,
                                                         builder: (BuildContext
-                                                        context) {
+                                                            context) {
                                                           return AlertDialog(
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20), // Adjust the radius as needed
                                                             ),
                                                             title: const Text(
                                                                 'Warning!',
@@ -488,14 +522,26 @@ class SaveMainState extends State<SaveMain> {
                                                             actions: [
                                                               Container(
                                                                 height: 40,
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
-                                                                  color: Color(0xff07327a), // Set the background color
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20), // Adjust the radius as needed
+                                                                  color: const Color(
+                                                                      0xff07327a), // Set the background color
                                                                 ),
-                                                                child: TextButton(
-                                                                  child: const Text(
-                                                                      'Cancel', style: TextStyle(color: Colors.white),),
-                                                                  onPressed: () {
+                                                                child:
+                                                                    TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    'Cancel',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
@@ -503,16 +549,28 @@ class SaveMainState extends State<SaveMain> {
                                                               ),
                                                               Container(
                                                                 height: 40,
-                                                                decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
-                                                                  color: Color(0xff07327a), // Set the background color
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20), // Adjust the radius as needed
+                                                                  color: const Color(
+                                                                      0xff07327a), // Set the background color
                                                                 ),
-                                                                child: TextButton(
+                                                                child:
+                                                                    TextButton(
                                                                   child:
-                                                                  const Text('OK', style: TextStyle(color: Colors.white),),
-                                                                  onPressed: () {
+                                                                      const Text(
+                                                                    'OK',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
                                                                     delete(data[
-                                                                    reversedIndex]);
+                                                                        reversedIndex]);
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
@@ -523,22 +581,45 @@ class SaveMainState extends State<SaveMain> {
                                                         },
                                                       );
                                                     },
-                                                    child: const Icon(Icons.delete)),
+                                                    child: const Icon(
+                                                        Icons.delete)),
                                               ],
                                             ),
-                                            const SizedBox(height: 8,),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
                                             Row(
                                               children: [
-                                                Text('${sleep[0]} - ${wake[0]}', style: const TextStyle(color: Colors.grey),),
+                                                Text(
+                                                  '${sleep[0]} - ${wake[0]}',
+                                                  style: const TextStyle(
+                                                      color: Colors.grey),
+                                                ),
                                               ],
                                             ),
-                                            const SizedBox(height: 5,),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
                                             Row(
                                               children: [
-                                                AtBox(label: sleep[1], iconData: 'assets/icon/sleep.png', title: 'Sleep At'),
-                                                AtBox(label: wake[1], iconData: 'assets/icon/wakeup.png', title: 'Wake At'),
-                                                NoiseBox(label: '${data[reversedIndex].maxVoice} db', title: 'Max Noise'),
-                                                NoiseBox(label: '${data[reversedIndex].avgVoice} db', title: 'Avg Noise')
+                                                AtBox(
+                                                    label: sleep[1],
+                                                    iconData:
+                                                        'assets/icon/sleep.png',
+                                                    title: 'Sleep At'),
+                                                AtBox(
+                                                    label: wake[1],
+                                                    iconData:
+                                                        'assets/icon/wakeup.png',
+                                                    title: 'Wake At'),
+                                                NoiseBox(
+                                                    label:
+                                                        '${data[reversedIndex].maxVoice} db',
+                                                    title: 'Max Noise'),
+                                                NoiseBox(
+                                                    label:
+                                                        '${data[reversedIndex].avgVoice} db',
+                                                    title: 'Avg Noise')
                                               ],
                                             )
                                           ],
@@ -558,8 +639,7 @@ class NoiseBox extends StatelessWidget {
   final String label;
   final String title;
 
-  const NoiseBox(
-      {super.key, required this.label, required this.title});
+  const NoiseBox({super.key, required this.label, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -570,8 +650,7 @@ class NoiseBox extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color:
-            const Color(0xff254467), // Set the border color
+            color: const Color(0xff254467), // Set the border color
             width: 1.5, // Set the border width
           ),
           gradient: const LinearGradient(
@@ -583,9 +662,13 @@ class NoiseBox extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-            const SizedBox(height: 5,),
-            Text(title,style: sSaveSubText)
+            Text(label,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(title, style: sSaveSubText)
           ],
         ),
       ),
@@ -599,7 +682,10 @@ class AtBox extends StatelessWidget {
   final String title;
 
   const AtBox(
-      {super.key, required this.label, required this.iconData, required this.title});
+      {super.key,
+      required this.label,
+      required this.iconData,
+      required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -610,8 +696,7 @@ class AtBox extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color:
-            const Color(0xff254467), // Set the border color
+            color: const Color(0xff254467), // Set the border color
             width: 1.5, // Set the border width
           ),
           gradient: const LinearGradient(
@@ -623,13 +708,23 @@ class AtBox extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
-            const SizedBox(height: 5,),
+            Text(label,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(
+              height: 5,
+            ),
             Row(
               children: [
-                Image(image: AssetImage(iconData),height: 15,width: 15,),
-                const SizedBox(width: 3,),
-                Text(title,style: sSaveSubText),
+                Image(
+                  image: AssetImage(iconData),
+                  height: 15,
+                  width: 15,
+                ),
+                const SizedBox(
+                  width: 3,
+                ),
+                Text(title, style: sSaveSubText),
               ],
             )
           ],

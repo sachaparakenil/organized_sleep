@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 
 class ClockView extends StatefulWidget {
   const ClockView({super.key, required this.size});
@@ -57,8 +55,6 @@ class ClockPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 10;
 
-    var centerFillBrush = Paint()..color = const Color(0xffEAECFF);
-
     var secHandBrush = Paint()
       ..color = const Color.fromARGB(90, 255, 255, 255)
       ..style = PaintingStyle.stroke
@@ -76,17 +72,9 @@ class ClockPainter extends CustomPainter {
 
     var hourHandBrush = Paint()
       ..color = const Color.fromARGB(255, 255, 255, 255)
-      /*..shader =
-      const RadialGradient(colors: [Color(0xffEA74AB), Color(0xffC279FB)])
-          .createShader(Rect.fromCircle(center: center, radius: radius))*/
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = size.width / 24;
-
-    var dashBrush = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
 
     canvas.drawCircle(center, radius * 0.70, fillBrush);
     canvas.drawCircle(center, radius * 0.80, outlineBrush);
@@ -109,19 +97,6 @@ class ClockPainter extends CustomPainter {
     var secHandX = centerX + radius * 0.6 * cos(dateTime.second * 6 * pi / 180);
     var secHandY = centerY + radius * 0.6 * sin(dateTime.second * 6 * pi / 180);
     canvas.drawLine(center, Offset(secHandX, secHandY), secHandBrush);
-
-    // canvas.drawCircle(center, radius * 0.12, centerFillBrush);
-
-    var outerRadius = radius;
-    var innerRadius = radius * 0.9;
-    /*for (var i = 0; i < 360; i += 12) {
-      var x1 = centerX + outerRadius * cos(i * pi / 180);
-      var y1 = centerY + outerRadius * sin(i * pi / 180);
-
-      var x2 = centerX + innerRadius * cos(i * pi / 180);
-      var y2 = centerY + innerRadius * sin(i * pi / 180);
-      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
-    }*/
   }
 
   @override
