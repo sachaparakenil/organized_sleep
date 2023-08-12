@@ -158,17 +158,56 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     // int hoursDifference = difference.inHours % 24;
     int minutesDifference = difference.inMinutes % 60;
 
-    if (minutesDifference > 2) {
-      /*print(noiseCrossed80dBList);
-      print(maxVoice);
-      print(meanDB);
-      print(
-          "Time difference: $daysDifference days, $hoursDifference hours, $minutesDifference minutes");
-      print(startTime);
-      print(endTime);*/
+    if (minutesDifference > 10) {
+      String max = maxVoice.toStringAsFixed(2);
+      String avg = meanDB!.toStringAsFixed(2);
+      final data = DetailsModel(
+          sleepAt: startingTime,
+          wakeAt: endingTime,
+          maxVoice: max,
+          avgVoice: avg,
+          sniffing: noiseCrossed80dBList);
+
+      final box = Boxes.getData();
+      box.add(data);
+      data.save();
+    }else{
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20), // Adjust the radius as needed
+            ),
+            title: const Text('Warning!',
+                style: TextStyle(color: Colors.red)),
+            content: const Text(
+                'To track your sleep,\nyou must use this tracker device for at least 10 minutes!'),
+            actions: [
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      20), // Adjust the radius as needed
+                  color: const Color(
+                      0xff07327a), // Set the background color
+                ),
+                child: TextButton(
+                  child: const Text(
+                    'Ok',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      );
     }
-    String max = maxVoice.toStringAsFixed(2);
-    String avg = meanDB!.toStringAsFixed(2);
 
     /*var box = await Hive.openBox('Sleep Report');
     box.put('SleepAt', startingTime);
@@ -177,16 +216,6 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
     box.put('AvgVoice', avg);
     box.put('list', noiseCrossed80dBList);*/
 
-    final data = DetailsModel(
-        sleepAt: startingTime,
-        wakeAt: endingTime,
-        maxVoice: max,
-        avgVoice: avg,
-        sniffing: noiseCrossed80dBList);
-
-    final box = Boxes.getData();
-    box.add(data);
-    data.save();
     // noiseCrossed80dBList.clear();
   }
 

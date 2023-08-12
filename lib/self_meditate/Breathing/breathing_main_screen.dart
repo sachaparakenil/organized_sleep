@@ -91,13 +91,6 @@ class _BreathingScreenState extends State<BreathingScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          Text(
-                            "Dalai Lama",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                color: Colors.white),
-                          ),
                         ],
                       ),
                     ],
