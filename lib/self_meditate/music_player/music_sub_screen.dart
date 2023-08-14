@@ -1,9 +1,8 @@
 import 'dart:math';
-
+import 'package:audio_service/audio_service.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PositionData {
@@ -49,7 +48,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               id: '4',
               title: 'Nature Meditation',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Nature Meditation2.mp3",
+      AudioSource.asset("assets/Sounds/Nature-Meditation2.mp3",
           tag: const MediaItem(
               id: '5',
               title: 'Nature Meditation2',
@@ -66,10 +65,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       AudioSource.asset("assets/Sounds/Om-Meditation-3.mp3",
           tag: const MediaItem(
               id: '9', title: 'Om Meditation3', artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Om Meditation.mp3",
+      AudioSource.asset("assets/Sounds/Om-Meditation.mp3",
           tag: const MediaItem(
               id: '10', title: 'Om Meditation', artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Om Meditation2.mp3",
+      AudioSource.asset("assets/Sounds/Om-Meditation2.mp3",
           tag: const MediaItem(
               id: '11',
               title: 'Om Meditation2',
@@ -82,58 +81,58 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               id: '13',
               title: 'Rain & Thunder',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Rain Relaxing.mp3",
+      AudioSource.asset("assets/Sounds/Rain-Relaxing.mp3",
           tag: const MediaItem(
               id: '14', title: 'Rain Relaxing', artist: 'Natural Environment')),
       AudioSource.asset("assets/Sounds/Rain.mp3",
           tag: const MediaItem(
               id: '15', title: 'Rain', artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Nature.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Nature.mp3",
           tag: const MediaItem(
               id: '16',
               title: 'Relaxing Nature',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound 6.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound-6.mp3",
           tag: const MediaItem(
               id: '17',
               title: 'Relaxing Sound 6',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound1.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound1.mp3",
           tag: const MediaItem(
               id: '18',
               title: 'Relaxing Sound1',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound2.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound2.mp3",
           tag: const MediaItem(
               id: '19',
               title: 'Relaxing Sound2',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound3.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound3.mp3",
           tag: const MediaItem(
               id: '20',
               title: 'Relaxing Sound3',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound4.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound4.mp3",
           tag: const MediaItem(
               id: '21',
               title: 'Relaxing Sound4',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound5.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound5.mp3",
           tag: const MediaItem(
               id: '22',
               title: 'Relaxing Sound5',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound6.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound6.mp3",
           tag: const MediaItem(
               id: '23',
               title: 'Relaxing Sound6',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound7.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound7.mp3",
           tag: const MediaItem(
               id: '24',
               title: 'Relaxing Sound7',
               artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Relaxing Sound8.mp3",
+      AudioSource.asset("assets/Sounds/Relaxing-Sound8.mp3",
           tag: const MediaItem(
               id: '25',
               title: 'Relaxing Sound8',
@@ -141,7 +140,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       AudioSource.asset("assets/Sounds/River.mp3",
           tag: const MediaItem(
               id: '26', title: 'River', artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/Water Dripping.mp3",
+      AudioSource.asset("assets/Sounds/Water-Dripping.mp3",
           tag: const MediaItem(
               id: '27',
               title: 'Water Dripping',
@@ -149,7 +148,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       AudioSource.asset("assets/Sounds/Waves.mp3",
           tag: const MediaItem(
               id: '28', title: 'Waves', artist: 'Natural Environment')),
-      AudioSource.asset("assets/Sounds/river 2.mp3",
+      AudioSource.asset("assets/Sounds/river-2.mp3",
           tag: const MediaItem(
               id: '29', title: 'river 2', artist: 'Natural Environment')),
       AudioSource.asset("assets/Sounds/thunder.mp3",

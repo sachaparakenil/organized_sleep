@@ -55,23 +55,31 @@ class HistoryMeter extends StatelessWidget {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Image(
-                image: AssetImage('assets/icon/snore_thumb.png'),
-                height: 200,
-                width: 200,
-              ),
               DbMeter(maxVoiceValue),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: const Color(0xff1C3A58), width: 1.5)
+                ),
+                 child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Noise less than 60 dB is Good.\nModerate noise ranges from 60 to 70 dB.\nLoud noise ranges from 70 to 80 dB.\nOver 80 dB is considered to be too loud.',style: historyTextStyle,),
+                  ],
+              ),
+               ),
+              const SizedBox(height: 28,),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    AtIndicator(
-                        label1: sleep[1], label2: sleep[0], title: 'SleepAt'),
-                    AtIndicator(
-                        label1: wake[1], label2: wake[0], title: 'WakeAt'),
+                    AtSleepTime(
+                        label1: sleep[1], label2: sleep[0], title: 'SLEEP AT', image: 'assets/icon/sleep.png',),
+                    AtSleepTime(
+                        label1: wake[1], label2: wake[0], title: 'WAKE AT', image: 'assets/icon/wakeup.png',),
                   ],
                 ),
               ),
@@ -85,9 +93,9 @@ class HistoryMeter extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     AtIndicator(
-                        label1: maxVoice, label2: 'db', title: 'MaxNoise'),
+                        label1: maxVoice, label2: 'db', title: 'MAX NOISE'),
                     AtIndicator(
-                        label1: avgVoice, label2: 'db', title: 'AvgNoise')
+                        label1: avgVoice, label2: 'db', title: 'AVG NOISE')
                   ],
                 ),
               ),
@@ -192,12 +200,24 @@ class LongList extends StatelessWidget {
                     image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
               ),
               child: const Center(
-                child: Text(
-                  'Your Sleep Is Better\nThan 95% Populations',
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image(image: AssetImage('assets/icon/ic.png'), height: 300, width: 300,),
+                    Text(
+                      'Your Sleep Is Better Than',
+                      style: TextStyle(
+                          fontSize: 28,
+                          color: Colors.white),
+                    ),
+                    Text(
+                      '95% POPULATIONS',
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ],
                 ),
               ),
             )
@@ -346,13 +366,17 @@ class AtIndicator extends StatelessWidget {
   }
 }
 
-class NoiseIndicator extends StatelessWidget {
-  final String label;
+class AtSleepTime extends StatelessWidget {
+  final String label1;
+  final String label2;
   final String title;
-  final VoidCallback? onPressed;
+  final String image;
 
-  const NoiseIndicator(
-      {super.key, required this.label, this.onPressed, required this.title});
+  const AtSleepTime(
+      {super.key,
+        required this.label1,
+        required this.title,
+        required this.label2, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -366,31 +390,35 @@ class NoiseIndicator extends StatelessWidget {
             width: 1.5, // Set the border width
           ),
           gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
             colors: [
-              Color(0xff0A1933), // Transparent at top left
-              Color.fromRGBO(255, 255, 255, 0.05), // White at bottom right
+              Color(0xff637ba8),
+              Color(0xff02122C),
             ],
           ),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              label1,
+              style: sHistoryText,
+            ),
+            Text(
+              label2,
+              style: sHistorySubText,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image(image: AssetImage(image),height: 20, width: 20,),
+                const SizedBox(width: 8,),
                 Text(
-                  label,
-                  style: sHistoryText,
+                  title,
+                  style: sHistoryNameText,
                 ),
               ],
-            ),
-            Text(
-              title,
-              style: sHistorySubText,
             )
           ],
         ),
@@ -398,3 +426,4 @@ class NoiseIndicator extends StatelessWidget {
     );
   }
 }
+

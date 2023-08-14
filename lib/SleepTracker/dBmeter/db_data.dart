@@ -121,6 +121,7 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
   }
 
   void start() async {
+    noiseCrossed80dBList.clear();
     DateTime now = DateTime.now();
     startingTime = DateFormat('dd:MM:yyyy HH:mm').format(now);
     startTime = DateFormat('dd:MM:yyyy HH:mm').parse(startingTime);
@@ -171,27 +172,25 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
       final box = Boxes.getData();
       box.add(data);
       data.save();
-    }else{
+    } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  20), // Adjust the radius as needed
+              borderRadius:
+                  BorderRadius.circular(20), // Adjust the radius as needed
             ),
-            title: const Text('Warning!',
-                style: TextStyle(color: Colors.red)),
+            title: const Text('Warning!', style: TextStyle(color: Colors.red)),
             content: const Text(
                 'To track your sleep,\nyou must use this tracker device for at least 10 minutes!'),
             actions: [
               Container(
                 height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      20), // Adjust the radius as needed
-                  color: const Color(
-                      0xff07327a), // Set the background color
+                  borderRadius:
+                      BorderRadius.circular(20), // Adjust the radius as needed
+                  color: const Color(0xff07327a), // Set the background color
                 ),
                 child: TextButton(
                   child: const Text(
@@ -208,15 +207,6 @@ class NoiseAppState extends State<NoiseApp> with WidgetsBindingObserver {
         },
       );
     }
-
-    /*var box = await Hive.openBox('Sleep Report');
-    box.put('SleepAt', startingTime);
-    box.put('WakeAt', endingTime);
-    box.put('maxVoice', max);
-    box.put('AvgVoice', avg);
-    box.put('list', noiseCrossed80dBList);*/
-
-    // noiseCrossed80dBList.clear();
   }
 
   @override

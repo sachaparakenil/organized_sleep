@@ -16,21 +16,12 @@ const sSaveSubText = TextStyle(
 );
 
 const sHistoryNameText = TextStyle(
-  fontSize: 20,
+  fontSize: 18,
   color: Colors.white,
 );
 
-const kLabelTextStyle = TextStyle(
-  fontSize: 18.0,
-  color: Color(0xFF8D8E98),
-);
-
-const kBackgroundColor = TextStyle(
-  color: Color(0xffF0F1F2),
-);
-
-const kAppbarStyle =
-    TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
+const historyTextStyle =
+    TextStyle(color: Colors.white, fontSize: 15);
 
 const kButtonTextStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
 

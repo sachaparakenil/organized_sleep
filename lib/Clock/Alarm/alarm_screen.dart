@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:organized_sleep/Clock/Alarm/screen/ring.dart';
 import 'package:organized_sleep/Clock/Alarm/widgets/tile.dart';
 import 'screen/edit_alarm.dart';
@@ -15,20 +14,6 @@ class AlarmScreen extends StatefulWidget {
 
 class _AlarmScreenState extends State<AlarmScreen> {
   late List<AlarmSettings> alarms;
-  String image = "assets/icon/bg5.png";
-
-  var channel = const MethodChannel('Alarm');
-
-  setImage(backgroundImage){
-    setState(() {
-      image = backgroundImage;
-    });
-  }
-
-  changeImage() async{
-    var res = await channel.invokeMethod('changeImage');
-    setImage(res);
-  }
 
   static StreamSubscription? subscription;
 
@@ -117,9 +102,9 @@ class _AlarmScreenState extends State<AlarmScreen> {
       body: Stack(children: [
         Container(
           padding: EdgeInsets.only(top: appBarHeight),
-          decoration:  BoxDecoration(
+          decoration:  const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(image), fit: BoxFit.fill),
+                image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
           ),
           child: SafeArea(
             child: alarms.isNotEmpty
@@ -149,7 +134,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           },
                         ),
                       ),
-                      TextButton(onPressed: changeImage, child: Text('Native')),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
