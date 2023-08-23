@@ -1,5 +1,54 @@
+import 'dart:async';
+
 import 'package:alarm/alarm.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:io';
+// ignore: unnecessary_import
+import 'package:flutter/foundation.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+int id = 0;
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+final StreamController<ReceivedNotification> didReceiveLocalNotificationStream =
+StreamController<ReceivedNotification>.broadcast();
+
+final StreamController<String?> selectNotificationStream =
+StreamController<String?>.broadcast();
+
+const MethodChannel platform =
+MethodChannel('dexterx.dev/flutter_local_notifications_example');
+
+const String portName = 'notification_send_port';
+
+String? selectedNotificationPayload;
+
+const String urlLaunchActionId = 'id_1';
+
+const String navigationActionId = 'id_3';
+
+const String darwinNotificationCategoryText = 'textCategory';
+
+const String darwinNotificationCategoryPlain = 'plainCategory';
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  // ignore: avoid_print
+  print('notification(${notificationResponse.id}) action tapped: '
+      '${notificationResponse.actionId} with'
+      ' payload: ${notificationResponse.payload}');
+  if (notificationResponse.input?.isNotEmpty ?? false) {
+    // ignore: avoid_print
+    print(
+        'notification action tapped with input: ${notificationResponse.input}');
+  }
+}
 
 class ExampleAlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
@@ -11,15 +60,31 @@ class ExampleAlarmEditScreen extends StatefulWidget {
   State<ExampleAlarmEditScreen> createState() => _ExampleAlarmEditScreenState();
 }
 
+class ReceivedNotification {
+  ReceivedNotification({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.payload,
+  });
+
+  final int id;
+  final String? title;
+  final String? body;
+  final String? payload;
+}
+
 class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   late bool creating;
   late TimeOfDay selectedTime;
   late bool loopAudio;
   late bool vibrate;
   late bool showNotification;
+
+  bool _notificationsEnabled = false;
   late String assetAudio;
   final _timePickerTheme = TimePickerThemeData(
-    backgroundColor: const Color(0xffbac6e7),
+    backgroundColor:  Colors.white,
     hourMinuteShape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: Color(0xff07327a), width: 1),
@@ -50,7 +115,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
             ? Colors.white
             : const Color(0xff86a8e1)),
     dialHandColor: const Color(0xff2d70e0),
-    dialBackgroundColor: const Color(0xff86a8e1),
+    dialBackgroundColor: const Color(0xffadbfde),
     hourMinuteTextStyle:
         const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     dayPeriodTextStyle:
@@ -71,6 +136,10 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   @override
   void initState() {
     super.initState();
+    _isAndroidPermissionGranted();
+    _requestPermissions();
+    _configureDidReceiveLocalNotificationSubject();
+    _configureSelectNotificationSubject();
     creating = widget.alarmSettings == null;
 
     if (creating) {
@@ -93,6 +162,349 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
           widget.alarmSettings!.notificationBody!.isNotEmpty;
       assetAudio = widget.alarmSettings!.assetAudioPath;
     }
+  }
+
+  Future<void> _isAndroidPermissionGranted() async {
+    if (Platform.isAndroid) {
+      final bool granted = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.areNotificationsEnabled() ??
+          false;
+
+      setState(() {
+        _notificationsEnabled = granted;
+      });
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          MacOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+
+      final bool? grantedNotificationPermission =
+      await androidImplementation?.requestPermission();
+      setState(() {
+        _notificationsEnabled = grantedNotificationPermission ?? false;
+      });
+    }
+  }
+
+  void _configureDidReceiveLocalNotificationSubject() {
+    didReceiveLocalNotificationStream.stream
+        .listen((ReceivedNotification receivedNotification) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: receivedNotification.title != null
+              ? Text(receivedNotification.title!)
+              : null,
+          content: receivedNotification.body != null
+              ? Text(receivedNotification.body!)
+              : null,
+          actions: <Widget>[
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).pop();
+                await Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        SecondPage(receivedNotification.payload),
+                  ),
+                );
+              },
+              child: const Text('Ok'),
+            )
+          ],
+        ),
+      );
+    });
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationStream.stream.listen((String? payload) async {
+      await Navigator.of(context).push(MaterialPageRoute<void>(
+        builder: (BuildContext context) => SecondPage(payload),
+      ));
+    });
+  }
+
+  Future<void> _showNotificationWithActions() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      channelDescription: 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction(
+          urlLaunchActionId,
+          'Action 1',
+          icon: DrawableResourceAndroidBitmap('food'),
+          contextual: true,
+        ),
+        AndroidNotificationAction(
+          'id_2',
+          'Action 2',
+          titleColor: Color.fromARGB(255, 255, 0, 0),
+          icon: DrawableResourceAndroidBitmap('secondary_icon'),
+        ),
+        AndroidNotificationAction(
+          navigationActionId,
+          'Action 3',
+          icon: DrawableResourceAndroidBitmap('secondary_icon'),
+          showsUserInterface: true,
+          // By default, Android plugin will dismiss the notification when the
+          // user tapped on a action (this mimics the behavior on iOS).
+          cancelNotification: false,
+        ),
+      ],
+    );
+
+    const DarwinNotificationDetails iosNotificationDetails =
+    DarwinNotificationDetails(
+      categoryIdentifier: darwinNotificationCategoryPlain,
+    );
+
+    const DarwinNotificationDetails macOSNotificationDetails =
+    DarwinNotificationDetails(
+      categoryIdentifier: darwinNotificationCategoryPlain,
+    );
+
+    const LinuxNotificationDetails linuxNotificationDetails =
+    LinuxNotificationDetails(
+      actions: <LinuxNotificationAction>[
+        LinuxNotificationAction(
+          key: urlLaunchActionId,
+          label: 'Action 1',
+        ),
+        LinuxNotificationAction(
+          key: navigationActionId,
+          label: 'Action 2',
+        ),
+      ],
+    );
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: iosNotificationDetails,
+      macOS: macOSNotificationDetails,
+      linux: linuxNotificationDetails,
+    );
+    await flutterLocalNotificationsPlugin.show(
+        id++, 'plain title', 'plain body', notificationDetails,
+        payload: 'item z');
+  }
+
+  Future<void> _showFullScreenNotification() async {
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Turn off your screen'),
+        content: const Text(
+            'to see the full-screen intent in 5 seconds, press OK and TURN '
+                'OFF your screen'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await flutterLocalNotificationsPlugin.zonedSchedule(
+                  0,
+                  'scheduled title',
+                  'scheduled body',
+                  tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+                  const NotificationDetails(
+                      android: AndroidNotificationDetails(
+                          'full screen channel id', 'full screen channel name',
+                          channelDescription: 'full screen channel description',
+                          priority: Priority.high,
+                          importance: Importance.high,
+                          fullScreenIntent: true)),
+                  androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+                  uiLocalNotificationDateInterpretation:
+                  UILocalNotificationDateInterpretation.absoluteTime);
+
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showSoundUriNotification() async {
+    /// this calls a method over a platform channel implemented within the
+    /// example app to return the Uri for the default alarm sound and uses
+    /// as the notification sound
+    final String? alarmUri = await platform.invokeMethod<String>('getAlarmUri');
+    final UriAndroidNotificationSound uriSound =
+    UriAndroidNotificationSound(alarmUri!);
+    final AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails('uri channel id', 'uri channel name',
+        channelDescription: 'uri channel description',
+        sound: uriSound,
+        styleInformation: const DefaultStyleInformation(true, true));
+    final NotificationDetails notificationDetails =
+    NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        id++, 'uri sound title', 'uri sound body', notificationDetails);
+  }
+
+
+  Future<void> _showInsistentNotification() async {
+    // This value is from: https://developer.android.com/reference/android/app/Notification.html#FLAG_INSISTENT
+    const int insistentFlag = 4;
+    final AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails('your channel id', 'your channel name',
+        channelDescription: 'your channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker',
+        additionalFlags: Int32List.fromList(<int>[insistentFlag]));
+    final NotificationDetails notificationDetails =
+    NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        id++, 'insistent title', 'insistent body', notificationDetails,
+        payload: 'item x');
+  }
+
+  Future<void> _cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  Future<void> _showOngoingNotification() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails('your channel id', 'your channel name',
+        channelDescription: 'your channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        ongoing: true,
+        autoCancel: false);
+    const NotificationDetails notificationDetails =
+    NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin.show(
+        id++,
+        'ongoing notification title',
+        'ongoing notification body',
+        notificationDetails);
+  }
+
+  Future<void> _getNotificationChannels() async {
+    final Widget notificationChannelsDialogContent =
+    await _getNotificationChannelsDialogContent();
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        content: notificationChannelsDialogContent,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<Widget> _getNotificationChannelsDialogContent() async {
+    try {
+      final List<AndroidNotificationChannel>? channels =
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()!
+          .getNotificationChannels();
+
+      return Container(
+        width: double.maxFinite,
+        child: ListView(
+          children: <Widget>[
+            const Text(
+              'Notifications Channels',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const Divider(color: Colors.black),
+            if (channels?.isEmpty ?? true)
+              const Text('No notification channels')
+            else
+              for (AndroidNotificationChannel channel in channels!)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('id: ${channel.id}\n'
+                        'name: ${channel.name}\n'
+                        'description: ${channel.description}\n'
+                        'groupId: ${channel.groupId}\n'
+                        'importance: ${channel.importance.value}\n'
+                        'playSound: ${channel.playSound}\n'
+                        'sound: ${channel.sound?.sound}\n'
+                        'enableVibration: ${channel.enableVibration}\n'
+                        'vibrationPattern: ${channel.vibrationPattern}\n'
+                        'showBadge: ${channel.showBadge}\n'
+                        'enableLights: ${channel.enableLights}\n'
+                        'ledColor: ${channel.ledColor}\n'),
+                    const Divider(color: Colors.black),
+                  ],
+                ),
+          ],
+        ),
+      );
+    } on PlatformException catch (error) {
+      return Text(
+        'Error calling "getNotificationChannels"\n'
+            'code: ${error.code}\n'
+            'message: ${error.message}',
+      );
+    }
+  }
+
+  Future<void> _showNotificationWithAudioAttributeAlarm() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your alarm channel id',
+      'your alarm channel name',
+      channelDescription: 'your alarm channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      audioAttributesUsage: AudioAttributesUsage.alarm,
+    );
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'notification sound controlled by alarm volume',
+      'alarm notification sound body',
+      platformChannelSpecifics,
+    );
   }
 
   Future<void> pickTime() async {
@@ -172,31 +584,6 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          /*Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(
-                  "Cancel",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.blueAccent),
-                ),
-              ),
-              TextButton(
-                onPressed: saveAlarm,
-                child: Text(
-                  "Save",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.blueAccent),
-                ),
-              ),
-            ],
-          ),*/
           RawMaterialButton(
             onPressed: pickTime,
             fillColor: const Color(0xffD3E1F6),
@@ -427,6 +814,68 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                   color: const Color(0xffBC544B),
                 )),
           const SizedBox(),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: Column(children: <Widget>[
+                  if (kIsWeb || !Platform.isLinux) ...<Widget>[
+                    PaddedElevatedButton(
+                      buttonText: 'Cancel all notifications',
+                      onPressed: () async {
+                        await _cancelAllNotifications();
+                      },
+                    ),
+                    PaddedElevatedButton(
+                      buttonText: 'Show notification with plain actions',
+                      onPressed: () async {
+                        await _showNotificationWithActions();
+                      },
+                    ),
+                    if (Platform.isAndroid) ...<Widget>[
+                      PaddedElevatedButton(
+                        buttonText: 'Show notification using Android Uri sound',
+                        onPressed: () async {
+                          await _showSoundUriNotification();
+                        },
+                      ),
+                      PaddedElevatedButton(
+                        buttonText: 'Show insistent notification',
+                        onPressed: () async {
+                          await _showInsistentNotification();
+                        },
+                      ),
+                      PaddedElevatedButton(
+                        buttonText: 'Show ongoing notification',
+                        onPressed: () async {
+                          await _showOngoingNotification();
+                        },
+                      ),
+                      PaddedElevatedButton(
+                        buttonText: 'Show full-screen notification',
+                        onPressed: () async {
+                          await _showFullScreenNotification();
+                        },
+                      ),
+                      PaddedElevatedButton(
+                        buttonText: 'Show notification with sound controlled by '
+                            'alarm volume',
+                        onPressed: () async {
+                          await _showNotificationWithAudioAttributeAlarm();
+                        },
+                      ),
+                      PaddedElevatedButton(
+                        buttonText: 'Get notification channels',
+                        onPressed: () async {
+                          await _getNotificationChannels();
+                        },
+                      ),
+                    ],
+                  ],
+                ]),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -476,4 +925,70 @@ class Save extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class SecondPage extends StatefulWidget {
+  const SecondPage(
+      this.payload, {
+        Key? key,
+      }) : super(key: key);
+
+  static const String routeName = '/secondPage';
+
+  final String? payload;
+
+  @override
+  State<StatefulWidget> createState() => SecondPageState();
+}
+
+class SecondPageState extends State<SecondPage> {
+  String? _payload;
+
+  @override
+  void initState() {
+    super.initState();
+    _payload = widget.payload;
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Text('Second Screen'),
+    ),
+    body: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('payload ${_payload ?? ''}'),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Go back!'),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class PaddedElevatedButton extends StatelessWidget {
+  const PaddedElevatedButton({
+    required this.buttonText,
+    required this.onPressed,
+    Key? key,
+  }) : super(key: key);
+
+  final String buttonText;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+    child: ElevatedButton(
+      onPressed: onPressed,
+      child: Text(buttonText),
+    ),
+  );
 }

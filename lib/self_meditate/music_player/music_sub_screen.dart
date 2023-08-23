@@ -307,12 +307,12 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 builder: (context, snapshot) {
                   final positionData = snapshot.data;
                   return ProgressBar(
-                    barHeight: 8,
+                    barHeight: 5,
                     timeLabelTextStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
-                    thumbRadius: 9,
+                    thumbRadius: 7,
                     thumbColor: Colors.white,
                     baseBarColor: const Color(0xff102349),
                     progressBarColor: const Color(0xff1F53AE),
