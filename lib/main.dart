@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -7,6 +8,8 @@ import 'package:organized_sleep/models/details_model.dart';
 import 'package:organized_sleep/self_meditate/meditation_home_screen.dart';
 import 'package:organized_sleep/self_meditate/music_player/music_main_screen.dart';
 import 'package:path_provider/path_provider.dart';
+import 'Clock/NewAlarm/newAlarm.dart';
+import 'Clock/NewAlarm/notification/notification_service.dart';
 import 'Clock/clock_home_screen.dart';
 import 'Clock/Alarm/alarm_screen.dart';
 import 'Clock/CountDown/countdown_screen.dart';
@@ -22,6 +25,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
   var directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(DetailsModelAdapter());
@@ -34,7 +38,14 @@ Future<void> main() async {
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,
   );
-  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
+  await NotificationService.initializeNotification();
+  WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+        (value) => runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash())),
+  );
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+  // runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Splash()));
   WidgetsBinding.instance.addObserver(_Handler());
 }
 
@@ -61,7 +72,7 @@ class BetterSleep extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
-        '/alarm': (context) => const AlarmScreen(),
+        '/alarm': (context) => const TimePickerScreen(),
         '/countdown': (context) => const CountdownScreen(),
         '/stopwatch': (context) => const StopWatchScreen(),
         '/breathing': (context) => const BreathingScreen(),

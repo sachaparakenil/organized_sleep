@@ -146,7 +146,7 @@ class ButtonThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button1(
-      label: 'Alarm',
+      label: 'Clock',
       onPressed: () async {
         PermissionStatus notification = await Permission.notification.request();
         if (notification == PermissionStatus.granted) {
