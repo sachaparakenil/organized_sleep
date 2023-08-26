@@ -1,12 +1,8 @@
-import 'package:organized_sleep/Clock/NewAlarm/notification/notification_service.dart';
-import 'package:organized_sleep/Clock/NewAlarm/share_preference_service.dart';
-import 'package:organized_sleep/Clock/NewAlarm/sleep_goal.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:organized_sleep/Clock/NewAlarm/Alarm%20main%20Screen/share_preference_service.dart';
+import 'package:organized_sleep/Clock/NewAlarm/Sleep%20Goal/sleep_goal.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'bedtime.dart';
+import '../Set Alarm/bedtime.dart';
 
 class TimePickerScreen extends StatefulWidget {
   const TimePickerScreen({super.key});
@@ -99,14 +95,14 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: const Image(
                       image: AssetImage("assets/icon/alarm_ic'.png"))),
-              SizedBox(height: 16,),
-              Text(
+              const SizedBox(height: 16,),
+              const Text(
                 'BetterSleep Resources',
                 style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: Column(
                   children: [
                     Button(

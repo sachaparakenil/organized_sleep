@@ -2,6 +2,7 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import '../Alarm main Screen/share_preference_service.dart';
 
 class NotificationService {
   static Future<void> initializeNotification() async {
@@ -60,6 +61,9 @@ class NotificationService {
     final payload = receivedAction.payload ?? {};
     if (payload['navigate'] == 'true') {
       debugPrint('I am in');
+       bool isRingtonePlaying = await AppSharedPreferences.getIsRingtonePlaying();
+      isRingtonePlaying = true;
+      await AppSharedPreferences.setIsRingtonePlaying(true);
       await AndroidAlarmManager.oneShot(
         const Duration(seconds: 1),
         0, //This ID has to be the same as above
@@ -106,6 +110,8 @@ class NotificationService {
         category: category,
         payload: payload,
         bigPicture: bigPiture,
+        wakeUpScreen: true,
+        fullScreenIntent: true,
       ),
       actionButtons: actionButtons,
       schedule: scheduled

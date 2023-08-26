@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:organized_sleep/main.dart';
+import '../Clock/Alarm/screen/edit_alarm.dart';
+import '../Clock/NewAlarm/Alarm main Screen/ring.dart';
+import '../Clock/NewAlarm/Alarm main Screen/share_preference_service.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -12,13 +16,38 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    navigate();
+    performAsyncInitialization();
   }
 
+  Future<void> performAsyncInitialization() async {
+    await navigate();
+    await setAlarm();
+  }
+
+  static Future<void> setAlarm() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+/*  static Future<void> stopRingtone() async {
+    await FlutterRingtonePlayer.stop();
+  }*/
   navigate() async {
     await Future.delayed(const Duration(milliseconds: 1500), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => BetterSleep()));
+    bool isRingtonePlaying = await AppSharedPreferences.getIsRingtonePlaying();
+    debugPrint('$isRingtonePlaying before going in main screen');
+    if (isRingtonePlaying) {
+      await AppSharedPreferences.setIsRingtonePlaying(false);
+      // isRingtonePlaying = false;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ExampleAlarmRingScreen()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BetterSleep()),
+      );
+    }
   }
 
   @override
@@ -45,3 +74,4 @@ class _SplashState extends State<Splash> {
     );
   }
 }
+

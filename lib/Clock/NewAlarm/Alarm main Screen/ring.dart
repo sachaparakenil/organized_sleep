@@ -1,11 +1,26 @@
-import 'package:alarm/alarm.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:organized_sleep/main.dart';
 
 class ExampleAlarmRingScreen extends StatelessWidget {
-  final AlarmSettings alarmSettings;
+  const ExampleAlarmRingScreen({
+    Key? key,
+  }) : super(key: key);
 
-  const ExampleAlarmRingScreen({Key? key, required this.alarmSettings})
-      : super(key: key);
+  static Future<void> stopRingtone() async {
+    await AndroidAlarmManager.oneShot(
+      const Duration(seconds: 1),
+      0, //This ID has to be the same as above
+      stopRingtoneCall,
+      exact: true,
+      wakeup: true,
+    );
+  }
+
+  static Future<void> stopRingtoneCall() async {
+    await FlutterRingtonePlayer.stop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +63,15 @@ class ExampleAlarmRingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Button3(
-                    label: 'SNOOZE',
-                    iconData: 'assets/icon/snooz.png',
-                    onPressed: () {
-                      final now = DateTime.now();
-                      Alarm.set(
-                        alarmSettings: alarmSettings.copyWith(
-                          dateTime: DateTime(
-                            now.year,
-                            now.month,
-                            now.day,
-                            now.hour,
-                            now.minute,
-                            0,
-                            0,
-                          ).add(const Duration(minutes: 1)),
-                        ),
-                      ).then((_) => Navigator.pop(context));
-                    },
-                  ),
-                  Button3(
                     label: 'DISMISS',
                     iconData: 'assets/icon/dismiss.png',
-                    onPressed: () {
-                      Alarm.stop(alarmSettings.id)
-                          .then((_) => Navigator.pop(context));
+                    onPressed: () async {
+                      stopRingtone();
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const BetterSleep(),
+                          ));
                     },
                   )
                 ],
@@ -100,6 +99,7 @@ class Button3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 100),
         padding: const EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
         child: ElevatedButton(
           onPressed: onPressed,

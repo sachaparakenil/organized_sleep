@@ -131,7 +131,7 @@ class ButtonTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button1(
-      label: 'Self\nMeditation',
+      label: 'Self\nMeditate',
       onPressed: () {
         Navigator.pushNamed(context, '/meditation');
       },

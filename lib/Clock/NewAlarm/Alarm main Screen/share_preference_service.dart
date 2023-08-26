@@ -79,4 +79,17 @@ class AppSharedPreferences {
     await _initPrefs();
     _prefs!.setBool(bedTimeAlarmKey, isEnabled);
   }
+
+  //new method for isRingtonePlayingKey
+  static const String isRingtonePlayingKey = 'is_ringtone_playing';
+
+  static Future<bool> getIsRingtonePlaying() async {
+    await _initPrefs();
+    return _prefs!.getBool(isRingtonePlayingKey) ?? false;
+  }
+
+  static Future<void> setIsRingtonePlaying(bool isPlaying) async {
+    await _initPrefs();
+    _prefs!.setBool(isRingtonePlayingKey, isPlaying);
+  }
 }

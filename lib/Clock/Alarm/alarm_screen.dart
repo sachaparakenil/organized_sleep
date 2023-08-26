@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:organized_sleep/Clock/Alarm/screen/ring.dart';
+import 'package:organized_sleep/Clock/NewAlarm/Alarm%20main%20Screen/ring.dart';
 import 'package:organized_sleep/Clock/Alarm/widgets/tile.dart';
 import 'screen/edit_alarm.dart';
 
@@ -38,7 +38,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              ExampleAlarmRingScreen(alarmSettings: alarmSettings),
+              const ExampleAlarmRingScreen(),
         ));
     loadAlarms();
   }
