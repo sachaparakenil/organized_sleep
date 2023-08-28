@@ -32,7 +32,8 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
 
   void retrieveSleepGoal() async {
     DateTime sleepGoal = await AppSharedPreferences.getSleepGoal();
-    String sleepGoalFormatted = '${sleepGoal.hour.toString().padLeft(2,'0')}:${sleepGoal.minute.toString().padLeft(2, '0')}';
+    String sleepGoalFormatted =
+        '${sleepGoal.hour.toString().padLeft(2, '0')}:${sleepGoal.minute.toString().padLeft(2, '0')}';
     setState(() {
       label2 = sleepGoalFormatted;
     });
@@ -83,7 +84,7 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
       ),
       body: Container(
         padding: EdgeInsets.only(top: appBarHeight),
-        decoration:  const BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
         ),
@@ -95,19 +96,28 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: const Image(
                       image: AssetImage("assets/icon/alarm_ic'.png"))),
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 20,
+              ),
               const Text(
                 'BetterSleep Resources',
-                style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Column(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: Row(
                   children: [
-                    Button(
-                      label1: 'Sleep Goal',
-                      label2: "$label2 hours",
+                    Button2(
+                      label: 'Sleep Goal',
+                      iconData: 'assets/icon/sleep_tracker.png',
                       onPressed: () async {
                         DateTime sleepGoal =
                             await AppSharedPreferences.getSleepGoal();
@@ -132,17 +142,44 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                         navigateAndSetState();
                       },
                     ),
-                    Button(
-                      label1: 'BedTime Goal',
-                      label2:
-                          '${initHour.toString().padLeft(2, '0')}:${initMinute.toString().padLeft(2, '0')} - ${endHour.toString().padLeft(2, '0')}:${endMinute.toString().padLeft(2, '0')} hours',
+                    Button2(
+                      label: 'Alarm',
+                      iconData: 'assets/icon/add_alarm.png',
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 500),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              // The screen you want to navigate to
+                              return const BedTime();
+                            },
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin = Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
+
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+
+                              var offsetAnimation = animation.drive(tween);
+
+                              // Apply desired transition effect
+                              return SlideTransition(
+                                  position: offsetAnimation, child: child);
+                            },
+                          ),
+                        );
+/*
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const BedTime(),
                           ),
-                        );
+                        );*/
                       },
                     ),
                   ],
@@ -230,7 +267,7 @@ class Button extends StatelessWidget {
   }
 }
 
-class Button2 extends StatelessWidget  {
+class Button2 extends StatelessWidget {
   final String label;
   final String iconData;
   final VoidCallback? onPressed;
@@ -277,7 +314,7 @@ class Button2 extends StatelessWidget  {
             ),
             child: Container(
               padding:
-              const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+                  const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

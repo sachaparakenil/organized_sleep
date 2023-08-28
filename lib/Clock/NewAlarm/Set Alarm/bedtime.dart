@@ -33,9 +33,6 @@ class _BedTimeState extends State<BedTime> {
   bool _isWakeUpAlarmEnabled = false;
   bool _isBedTimeAlarmEnabled = false;
 
-  double currentvol = 0.5;
-  String buttontype = "none";
-
   @override
   void initState() {
     super.initState();
@@ -138,6 +135,17 @@ class _BedTimeState extends State<BedTime> {
     prefs.setInt('end_minute', end.m);
     prefs.setBool('is_disable_range', isDisableRange ?? false);
 
+    if (_isWakeUpAlarmEnabled) {
+      cancelAlarm(2);
+      _scheduleAlarm(end.h, end.m, 2);
+      debugPrint('${end.h}:${end.m} Alarm is Set');
+    }
+    if (_isBedTimeAlarmEnabled) {
+      cancelAlarm(1);
+      _scheduleAlarmForBed(init.h, init.m, 1);
+      debugPrint('${init.h}:${init.m} Alarm is Set');
+    }
+
     setState(() {
       validRange = isDisableRange;
     });
@@ -189,10 +197,8 @@ class _BedTimeState extends State<BedTime> {
       android: AndroidSounds.alarm,
       ios: IosSounds.glass,
       looping: true,
-      // Android only - API >= 28
       volume: 1,
-      // Android only - API >= 28
-      asAlarm: false, // Android only - all APIs
+      asAlarm: true,
     );
 
     bool isRingtonePlaying = await AppSharedPreferences.getIsRingtonePlaying();
@@ -202,39 +208,74 @@ class _BedTimeState extends State<BedTime> {
     debugPrint("$isRingtonePlaying  after giving true in notification");
 
     await NotificationService.showNotification(
-        title: 'music',
-        body: 'body',
-        payload: {
-          "navigate": "true",
-        },
-        actionButtons: [
-          NotificationActionButton(
-            key: 'check',
-            label: 'Check it out',
-            actionType: ActionType.SilentAction,
-            color: Colors.green,
-          )
-        ]);
+      title: 'WakeUp Alarm',
+      body:
+          "Rise and shine, it's a brand new day filled with endless possibilities!",
+      payload: {
+        "navigate": "true",
+      },
+    );
+    bool wakeUp = await AppSharedPreferences.getWakeUpAlarmEnabled();
+    wakeUp = false;
+    AppSharedPreferences.setWakeUpAlarmEnabled(false);
   }
 
-/*  static Future<void> stopRingtone() async {
+  void _scheduleAlarmForBed(int hour, int minute, int id) async {
+    DateTime now = DateTime.now();
+    int selectedMinutes = hour * 60 * 60 + minute * 60;
+
+    int currentMinutes = now.hour * 60 * 60 + now.minute * 60 + now.second;
+
+    late int differenceInSeconds;
+
+    if (selectedMinutes < currentMinutes) {
+      selectedMinutes = selectedMinutes + 60 * 24 * 60;
+      differenceInSeconds = selectedMinutes - currentMinutes;
+    } else if (selectedMinutes > currentMinutes) {
+      differenceInSeconds = selectedMinutes - currentMinutes;
+    }
+    Duration delayDuration = Duration(seconds: differenceInSeconds);
+    debugPrint("$selectedMinutes selected Seconds");
+    debugPrint("$currentMinutes Current Seconds");
+    debugPrint("$differenceInSeconds Difference in Seconds");
+    debugPrint('$delayDuration Delay Duration');
+
     await AndroidAlarmManager.oneShot(
-      const Duration(seconds: 0),
-      0, //This ID has to be the same as above
-      stopRingtone1,
-      exact: true,
+      delayDuration,
+      1,
+      callbackForWake,
       wakeup: true,
     );
-  }*/
+  }
 
-/*  static Future<void> stopRingtone1() async {
-    await FlutterRingtonePlayer.stop();
-  }*/
-/*  static void stopRingtone() {
-    FlutterRingtonePlayer.stop();
-      debugPrint("Ringtone Stopped");
+  static Future<void> callbackForWake() async {
+    debugPrint("Start playing");
+    FlutterRingtonePlayer.play(
+      android: AndroidSounds.alarm,
+      ios: IosSounds.glass,
+      looping: true,
+      volume: 1,
+      asAlarm: true,
+    );
 
-  }*/
+    bool isRingtonePlaying = await AppSharedPreferences.getIsRingtonePlaying();
+    debugPrint("$isRingtonePlaying  before giving true in notification");
+
+    await AppSharedPreferences.setIsRingtonePlaying(true);
+    debugPrint("$isRingtonePlaying  after giving true in notification");
+
+    await NotificationService.showNotification(
+      title: 'BedTime Reminder',
+      body:
+          "Embrace the night and let your dreams guide you towards a brighter tomorrow.",
+      payload: {
+        "navigate": "true",
+      },
+    );
+    bool sleepTime = await AppSharedPreferences.getBedTimeAlarmEnabled();
+    sleepTime = false;
+    AppSharedPreferences.setBedTimeAlarmEnabled(false);
+  }
 
   Future<void> cancelAlarm(int id) async {
     AndroidAlarmManager.cancel(id);
@@ -246,7 +287,7 @@ class _BedTimeState extends State<BedTime> {
 
   @override
   Widget build(BuildContext context) {
-    final double appBarHeight = AppBar().preferredSize.height;
+    final double appBarHeight = AppBar().preferredSize.height + 10;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
@@ -282,29 +323,6 @@ class _BedTimeState extends State<BedTime> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _timeWidget(
-                  'BedTime',
-                  _inBedTime,
-                  const Icon(
-                    Icons.power_settings_new_outlined,
-                    size: 25.0,
-                    color: Color(0xFF3CDAF7),
-                  ),
-                ),
-                _timeWidget(
-                  'WakeUp',
-                  _outBedTime,
-                  const Icon(
-                    Icons.notifications_active_outlined,
-                    size: 25.0,
-                    color: Color(0xFF3CDAF7),
-                  ),
-                ),
-              ],
-            ),
             TimePicker(
               initTime: _inBedTime,
               endTime: _outBedTime,
@@ -316,11 +334,13 @@ class _BedTimeState extends State<BedTime> {
               primarySectors: _clockTimeFormat.value,
               secondarySectors: _clockTimeFormat.value * 2,
               decoration: TimePickerDecoration(
-                baseColor: const Color(0xFF1F2633),
+                baseColor: const Color.fromARGB(110, 255, 255, 255),
                 pickerBaseCirclePadding: 15.0,
                 sweepDecoration: TimePickerSweepDecoration(
                   pickerStrokeWidth: 30.0,
-                  pickerColor: _isSleepGoal ? const Color(0xFF3CDAF7) : Colors.white,
+                  pickerColor: _isSleepGoal
+                      ? Colors.white
+                      : const Color.fromARGB(110, 255, 255, 255),
                   showConnector: true,
                 ),
                 initHandlerDecoration: TimePickerHandlerDecoration(
@@ -328,7 +348,7 @@ class _BedTimeState extends State<BedTime> {
                   shape: BoxShape.circle,
                   radius: 12.0,
                   icon: const Icon(
-                    Icons.power_settings_new_outlined,
+                    Icons.bedtime_outlined,
                     size: 20.0,
                     color: Color(0xFF3CDAF7),
                   ),
@@ -373,7 +393,9 @@ class _BedTimeState extends State<BedTime> {
                       '${intl.NumberFormat('00').format(_intervalBedTime.h)}Hr ${intl.NumberFormat('00').format(_intervalBedTime.m)}Min',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: _isSleepGoal ? const Color(0xFF3CDAF7) : Colors.white,
+                        color: _isSleepGoal
+                            ? const Color(0xFF3CDAF7)
+                            : Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -381,12 +403,44 @@ class _BedTimeState extends State<BedTime> {
                 ),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _timeWidget(
+                  'BedTime',
+                  _inBedTime,
+                  const Image(
+                    image: AssetImage('assets/icon/sleep.png'),
+                    height: 25,
+                    width: 25,
+                  ),
+                ),
+                _timeWidget(
+                  'WakeUp',
+                  _outBedTime,
+                  const Image(
+                    image: AssetImage('assets/icon/wakeup.png'),
+                    height: 25,
+                    width: 25,
+                  ),
+                ),
+              ],
+            ),
             Container(
               width: 300.0,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: const Color(0xFF1F2633),
-                borderRadius: BorderRadius.circular(25.0),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: const Color(0xff254467), // Set the border color
+                  width: 1.5, // Set the border width
+                ),
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xff637ba8),
+                    Color(0xff02122C),
+                  ],
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -399,49 +453,88 @@ class _BedTimeState extends State<BedTime> {
                 ),
               ),
             ),
-            SwitchListTile(
-              title: const Text(
-                'Wake Up Alarm',
-                style: TextStyle(color: Colors.white),
+            Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 30,
               ),
-              value: _isWakeUpAlarmEnabled,
-              onChanged: (value) async {
-                setState(() {
-                  _isWakeUpAlarmEnabled = value;
-                });
-                await AppSharedPreferences.setWakeUpAlarmEnabled(value);
-                if (_isWakeUpAlarmEnabled) {
-                  debugPrint('Wake Up Alarm is enabled');
-                  _scheduleAlarm(_outBedTime.h, _outBedTime.m, 2);
-                } else {
-                  debugPrint('Wake Up Alarm is disabled');
-                  cancelAlarm(2);
-                }
-                // Implement the logic to handle wake up alarm enable/disable
-                // You can update shared preferences or call relevant methods here
-              },
-            ),
-            SwitchListTile(
-              title: const Text(
-                'Bedtime Alarm',
-                style: TextStyle(color: Colors.white),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              decoration: BoxDecoration(
+                // border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(25),
+                color: Colors.white,
               ),
-              value: _isBedTimeAlarmEnabled,
-              onChanged: (value) async {
-                setState(() {
-                  _isBedTimeAlarmEnabled = value;
-                });
-                if (_isBedTimeAlarmEnabled) {
-                  debugPrint('Bed Time Alarm is enabled');
-                  _scheduleAlarm(_inBedTime.h, _inBedTime.m, 1);
-                } else {
-                  debugPrint('Bed Time Alarm is disabled');
-                  cancelAlarm(1);
-                }
-                await AppSharedPreferences.setBedTimeAlarmEnabled(value);
-                // Implement the logic to handle bedtime alarm enable/disable
-                // You can update shared preferences or call relevant methods here
-              },
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(18),
+                      color: const Color(0xffD3E1F6),
+                    ),
+                    child: SwitchListTile(
+                      title: const Text(
+                        'Wake Up Alarm',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      value: _isWakeUpAlarmEnabled,
+                      activeColor: const Color(0xff07327a),
+                      inactiveTrackColor: Colors.grey,
+                      onChanged: (value) async {
+                        setState(() {
+                          _isWakeUpAlarmEnabled = value;
+                        });
+                        await AppSharedPreferences.setWakeUpAlarmEnabled(value);
+                        if (_isWakeUpAlarmEnabled) {
+                          debugPrint('Wake Up Alarm is enabled');
+                          _scheduleAlarm(_outBedTime.h, _outBedTime.m, 2);
+                        } else {
+                          debugPrint('Wake Up Alarm is disabled');
+                          cancelAlarm(2);
+                        }
+                        // Implement the logic to handle wake up alarm enable/disable
+                        // You can update shared preferences or call relevant methods here
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      // border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(18),
+                      color: const Color(0xffD3E1F6),
+                    ),
+                    child: SwitchListTile(
+                      title: const Text(
+                        'Bedtime Alarm',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      value: _isBedTimeAlarmEnabled,
+                      activeColor: const Color(0xff07327a),
+                      inactiveTrackColor: Colors.grey,
+                      onChanged: (value) async {
+                        setState(() {
+                          _isBedTimeAlarmEnabled = value;
+                        });
+                        if (_isBedTimeAlarmEnabled) {
+                          debugPrint('Bed Time Alarm is enabled');
+                          _scheduleAlarmForBed(_inBedTime.h, _inBedTime.m, 1);
+                        } else {
+                          debugPrint('Bed Time Alarm is disabled');
+                          cancelAlarm(1);
+                        }
+                        await AppSharedPreferences.setBedTimeAlarmEnabled(
+                            value);
+                        // Implement the logic to handle bedtime alarm enable/disable
+                        // You can update shared preferences or call relevant methods here
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -449,37 +542,44 @@ class _BedTimeState extends State<BedTime> {
     );
   }
 
-  Widget _timeWidget(String title, PickedTime time, Icon icon) {
+  Widget _timeWidget(String title, PickedTime time, Image image) {
     return Container(
-      width: 150.0,
       decoration: BoxDecoration(
-        color: const Color(0xFF1F2633),
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          children: [
-            Text(
-              '${intl.NumberFormat('00').format(time.h)}:${intl.NumberFormat('00').format(time.m)}',
-              style: const TextStyle(
-                color: Color(0xFF3CDAF7),
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Color(0xFF3CDAF7),
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 10),
-            icon,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color(0xff254467), // Set the border color
+          width: 1.5, // Set the border width
+        ),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xff637ba8),
+            Color(0xff02122C),
           ],
         ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          Text(
+            '${intl.NumberFormat('00').format(time.h)}:${intl.NumberFormat('00').format(time.m)}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 7),
+          image,
+        ],
       ),
     );
   }

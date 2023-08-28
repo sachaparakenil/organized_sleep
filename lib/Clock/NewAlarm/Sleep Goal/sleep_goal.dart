@@ -44,6 +44,25 @@ class _SleepGoalScreenState extends State<SleepGoalScreen> {
           hourTitle: 'Hour',
           saveButtonText: 'Save',
           initialDateTime: sleepGoal,
+          sheetCloseIconColor: const Color(0xff131a49),
+          saveButtonColor: const Color(0xff76a0e1),
+          sheetTitleStyle: const TextStyle(
+            color: Color(0xff131a49),
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+          hourTitleStyle: const TextStyle(
+            color: Color(0xff333770),
+            fontSize: 22,
+          ),
+          minuteTitleStyle: const TextStyle(
+            color: Color(0xff333770),
+            fontSize: 22,
+          ),
+          wheelNumberItemStyle:
+              const TextStyle(color: Colors.black26, fontSize: 18),
+          wheelNumberSelectedStyle:
+              const TextStyle(color: Colors.black, fontSize: 18),
         ),
       );
       if (result != null) {
@@ -79,6 +98,53 @@ class _SleepGoalScreenState extends State<SleepGoalScreen> {
             ),
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'Information',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Expanded(
+                    child: AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      title: const Center(child: Text('Sleep Quality')),
+                      titleTextStyle: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      content: Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: const Column(
+                          children: [
+                            Text(
+                                'Aim for 7-9 hours of sleep each night for better health. Consistent sleep schedule and a comfy sleep environment contribute to overall well-being.')
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ), //IconButton
+        ],
         title: const Text(
           'SLEEP GOAL',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -89,21 +155,49 @@ class _SleepGoalScreenState extends State<SleepGoalScreen> {
       ),
       body: Container(
         padding: EdgeInsets.only(top: appBarHeight),
-        decoration:  const BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
+              image: AssetImage("assets/icon/bg4.png"), fit: BoxFit.fill),
         ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white10,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.symmetric(horizontal: 85),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Sleep Goal',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    Text(
+                      '${dateTimeSelected.hour.toString().padLeft(2, '0')} hr : ${dateTimeSelected.minute.toString().padLeft(2, '0')} min',
+                      style: const TextStyle(fontSize: 22, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: const Image(
-                      image: AssetImage("assets/icon/snore_thumb.png"))),
+                    image: AssetImage("assets/icon/snore_thumb.png"),
+                    height: 250,
+                    width: 250,
+                  )),
+              const SizedBox(height: 20),
               Container(
-                padding:
-                    const EdgeInsets.only(right: 16, left: 16, top: 8, bottom: 8),
+                padding: const EdgeInsets.only(
+                    right: 16, left: 16, top: 8, bottom: 8),
                 child: ElevatedButton(
                   onPressed: () {
                     _openTimePickerSheet(context);
@@ -113,7 +207,7 @@ class _SleepGoalScreenState extends State<SleepGoalScreen> {
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(25),
                     ),
 
                     disabledForegroundColor: Colors.black.withOpacity(0.38),
@@ -124,7 +218,7 @@ class _SleepGoalScreenState extends State<SleepGoalScreen> {
                   ),
                   child: Ink(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(30),
                       border: Border.all(
                         color: const Color(0xff254467), // Set the border color
                         width: 1.5, // Set the border width
@@ -150,11 +244,6 @@ class _SleepGoalScreenState extends State<SleepGoalScreen> {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Selected Time: ${dateTimeSelected.hour.toString().padLeft(2, '0')}:${dateTimeSelected.minute.toString().padLeft(2, '0')}',
-                style: const TextStyle(fontSize: 22, color: Colors.white),
               ),
             ],
           ),

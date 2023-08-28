@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:organized_sleep/Clock/Alarm/alarm_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
+
+import '../../Clock/NewAlarm/Alarm main Screen/newAlarm.dart';
 
 class RecorderView extends StatefulWidget {
   final Function onSaved;

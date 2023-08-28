@@ -3,6 +3,7 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_sleep/Clock/NewAlarm/Alarm%20main%20Screen/ring.dart';
 import 'package:organized_sleep/Clock/Alarm/widgets/tile.dart';
+import '../NewAlarm/Alarm main Screen/newAlarm.dart';
 import 'screen/edit_alarm.dart';
 
 class AlarmScreen extends StatefulWidget {
@@ -37,8 +38,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
     await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              const ExampleAlarmRingScreen(),
+          builder: (context) => const ExampleAlarmRingScreen(),
         ));
     loadAlarms();
   }
@@ -102,7 +102,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
       body: Stack(children: [
         Container(
           padding: EdgeInsets.only(top: appBarHeight),
-          decoration:  const BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/icon/bg3.png"), fit: BoxFit.fill),
           ),
@@ -218,82 +218,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
           ),
         ),
       ]),
-    );
-  }
-}
-
-class Button2 extends StatelessWidget {
-  final String label;
-  final String iconData;
-  final VoidCallback? onPressed;
-
-  const Button2(
-      {super.key, required this.label, this.onPressed, required this.iconData});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 0),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            // backgroundColor: Color.fromRGBO(255, 255, 255, 0.5),
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(17),
-            ),
-
-            disabledForegroundColor: Colors.black.withOpacity(0.38),
-            disabledBackgroundColor: Colors.black.withOpacity(0.12),
-            padding: EdgeInsets.zero, // To remove padding, if needed
-            elevation: 0, // Disabled text color
-            minimumSize: const Size(100, 40),
-          ),
-          child: Ink(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: const Color(0xff254467), // Set the border color
-                width: 1.5, // Set the border width
-              ),
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xff0A1933), // Transparent at top left
-                  Color.fromRGBO(255, 255, 255, 0.1), // White at bottom right
-                ],
-              ),
-            ),
-            child: Container(
-              padding:
-                  const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image(
-                    image: AssetImage(
-                      iconData,
-                    ),
-                    width: 30,
-                    height: 30,
-                  ),
-                  const SizedBox(width: 6.0),
-                  Center(
-                    child: Text(
-                      label,
-                      style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

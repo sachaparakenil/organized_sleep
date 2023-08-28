@@ -46,7 +46,7 @@ class Meditation extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.topCenter,
                   padding: EdgeInsets.only(top: appBarHeight + topSpacing),
-                  child:  const Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ButtonOne(),
@@ -154,7 +154,8 @@ class Button5 extends StatelessWidget {
               ),
             ),
             child: Container(
-              padding: const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
+              padding:
+                  const EdgeInsets.only(top: 15, bottom: 15, right: 7, left: 7),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

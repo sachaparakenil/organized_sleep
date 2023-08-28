@@ -184,7 +184,8 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   Future<void> _init() async {
     await _audioPlayer.setLoopMode(LoopMode.all);
-    await _audioPlayer.setAudioSource(_playlist[_currentSongIndexNotifier.value]);
+    await _audioPlayer
+        .setAudioSource(_playlist[_currentSongIndexNotifier.value]);
     _audioPlayer.play();
   }
 
@@ -326,7 +327,11 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
             const SizedBox(
               height: 45,
             ),
-            Controls(audioPlayer: _audioPlayer, onNext: _playPreviousSong, onPrevious:_playNextSong ,),
+            Controls(
+              audioPlayer: _audioPlayer,
+              onNext: _playPreviousSong,
+              onPrevious: _playNextSong,
+            ),
           ],
         ),
       ),
@@ -373,7 +378,11 @@ class MediaMetadata extends StatelessWidget {
 }
 
 class Controls extends StatelessWidget {
-  const Controls({super.key, required this.audioPlayer, required this.onNext, required this.onPrevious});
+  const Controls(
+      {super.key,
+      required this.audioPlayer,
+      required this.onNext,
+      required this.onPrevious});
   final AudioPlayer audioPlayer;
   final VoidCallback onNext;
   final VoidCallback onPrevious;
@@ -388,7 +397,9 @@ class Controls extends StatelessWidget {
             color: Colors.white,
             iconSize: 50,
             icon: const Icon(Icons.skip_previous_rounded)),
-        const SizedBox(width: 20,),
+        const SizedBox(
+          width: 20,
+        ),
         StreamBuilder<PlayerState>(
             stream: audioPlayer.playerStateStream,
             builder: (context, snapshot) {
@@ -437,7 +448,9 @@ class Controls extends StatelessWidget {
                 ),
               );
             }),
-        const SizedBox(width: 20,),
+        const SizedBox(
+          width: 20,
+        ),
         IconButton(
             onPressed: onPrevious,
             color: Colors.white,
@@ -454,7 +467,8 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   final Color backgroundColor;
   final Color progressColor;
 
-  const CustomCircularProgressIndicator({super.key,
+  const CustomCircularProgressIndicator({
+    super.key,
     required this.progress,
     this.strokeWidth = 6,
     this.backgroundColor = const Color(0xff061CCE),

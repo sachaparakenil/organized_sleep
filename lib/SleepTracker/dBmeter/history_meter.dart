@@ -58,28 +58,42 @@ class HistoryMeter extends StatelessWidget {
             children: [
               DbMeter(maxVoiceValue),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 22),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: const Color(0xff1C3A58), width: 1.5)
-                ),
-                 child: const Column(
+                    borderRadius: BorderRadius.circular(30),
+                    border:
+                        Border.all(color: const Color(0xff1C3A58), width: 1.5)),
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Noise less than 60 dB is Good.\nModerate noise ranges from 60 to 70 dB.\nLoud noise ranges from 70 to 80 dB.\nOver 80 dB is considered to be too loud.',style: historyTextStyle,),
+                    Text(
+                      'Noise less than 60 dB is Good.\nModerate noise ranges from 60 to 70 dB.\nLoud noise ranges from 70 to 80 dB.\nOver 80 dB is considered to be too loud.',
+                      style: historyTextStyle,
+                    ),
                   ],
+                ),
               ),
-               ),
-              const SizedBox(height: 28,),
+              const SizedBox(
+                height: 28,
+              ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     AtSleepTime(
-                        label1: sleep[1], label2: sleep[0], title: 'SLEEP AT', image: 'assets/icon/sleep.png',),
+                      label1: sleep[1],
+                      label2: sleep[0],
+                      title: 'SLEEP AT',
+                      image: 'assets/icon/sleep.png',
+                    ),
                     AtSleepTime(
-                        label1: wake[1], label2: wake[0], title: 'WAKE AT', image: 'assets/icon/wakeup.png',),
+                      label1: wake[1],
+                      label2: wake[0],
+                      title: 'WAKE AT',
+                      image: 'assets/icon/wakeup.png',
+                    ),
                   ],
                 ),
               ),
@@ -190,7 +204,7 @@ class LongList extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text("Sniffing Data"),
+        title: const Text("SNIFFING DATA"),
         centerTitle: true,
       ),
       body: sniffing.isEmpty
@@ -203,12 +217,14 @@ class LongList extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image(image: AssetImage('assets/icon/ic.png'), height: 300, width: 300,),
+                    Image(
+                      image: AssetImage('assets/icon/ic.png'),
+                      height: 300,
+                      width: 300,
+                    ),
                     Text(
                       'Your Sleep Is Better Than',
-                      style: TextStyle(
-                          fontSize: 28,
-                          color: Colors.white),
+                      style: TextStyle(fontSize: 28, color: Colors.white),
                     ),
                     Text(
                       '95% POPULATIONS',
@@ -374,9 +390,10 @@ class AtSleepTime extends StatelessWidget {
 
   const AtSleepTime(
       {super.key,
-        required this.label1,
-        required this.title,
-        required this.label2, required this.image});
+      required this.label1,
+      required this.title,
+      required this.label2,
+      required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -412,8 +429,14 @@ class AtSleepTime extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image(image: AssetImage(image),height: 20, width: 20,),
-                const SizedBox(width: 8,),
+                Image(
+                  image: AssetImage(image),
+                  height: 20,
+                  width: 20,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
                 Text(
                   title,
                   style: sHistoryNameText,
@@ -426,4 +449,3 @@ class AtSleepTime extends StatelessWidget {
     );
   }
 }
-

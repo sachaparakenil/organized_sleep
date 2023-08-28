@@ -122,7 +122,7 @@ class _RecorderHomeViewState extends State<RecorderHomeView> {
         title: const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: Text(
-            "Sleep Tracker",
+            "SLEEP TRACKER",
           ),
         ),
         centerTitle: true,

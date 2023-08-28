@@ -10,12 +10,12 @@ class AppSharedPreferences {
   // Methods from the first class
 
   static Future<void> saveBedTimeValues(
-      int initHour,
-      int initMinute,
-      int endHour,
-      int endMinute,
-      bool isDisableRange,
-      ) async {
+    int initHour,
+    int initMinute,
+    int endHour,
+    int endMinute,
+    bool isDisableRange,
+  ) async {
     await _initPrefs();
     _prefs!.setInt('init_hour', initHour);
     _prefs!.setInt('init_minute', initMinute);

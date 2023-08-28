@@ -14,16 +14,16 @@ import 'package:timezone/timezone.dart' as tz;
 int id = 0;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 final StreamController<ReceivedNotification> didReceiveLocalNotificationStream =
-StreamController<ReceivedNotification>.broadcast();
+    StreamController<ReceivedNotification>.broadcast();
 
 final StreamController<String?> selectNotificationStream =
-StreamController<String?>.broadcast();
+    StreamController<String?>.broadcast();
 
 const MethodChannel platform =
-MethodChannel('dexterx.dev/flutter_local_notifications_example');
+    MethodChannel('dexterx.dev/flutter_local_notifications_example');
 
 const String portName = 'notification_send_port';
 
@@ -84,7 +84,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   bool _notificationsEnabled = false;
   late String assetAudio;
   final _timePickerTheme = TimePickerThemeData(
-    backgroundColor:  Colors.white,
+    backgroundColor: Colors.white,
     hourMinuteShape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: Color(0xff07327a), width: 1),
@@ -167,9 +167,9 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   Future<void> _isAndroidPermissionGranted() async {
     if (Platform.isAndroid) {
       final bool granted = await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-          ?.areNotificationsEnabled() ??
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()
+              ?.areNotificationsEnabled() ??
           false;
 
       setState(() {
@@ -182,27 +182,27 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
     if (Platform.isIOS || Platform.isMacOS) {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin>()
+              IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+            alert: true,
+            badge: true,
+            sound: true,
+          );
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          MacOSFlutterLocalNotificationsPlugin>()
+              MacOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+            alert: true,
+            badge: true,
+            sound: true,
+          );
     } else if (Platform.isAndroid) {
       final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-      flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
 
       final bool? grantedNotificationPermission =
-      await androidImplementation?.requestPermission();
+          await androidImplementation?.requestPermission();
       setState(() {
         _notificationsEnabled = grantedNotificationPermission ?? false;
       });
@@ -251,7 +251,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
 
   Future<void> _showNotificationWithActions() async {
     const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your channel id',
       'your channel name',
       channelDescription: 'your channel description',
@@ -284,17 +284,17 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
     );
 
     const DarwinNotificationDetails iosNotificationDetails =
-    DarwinNotificationDetails(
+        DarwinNotificationDetails(
       categoryIdentifier: darwinNotificationCategoryPlain,
     );
 
     const DarwinNotificationDetails macOSNotificationDetails =
-    DarwinNotificationDetails(
+        DarwinNotificationDetails(
       categoryIdentifier: darwinNotificationCategoryPlain,
     );
 
     const LinuxNotificationDetails linuxNotificationDetails =
-    LinuxNotificationDetails(
+        LinuxNotificationDetails(
       actions: <LinuxNotificationAction>[
         LinuxNotificationAction(
           key: urlLaunchActionId,
@@ -325,7 +325,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
         title: const Text('Turn off your screen'),
         content: const Text(
             'to see the full-screen intent in 5 seconds, press OK and TURN '
-                'OFF your screen'),
+            'OFF your screen'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -349,7 +349,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                           fullScreenIntent: true)),
                   androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
                   uiLocalNotificationDateInterpretation:
-                  UILocalNotificationDateInterpretation.absoluteTime);
+                      UILocalNotificationDateInterpretation.absoluteTime);
 
               Navigator.pop(context);
             },
@@ -366,31 +366,30 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
     /// as the notification sound
     final String? alarmUri = await platform.invokeMethod<String>('getAlarmUri');
     final UriAndroidNotificationSound uriSound =
-    UriAndroidNotificationSound(alarmUri!);
+        UriAndroidNotificationSound(alarmUri!);
     final AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails('uri channel id', 'uri channel name',
-        channelDescription: 'uri channel description',
-        sound: uriSound,
-        styleInformation: const DefaultStyleInformation(true, true));
+        AndroidNotificationDetails('uri channel id', 'uri channel name',
+            channelDescription: 'uri channel description',
+            sound: uriSound,
+            styleInformation: const DefaultStyleInformation(true, true));
     final NotificationDetails notificationDetails =
-    NotificationDetails(android: androidNotificationDetails);
+        NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
         id++, 'uri sound title', 'uri sound body', notificationDetails);
   }
-
 
   Future<void> _showInsistentNotification() async {
     // This value is from: https://developer.android.com/reference/android/app/Notification.html#FLAG_INSISTENT
     const int insistentFlag = 4;
     final AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails('your channel id', 'your channel name',
-        channelDescription: 'your channel description',
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'ticker',
-        additionalFlags: Int32List.fromList(<int>[insistentFlag]));
+        AndroidNotificationDetails('your channel id', 'your channel name',
+            channelDescription: 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ticker: 'ticker',
+            additionalFlags: Int32List.fromList(<int>[insistentFlag]));
     final NotificationDetails notificationDetails =
-    NotificationDetails(android: androidNotificationDetails);
+        NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
         id++, 'insistent title', 'insistent body', notificationDetails,
         payload: 'item x');
@@ -402,14 +401,14 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
 
   Future<void> _showOngoingNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails('your channel id', 'your channel name',
-        channelDescription: 'your channel description',
-        importance: Importance.max,
-        priority: Priority.high,
-        ongoing: true,
-        autoCancel: false);
+        AndroidNotificationDetails('your channel id', 'your channel name',
+            channelDescription: 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ongoing: true,
+            autoCancel: false);
     const NotificationDetails notificationDetails =
-    NotificationDetails(android: androidNotificationDetails);
+        NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin.show(
         id++,
         'ongoing notification title',
@@ -419,7 +418,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
 
   Future<void> _getNotificationChannels() async {
     final Widget notificationChannelsDialogContent =
-    await _getNotificationChannelsDialogContent();
+        await _getNotificationChannelsDialogContent();
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -439,10 +438,10 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   Future<Widget> _getNotificationChannelsDialogContent() async {
     try {
       final List<AndroidNotificationChannel>? channels =
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()!
-          .getNotificationChannels();
+          await flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<
+                  AndroidFlutterLocalNotificationsPlugin>()!
+              .getNotificationChannels();
 
       return Container(
         width: double.maxFinite,
@@ -481,15 +480,15 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
     } on PlatformException catch (error) {
       return Text(
         'Error calling "getNotificationChannels"\n'
-            'code: ${error.code}\n'
-            'message: ${error.message}',
+        'code: ${error.code}\n'
+        'message: ${error.message}',
       );
     }
   }
 
   Future<void> _showNotificationWithAudioAttributeAlarm() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your alarm channel id',
       'your alarm channel name',
       channelDescription: 'your alarm channel description',
@@ -498,7 +497,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       audioAttributesUsage: AudioAttributesUsage.alarm,
     );
     const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
       'notification sound controlled by alarm volume',
@@ -858,7 +857,8 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
                         },
                       ),
                       PaddedElevatedButton(
-                        buttonText: 'Show notification with sound controlled by '
+                        buttonText:
+                            'Show notification with sound controlled by '
                             'alarm volume',
                         onPressed: () async {
                           await _showNotificationWithAudioAttributeAlarm();
@@ -927,12 +927,11 @@ class Save extends StatelessWidget {
   }
 }
 
-
 class SecondPage extends StatefulWidget {
   const SecondPage(
-      this.payload, {
-        Key? key,
-      }) : super(key: key);
+    this.payload, {
+    Key? key,
+  }) : super(key: key);
 
   static const String routeName = '/secondPage';
 
@@ -953,24 +952,24 @@ class SecondPageState extends State<SecondPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Second Screen'),
-    ),
-    body: Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text('payload ${_payload ?? ''}'),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Go back!'),
+        appBar: AppBar(
+          title: const Text('Second Screen'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text('payload ${_payload ?? ''}'),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go back!'),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
 
 class PaddedElevatedButton extends StatelessWidget {
@@ -985,10 +984,10 @@ class PaddedElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-    child: ElevatedButton(
-      onPressed: onPressed,
-      child: Text(buttonText),
-    ),
-  );
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          child: Text(buttonText),
+        ),
+      );
 }
